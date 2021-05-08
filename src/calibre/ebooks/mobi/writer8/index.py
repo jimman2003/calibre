@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 from polyglot.builtins import map
 
@@ -92,7 +91,7 @@ class IndexHeader(Header):  # {{{
 # }}}
 
 
-class Index(object):  # {{{
+class Index:  # {{{
 
     control_byte_count = 1
     cncx = CNCX()
@@ -341,7 +340,7 @@ class NCXIndex(Index):
             largest = max(x['index'] for x in toc_table)
         except ValueError:
             largest = 0
-        fmt = '%0{0}X'.format(max(2, len('%X' % largest)))
+        fmt = '%0{}X'.format(max(2, len('%X' % largest)))
 
         def to_entry(x):
             ans = {}

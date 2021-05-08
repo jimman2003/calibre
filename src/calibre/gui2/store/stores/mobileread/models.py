@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -105,7 +101,7 @@ class BooksModel(QAbstractItemModel):
             return
         descending = order == Qt.SortOrder.DescendingOrder
         self.books.sort(None,
-            lambda x: sort_key(type(u'')(self.data_as_text(x, col))),
+            lambda x: sort_key(type('')(self.data_as_text(x, col))),
             descending)
         if reset:
             self.beginResetModel(), self.endResetModel()

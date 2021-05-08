@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -129,7 +128,7 @@ def get_hpos(anchor, page_width, XPath, get, width_frac):
     return 0
 
 
-class Images(object):
+class Images:
 
     def __init__(self, namespace, log):
         self.namespace = namespace
@@ -262,7 +261,7 @@ class Images(object):
                 ans = self.pic_to_img(pic, alt, inline, title)
                 if ans is not None:
                     if style:
-                        ans.set('style', '; '.join('%s: %s' % (k, v) for k, v in iteritems(style)))
+                        ans.set('style', '; '.join('{}: {}'.format(k, v) for k, v in iteritems(style)))
                     yield ans
 
         # Now process the floats
@@ -273,7 +272,7 @@ class Images(object):
                 ans = self.pic_to_img(pic, alt, anchor, title)
                 if ans is not None:
                     if style:
-                        ans.set('style', '; '.join('%s: %s' % (k, v) for k, v in iteritems(style)))
+                        ans.set('style', '; '.join('{}: {}'.format(k, v) for k, v in iteritems(style)))
                     yield ans
 
     def pict_to_html(self, pict, page):
@@ -295,7 +294,7 @@ class Images(object):
                 style['margin-left'] = '0' if align == 'left' else 'auto'
                 style['margin-right'] = 'auto' if align == 'left' else '0'
             if style:
-                hr.set('style', '; '.join(('%s:%s' % (k, v) for k, v in iteritems(style))))
+                hr.set('style', '; '.join(('{}:{}'.format(k, v) for k, v in iteritems(style))))
             yield hr
 
         for imagedata in XPath('descendant::v:imagedata[@r:id]')(pict):
@@ -359,8 +358,6 @@ class Images(object):
             os.mkdir(dest)
         self.dest_dir, self.docx = dest, docx
         if elem.tag.endswith('}drawing'):
-            for tag in self.drawing_to_html(elem, page):
-                yield tag
+            yield from self.drawing_to_html(elem, page)
         else:
-            for tag in self.pict_to_html(elem, page):
-                yield tag
+            yield from self.pict_to_html(elem, page)

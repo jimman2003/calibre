@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -50,10 +49,10 @@ def reset_caches():
 def open_for_write(fname):
     try:
         return share_open(fname, 'w+b')
-    except EnvironmentError:
+    except OSError:
         try:
             os.makedirs(os.path.dirname(fname))
-        except EnvironmentError:
+        except OSError:
             pass
     return share_open(fname, 'w+b')
 
@@ -71,7 +70,7 @@ def create_file_copy(ctx, rd, prefix, library_id, book_id, ext, mtime, copy_func
     if iswindows:
         base = '\\\\?\\' + os.path.abspath(base)  # Ensure fname is not too long for windows' API
 
-    bname = '%s-%s-%x.%s' % (prefix, library_id, book_id, ext)
+    bname = '{}-{}-{:x}.{}'.format(prefix, library_id, book_id, ext)
     if '\\' in bname or '/' in bname:
         raise ValueError('File components must not contain path separators')
     fname = os.path.join(base, bname)
@@ -101,7 +100,7 @@ def create_file_copy(ctx, rd, prefix, library_id, book_id, ext, mtime, copy_func
             try:
                 ans = share_open(fname, 'rb')
                 used_cache = 'yes'
-            except EnvironmentError as err:
+            except OSError as err:
                 if err.errno != errno.ENOENT:
                     raise
                 ans = open_for_write(fname)
@@ -130,7 +129,7 @@ def write_generated_cover(db, book_id, width, height, destf):
 def generated_cover(ctx, rd, library_id, db, book_id, width=None, height=None):
     prefix = 'generated-cover'
     if height is not None:
-        prefix += '-%sx%s' % (width, height)
+        prefix += '-{}x{}'.format(width, height)
 
     mtime = timestampfromdt(db.field_for('last_modified', book_id))
     return create_file_copy(ctx, rd, prefix, library_id, book_id, 'jpg', mtime, partial(write_generated_cover, db, book_id, width, height))
@@ -145,7 +144,7 @@ def cover(ctx, rd, library_id, db, book_id, width=None, height=None):
         def copy_func(dest):
             db.copy_cover_to(book_id, dest)
     else:
-        prefix += '-%sx%s' % (width, height)
+        prefix += '-{}x{}'.format(width, height)
 
         def copy_func(dest):
             buf = BytesIO()
@@ -160,7 +159,7 @@ def book_filename(rd, book_id, mi, fmt, as_encoded_unicode=False):
     au = authors_to_string(mi.authors or [_('Unknown')])
     title = mi.title or _('Unknown')
     ext = (fmt or '').lower()
-    fname = '%s - %s_%s.%s' % (title[:30], au[:30], book_id, ext)
+    fname = '{} - {}_{}.{}'.format(title[:30], au[:30], book_id, ext)
     if as_encoded_unicode:
         # See https://tools.ietf.org/html/rfc6266
         fname = sanitize_file_name(fname).encode('utf-8')
@@ -207,7 +206,7 @@ def book_fmt(ctx, rd, library_id, db, book_id, fmt):
             set_metadata(dest, mi, fmt)
             dest.seek(0)
 
-    rd.outheaders['Content-Disposition'] = '''attachment; filename="%s"; filename*=utf-8''%s''' % (
+    rd.outheaders['Content-Disposition'] = '''attachment; filename="{}"; filename*=utf-8''{}'''.format(
         book_filename(rd, book_id, mi, fmt), book_filename(rd, book_id, mi, fmt, as_encoded_unicode=True))
 
     return create_file_copy(ctx, rd, 'fmt', library_id, book_id, fmt, mtime, copy_func, extra_etag_data=extra_etag_data)
@@ -226,7 +225,7 @@ def static(ctx, rd, what):
     path = P('content-server/' + path)
     try:
         return share_open(path, 'rb')
-    except EnvironmentError:
+    except OSError:
         raise HTTPNotFound()
 
 
@@ -265,17 +264,17 @@ def icon(ctx, rd, which):
     if sz == 'full':
         try:
             return share_open(path, 'rb')
-        except EnvironmentError:
+        except OSError:
             raise HTTPNotFound()
     with lock:
         cached = os.path.join(rd.tdir, 'icons', '%d-%s.png' % (sz, which))
         try:
             return share_open(cached, 'rb')
-        except EnvironmentError:
+        except OSError:
             pass
         try:
             src = share_open(path, 'rb')
-        except EnvironmentError:
+        except OSError:
             raise HTTPNotFound()
         with src:
             idata = src.read()
@@ -341,4 +340,4 @@ def get(ctx, rd, what, book_id, library_id):
             try:
                 return book_fmt(ctx, rd, library_id, db, book_id, what.lower())
             except NoSuchFormat:
-                raise HTTPNotFound('No %s format for the book %r' % (what.lower(), book_id))
+                raise HTTPNotFound('No {} format for the book {!r}'.format(what.lower(), book_id))

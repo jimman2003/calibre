@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -92,7 +89,7 @@ class TXTInput(InputFormatPlugin):
                    'of the standard markdown format. The extensions enabled by default: %default.\n'
                    'To learn more about markdown extensions, see {}\n'
                    'This should be a comma separated list of extensions to enable:\n'
-                   ).format('https://python-markdown.github.io/extensions/') + '\n'.join('* %s: %s' % (k, MD_EXTENSIONS[k]) for k in sorted(MD_EXTENSIONS))),
+                   ).format('https://python-markdown.github.io/extensions/') + '\n'.join('* {}: {}'.format(k, MD_EXTENSIONS[k]) for k in sorted(MD_EXTENSIONS))),
     }
 
     def shift_file(self, fname, data):
@@ -178,7 +175,7 @@ class TXTInput(InputFormatPlugin):
                 # gb2312 instead of gbk. gbk is a superset of gb2312, anyway.
                 det_encoding = 'gbk'
             ienc = det_encoding
-            log.debug('Detected input encoding as %s with a confidence of %s%%' % (ienc, confidence * 100))
+            log.debug('Detected input encoding as {} with a confidence of {}%'.format(ienc, confidence * 100))
         if not ienc:
             ienc = 'utf-8'
             log.debug('No input encoding specified and could not auto detect using %s' % ienc)

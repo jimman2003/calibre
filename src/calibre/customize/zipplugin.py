@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -340,9 +339,9 @@ class CalibrePluginFinder:
                     break
         else:
             if self._identifier_pat.match(plugin_name) is None:
-                raise InvalidPlugin((
+                raise InvalidPlugin(
                     'The plugin at %r uses an invalid import name: %r' %
-                    (path_to_zip_file, plugin_name)))
+                    (path_to_zip_file, plugin_name))
 
         pynames = [x for x in names if x.endswith('.py')]
 

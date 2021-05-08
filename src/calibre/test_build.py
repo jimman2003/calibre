@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -30,7 +29,7 @@ class BuildTest(unittest.TestCase):
                 try:
                     ctypes.WinDLL(os.path.join(base, x))
                 except Exception as err:
-                    self.assertTrue(False, 'Failed to load DLL %s with error: %s' % (x, err))
+                    self.assertTrue(False, 'Failed to load DLL {} with error: {}'.format(x, err))
 
     def test_pycryptodome(self):
         from Crypto.Cipher import AES
@@ -71,7 +70,7 @@ class BuildTest(unittest.TestCase):
 
     def test_chardet(self):
         from cchardet import detect
-        raw = 'mūsi Füße'.encode('utf-8')
+        raw = 'mūsi Füße'.encode()
         data = detect(raw)
         self.assertEqual(data['encoding'].lower(), 'utf-8')
         self.assertGreater(data['confidence'], 0.5)
@@ -167,7 +166,7 @@ class BuildTest(unittest.TestCase):
         def au(x, name):
             self.assertTrue(
                 isinstance(x, unicode_type),
-                '%s() did not return a unicode string, instead returning: %r' % (name, x))
+                '{}() did not return a unicode string, instead returning: {!r}'.format(name, x))
         for x in 'username temp_path locale_name'.split():
             au(getattr(winutil, x)(), x)
         d = winutil.localeconv()

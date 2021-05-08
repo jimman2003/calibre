@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 store_version = 2  # Needed for dynamic plugin loading
 
 __license__ = 'GPL 3'
@@ -109,8 +106,7 @@ class ManyBooksStore(BasicStoreConfig, OpenSearchOPDSStore):
     web_url = 'http://manybooks.net'
 
     def search(self, query, max_results=10, timeout=60):
-        for r in search_manybooks(query, max_results=max_results, timeout=timeout, open_search_url=self.open_search_url):
-            yield r
+        yield from search_manybooks(query, max_results=max_results, timeout=timeout, open_search_url=self.open_search_url)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__   = 'GPL v3'
@@ -38,7 +37,7 @@ def XLINK(tag):
     return '{%s}%s'%(NAMESPACES['xlink'], tag)
 
 
-class Context(object):
+class Context:
 
     def __init__(self, root):
         try:
@@ -57,7 +56,7 @@ class Context(object):
     def get_or_create(self, parent, tag, attribs={}, at_start=True):
         xpathstr='./fb:'+tag
         for n, v in attribs.items():
-            xpathstr += '[@%s="%s"]' % (n, v)
+            xpathstr += '[@{}="{}"]'.format(n, v)
         ans = self.XPath(xpathstr)(parent)
         if ans:
             ans = ans[0]
@@ -66,7 +65,7 @@ class Context(object):
         return ans
 
     def create_tag(self, parent, tag, attribs={}, at_start=True):
-        ans = parent.makeelement('{%s}%s' % (self.fb_ns, tag))
+        ans = parent.makeelement('{{{}}}{}'.format(self.fb_ns, tag))
         ans.attrib.update(attribs)
         if at_start:
             parent.insert(0, ans)
@@ -210,7 +209,7 @@ def _parse_book_title(root, ctx):
     xp_ti = '//fb:title-info/fb:book-title/text()'
     xp_pi = '//fb:publish-info/fb:book-title/text()'
     xp_si = '//fb:src-title-info/fb:book-title/text()'
-    book_title = ctx.XPath('normalize-space(%s|%s|%s)' % (xp_ti, xp_pi, xp_si))(root)
+    book_title = ctx.XPath('normalize-space({}|{}|{})'.format(xp_ti, xp_pi, xp_si))(root)
 
     return book_title
 
@@ -244,7 +243,7 @@ def _parse_cover_data(root, imgid, mi, ctx):
                 fmt = identify(cdata)[0]
                 mi.cover_data = (fmt, cdata)
         else:
-            prints("WARNING: Unsupported coverpage mime-type '%s' (id=#%s)" % (mimetype, imgid))
+            prints("WARNING: Unsupported coverpage mime-type '{}' (id=#{})".format(mimetype, imgid))
 
 
 def _parse_tags(root, mi, ctx):
@@ -265,7 +264,7 @@ def _parse_series(root, mi, ctx):
     xp_ti = '//fb:title-info/fb:sequence[1]'
     xp_pi = '//fb:publish-info/fb:sequence[1]'
 
-    elms_sequence = ctx.XPath('%s|%s' % (xp_ti, xp_pi))(root)
+    elms_sequence = ctx.XPath('{}|{}'.format(xp_ti, xp_pi))(root)
     if elms_sequence:
         mi.series = elms_sequence[0].get('name', None)
         if mi.series:

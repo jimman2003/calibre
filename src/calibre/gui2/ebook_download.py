@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -76,7 +73,7 @@ def download_file(url, cookie_file=None, filename=None, create_browser=None):
     return dfilename
 
 
-class EbookDownload(object):
+class EbookDownload:
 
     def __call__(self, gui, cookie_file=None, url='', filename='', save_loc='', add_to_lib=True, tags=[], create_browser=None,
                  log=None, abort=None, notifications=None):
@@ -134,7 +131,7 @@ def start_ebook_download(callback, job_manager, gui, cookie_file=None, url='', f
     job_manager.run_threaded_job(job)
 
 
-class EbookDownloadMixin(object):
+class EbookDownloadMixin:
 
     def __init__(self, *args, **kwargs):
         pass

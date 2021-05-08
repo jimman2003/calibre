@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -87,7 +86,7 @@ class BasicMetadataWidget(object):
 '''
 
 
-class ToMetadataMixin(object):
+class ToMetadataMixin:
 
     FIELD_NAME = None
     allow_undo = False
@@ -643,7 +642,7 @@ class SeriesIndexEdit(make_undoable(QDoubleSpinBox), ToMetadataMixin):
     data_changed = pyqtSignal()
 
     def __init__(self, parent, series_edit):
-        super(SeriesIndexEdit, self).__init__(parent)
+        super().__init__(parent)
         self.valueChanged.connect(self.data_changed)
         self.dialog = parent
         self.db = self.original_series_name = None
@@ -1179,7 +1178,7 @@ class Cover(ImageView):  # {{{
             try:
                 with open(_file, "rb") as f:
                     cover = f.read()
-            except IOError as e:
+            except OSError as e:
                 d = error_dialog(
                         self, _('Error reading file'),
                         _("<p>There was an error reading from file: <br /><b>") + _file + "</b></p><br />"+unicode_type(e))
@@ -1340,7 +1339,7 @@ class RatingEdit(RatingEditor, ToMetadataMixin):  # {{{
     data_changed = pyqtSignal()
 
     def __init__(self, parent):
-        super(RatingEdit, self).__init__(parent)
+        super().__init__(parent)
         self.setToolTip(self.TOOLTIP)
         self.setWhatsThis(self.TOOLTIP)
         self.currentTextChanged.connect(self.data_changed)
@@ -1494,7 +1493,7 @@ class Identifiers(Dialog):
 
     def __init__(self, identifiers, parent=None):
         Dialog.__init__(self, _('Edit Identifiers'), 'edit-identifiers-dialog', parent=parent)
-        self.text.setPlainText('\n'.join('%s:%s' % (k, identifiers[k]) for k in sorted(identifiers, key=sort_key)))
+        self.text.setPlainText('\n'.join('{}:{}'.format(k, identifiers[k]) for k in sorted(identifiers, key=sort_key)))
 
     def setup_ui(self):
         self.l = l = QVBoxLayout(self)
@@ -1817,7 +1816,7 @@ class DateEdit(make_undoable(DateTimeEdit), ToMetadataMixin):
     data_changed = pyqtSignal()
 
     def __init__(self, parent, create_clear_button=True):
-        super(DateEdit, self).__init__(parent)
+        super().__init__(parent)
         self.setToolTip(self.TOOLTIP)
         self.setWhatsThis(self.TOOLTIP)
         self.dateTimeChanged.connect(self.data_changed)
@@ -1869,7 +1868,7 @@ class DateEdit(make_undoable(DateTimeEdit), ToMetadataMixin):
         elif ev.key() == Qt.Key.Key_Tab and is_date_undefined(self.current_val):
             ev.ignore()
         else:
-            return super(DateEdit, self).keyPressEvent(ev)
+            return super().keyPressEvent(ev)
 
 
 class PubdateEdit(DateEdit):

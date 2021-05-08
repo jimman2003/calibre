@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2019, Kovid Goyal <kovid at kovidgoyal.net>
 
 # Imports {{{
@@ -292,7 +291,7 @@ class RenderManager(QObject):
     def signal_received(self, read_fd):
         try:
             os.read(read_fd, 1024)
-        except EnvironmentError:
+        except OSError:
             return
         QApplication.instance().exit(KILL_SIGNAL)
 
@@ -533,7 +532,7 @@ def make_anchors_unique(container, log):
     return name_anchor_map
 
 
-class AnchorLocation(object):
+class AnchorLocation:
 
     __slots__ = ('pagenum', 'left', 'top', 'zoom')
 
@@ -589,7 +588,7 @@ def fix_links(pdf_doc, anchor_locations, name_anchor_map, mark_links, log):
 
 
 # Outline creation {{{
-class PDFOutlineRoot(object):
+class PDFOutlineRoot:
 
     def __init__(self, pdf_doc):
         self.pdf_doc = pdf_doc

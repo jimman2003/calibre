@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -258,7 +257,7 @@ class MyApplication(Gtk.Application):
         props = {name:get_property_value(r.reply()) for name, r in iteritems(replies)}
         ans = ['\nX Window properties:']
         for name in sorted(props):
-            ans.append('%s: %r' % (name, props[name]))
+            ans.append('{}: {!r}'.format(name, props[name]))
         self.xprop_data = '\n'.join(ans)
         self.object_path = props['_UNITY_OBJECT_PATH']
         self.bus_name = props['_GTK_UNIQUE_BUS_NAME']

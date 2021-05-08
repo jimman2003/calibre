@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2010, Hiroshi Miura <miurahr@linux.com>'
 __docformat__ = 'restructuredtext en'
@@ -21,7 +18,7 @@ Tranliterate the string from unicode characters to ASCII in Chinese and others.
 import unicodedata
 
 
-class Unihandecoder(object):
+class Unihandecoder:
     preferred_encoding = None
     decoder = None
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -133,7 +132,7 @@ class HeaderView(QHeaderView):  # {{{
 # }}}
 
 
-class PreserveViewState(object):  # {{{
+class PreserveViewState:  # {{{
 
     '''
     Save the set of selected books at enter time. If at exit time there are no
@@ -1205,7 +1204,7 @@ class BooksView(QTableView):  # {{{
     def selectionCommand(self, index, event):
         if event and event.type() == QEvent.Type.KeyPress and event.key() in (Qt.Key.Key_Home, Qt.Key.Key_End) and event.modifiers() & Qt.Modifier.CTRL:
             return QItemSelectionModel.SelectionFlag.ClearAndSelect | QItemSelectionModel.SelectionFlag.Rows
-        return super(BooksView, self).selectionCommand(index, event)
+        return super().selectionCommand(index, event)
 
     def keyPressEvent(self, ev):
         if handle_enter_press(self, ev):

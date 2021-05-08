@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2010, Kovid Goyal <kovid at kovidgoyal.net>
 
 import copy, json, traceback
@@ -143,8 +142,8 @@ class ConfigWidget(ConfigWidgetBase, Ui_Form):
             traceback.print_exc()
             self.builtin_source_dict = {}
 
-        self.funcs = dict((k,v) for k,v in formatter_functions().get_functions().items()
-                                if v.is_python)
+        self.funcs = {k:v for k,v in formatter_functions().get_functions().items()
+                                if v.is_python}
 
         self.builtins = formatter_functions().get_builtins_and_aliases()
 

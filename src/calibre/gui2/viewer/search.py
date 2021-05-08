@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2020, Kovid Goyal <kovid at kovidgoyal.net>
 
 import json
@@ -80,7 +79,7 @@ def text_to_regex(text):
     return ''.join(ans)
 
 
-class Search(object):
+class Search:
 
     def __init__(self, text, mode, case_sensitive, backwards):
         self.text, self.mode = text, mode
@@ -117,7 +116,7 @@ class Search(object):
         return str(namedtuple('Search', s)(*tuple(getattr(self, x) for x in s)))
 
 
-class SearchFinished(object):
+class SearchFinished:
 
     def __init__(self, search_query):
         self.search_query = search_query
@@ -357,12 +356,12 @@ class SearchInput(QWidget):  # {{{
         qt.addItem(_('Contains'), 'normal')
         qt.addItem(_('Whole words'), 'word')
         qt.addItem(_('Regex'), 'regex')
-        qt.setToolTip(('<p>' + _(
+        qt.setToolTip('<p>' + _(
             'Choose the type of search: <ul>'
             '<li><b>Contains</b> will search for the entered text anywhere.'
             '<li><b>Whole words</b> will search for whole words that equal the entered text.'
             '<li><b>Regex</b> will interpret the text as a regular expression.'
-        )))
+        ))
         qt.setCurrentIndex(qt.findData(vprefs.get('viewer-{}-mode'.format(self.panel_name), 'normal') or 'normal'))
         qt.currentIndexChanged.connect(self.save_search_type)
         h.addWidget(qt)

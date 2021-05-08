@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -78,7 +77,7 @@ def get_content_length(response):
         return -1
 
 
-class ProgressTracker(object):
+class ProgressTracker:
 
     def __init__(self, fobj, url, sz, progress_report):
         self.fobj = fobj

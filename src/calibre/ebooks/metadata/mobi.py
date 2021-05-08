@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2009, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -29,7 +28,7 @@ def is_image(ss):
     return what(None, ss[:200]) is not None
 
 
-class StreamSlicer(object):
+class StreamSlicer:
 
     def __init__(self, stream, start=0, stop=None):
         self._stream = stream
@@ -97,7 +96,7 @@ class StreamSlicer(object):
         self._stream.truncate(value)
 
 
-class MetadataUpdater(object):
+class MetadataUpdater:
     DRM_KEY_SIZE = 48
 
     def __init__(self, stream):
@@ -310,10 +309,10 @@ class MetadataUpdater(object):
     def dump_pdbrecords(self):
         # Diagnostic
         print("MetadataUpdater.dump_pdbrecords()")
-        print("%10s %10s %10s" % ("offset","flags","val"))
+        print("{:>10} {:>10} {:>10}".format("offset","flags","val"))
         for i in range(len(self.pdbrecords)):
             pdbrecord = self.pdbrecords[i]
-            print("%10X %10X %10X" % (pdbrecord[0], pdbrecord[1], pdbrecord[2]))
+            print("{:10X} {:10X} {:10X}".format(pdbrecord[0], pdbrecord[1], pdbrecord[2]))
 
     def record(self, n):
         if n >= self.nrecs:

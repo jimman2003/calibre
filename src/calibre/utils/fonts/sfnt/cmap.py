@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -120,7 +119,7 @@ def set_id_delta(id_delta):  # {{{
 # }}}
 
 
-class BMPTable(object):
+class BMPTable:
 
     def __init__(self, raw):
         self.raw = raw
@@ -171,7 +170,7 @@ class BMPTable(object):
 class CmapTable(UnknownTable):
 
     def __init__(self, *args, **kwargs):
-        super(CmapTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.version, self.num_tables = unpack_from(b'>HH', self.raw)
 

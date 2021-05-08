@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2010, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -73,10 +72,10 @@ def copy_all(text_browser):
 
 
 def create_search_internet_menu(callback, author=None):
-    m = QMenu((
+    m = QMenu(
         _('Search the internet for the author {}').format(author)
         if author is not None else
-        _('Search the internet for this book'))
+        _('Search the internet for this book')
     )
     m.menuAction().setIcon(QIcon(I('search.png')))
     items = all_book_searches() if author is None else all_author_searches()

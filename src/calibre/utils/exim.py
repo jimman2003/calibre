@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -28,7 +27,7 @@ def send_file(from_obj, to_obj, chunksize=1<<20):
     return unicode_type(m.hexdigest())
 
 
-class FileDest(object):
+class FileDest:
 
     def __init__(self, key, exporter, mtime=None):
         self.exporter, self.key = exporter, key
@@ -66,7 +65,7 @@ class FileDest(object):
         self.close()
 
 
-class Exporter(object):
+class Exporter:
 
     VERSION = 0
     TAIL_FMT = b'!II?'  # part_num, version, is_last
@@ -138,11 +137,11 @@ class Exporter(object):
             for fname in filenames:
                 fpath = os.path.join(dirpath, fname)
                 rpath = os.path.relpath(fpath, path).replace(os.sep, '/')
-                key = '%s:%s' % (pkey, rpath)
+                key = '{}:{}'.format(pkey, rpath)
                 try:
                     with lopen(fpath, 'rb') as f:
                         self.add_file(f, key)
-                except EnvironmentError:
+                except OSError:
                     if not iswindows:
                         raise
                     time.sleep(1)
@@ -209,7 +208,7 @@ def export(destdir, library_paths=None, dbmap=None, progress1=None, progress2=No
 # Import {{{
 
 
-class FileSource(object):
+class FileSource:
 
     def __init__(self, f, size, digest, description, mtime, importer):
         self.f, self.size, self.digest, self.description = f, size, digest, description
@@ -235,7 +234,7 @@ class FileSource(object):
         self.hasher = self.f = None
 
 
-class Importer(object):
+class Importer:
 
     def __init__(self, path_to_export_dir):
         self.corrupted_files = []
@@ -290,7 +289,7 @@ class Importer(object):
             try:
                 with lopen(path, 'wb') as dest:
                     shutil.copyfileobj(f, dest)
-            except EnvironmentError:
+            except OSError:
                 os.makedirs(os.path.dirname(path))
                 with lopen(path, 'wb') as dest:
                     shutil.copyfileobj(f, dest)
@@ -299,7 +298,7 @@ class Importer(object):
         try:
             with lopen(gpath, 'rb') as f:
                 raw = f.read()
-        except EnvironmentError:
+        except OSError:
             raw = b''
         try:
             lpath = library_usage_stats.most_common(1)[0][0]
@@ -332,7 +331,7 @@ def import_data(importer, library_path_map, config_location=None, progress1=None
             progress1(dest, i, total)
         try:
             os.makedirs(dest)
-        except EnvironmentError as err:
+        except OSError as err:
             if err.errno != errno.EEXIST:
                 raise
         if not os.path.isdir(dest):
@@ -355,14 +354,14 @@ def import_data(importer, library_path_map, config_location=None, progress1=None
             if os.path.exists(config_location):
                 try:
                     shutil.rmtree(config_location)
-                except EnvironmentError:
+                except OSError:
                     if not iswindows:
                         raise
                     time.sleep(1)
                     shutil.rmtree(config_location)
     try:
         os.rename(base_dir, config_location)
-    except EnvironmentError:
+    except OSError:
         time.sleep(2)
         os.rename(base_dir, config_location)
     from calibre.gui2 import gprefs
@@ -384,7 +383,7 @@ def test_import(export_dir='/t/ex', import_dir='/t/imp'):
 def cli_report(*args, **kw):
     try:
         prints(*args, **kw)
-    except EnvironmentError:
+    except OSError:
         pass
 
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -47,7 +46,7 @@ def at_start(elem):
     return False
 
 
-class DetectStructure(object):
+class DetectStructure:
 
     def __call__(self, oeb, opts):
         self.log = oeb.log

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2010, Greg Riker
 
 
@@ -70,7 +69,7 @@ class Formatter(TemplateFormatter):
         return self.book.format_field(key, series_with_index=False)[1]
 
 
-class CatalogBuilder(object):
+class CatalogBuilder:
     '''
     Generates catalog source files from calibre database
 
@@ -246,14 +245,14 @@ class CatalogBuilder(object):
          (str): sort key
         """
         if not book['series']:
-            key = '%s %s' % (self._kf_author_to_author_sort(book['author']),
+            key = '{} {}'.format(self._kf_author_to_author_sort(book['author']),
                                 capitalize(book['title_sort']))
         else:
             index = book['series_index']
             integer = int(index)
             fraction = index - integer
             series_index = '%04d%s' % (integer, unicode_type('%0.4f' % fraction).lstrip('0'))
-            key = '%s ~%s %s' % (self._kf_author_to_author_sort(book['author']),
+            key = '{} ~{} {}'.format(self._kf_author_to_author_sort(book['author']),
                                     self.generate_sort_title(book['series']),
                                     series_index)
         return key
@@ -290,7 +289,7 @@ class CatalogBuilder(object):
         integer = int(index)
         fraction = index - integer
         series_index = '%04d%s' % (integer, unicode_type('%0.4f' % fraction).lstrip('0'))
-        key = '%s %s' % (self.generate_sort_title(book['series']),
+        key = '{} {}'.format(self.generate_sort_title(book['series']),
                          series_index)
         return key
 
@@ -742,9 +741,9 @@ class CatalogBuilder(object):
             print("     establish_equivalencies():")
             if key:
                 for idx, item in enumerate(item_list):
-                    print("      %s %s" % (cl_list[idx], item[sort_field]))
+                    print("      {} {}".format(cl_list[idx], item[sort_field]))
             else:
-                print("      %s %s" % (cl_list[idx], item))
+                print("      {} {}".format(cl_list[idx], item))
 
         return cl_list
 
@@ -849,7 +848,7 @@ class CatalogBuilder(object):
         if self.DEBUG and self.opts.verbose:
             self.opts.log.info("\nfetch_books_by_author(): %d unique authors" % len(unique_authors))
             for author in unique_authors:
-                self.opts.log.info((u" %-50s %-25s %2d" % (author[0][0:45], author[1][0:20],
+                self.opts.log.info((" %-50s %-25s %2d" % (author[0][0:45], author[1][0:20],
                     author[2])).encode('utf-8'))
             self.opts.log.info("\nfetch_books_by_author(): %d individual authors" % len(individual_authors))
             for author in sorted(individual_authors):
@@ -879,9 +878,9 @@ class CatalogBuilder(object):
 
             if self.DEBUG and self.opts.verbose:
                 self.opts.log.info("fetch_books_by_title(): %d books" % len(self.books_by_title))
-                self.opts.log.info(" %-40s %-40s" % ('title', 'title_sort'))
+                self.opts.log.info(" {:<40} {:<40}".format('title', 'title_sort'))
                 for title in self.books_by_title:
-                    self.opts.log.info((u" %-40s %-40s" % (title['title'][0:40],
+                    self.opts.log.info((" {:<40} {:<40}".format(title['title'][0:40],
                                                             title['title_sort'][0:40])).encode('utf-8'))
         else:
             error_msg = _("No books to catalog.\nCheck 'Excluded books' rules in the E-book options.\n")
@@ -1070,7 +1069,7 @@ class CatalogBuilder(object):
 
         if self.DEBUG:
             if self.prefix_rules:
-                self.opts.log.info(" Added prefixes (bools_are_tristate: {0}):".format(self.db.new_api.pref('bools_are_tristate')))
+                self.opts.log.info(" Added prefixes (bools_are_tristate: {}):".format(self.db.new_api.pref('bools_are_tristate')))
             else:
                 self.opts.log.info(" No added prefixes")
 
@@ -1188,7 +1187,7 @@ class CatalogBuilder(object):
                         dots = int((book['percent_read'] + 5) // 10)
                         dot_string = self.SYMBOL_PROGRESS_READ * dots
                         empty_dots = self.SYMBOL_PROGRESS_UNREAD * (10 - dots)
-                        book['reading_progress'] = '%s%s' % (dot_string, empty_dots)
+                        book['reading_progress'] = '{}{}'.format(dot_string, empty_dots)
                         bookmarks[id] = ((myBookmark, book))
 
             self.bookmarked_books = bookmarks
@@ -1554,7 +1553,7 @@ class CatalogBuilder(object):
                     pSeriesTag['class'] = "series_mobi"
                 if self.opts.generate_series:
                     aTag = soup.new_tag('a')
-                    aTag['href'] = "%s.html#%s" % ('BySeries', self.generate_series_anchor(book['series']))
+                    aTag['href'] = "{}.html#{}".format('BySeries', self.generate_series_anchor(book['series']))
                     aTag.insert(0, book['series'])
                     pSeriesTag.insert(0, aTag)
                 else:
@@ -1676,7 +1675,7 @@ class CatalogBuilder(object):
                 pIndexTag = soup.new_tag("p")
                 pIndexTag['class'] = "date_index"
                 aTag = soup.new_tag("a")
-                aTag['id'] = "bda_%s-%s" % (current_date.year, current_date.month)
+                aTag['id'] = "bda_{}-{}".format(current_date.year, current_date.month)
                 pIndexTag.insert(0, aTag)
                 pIndexTag.insert(1, NavigableString(date_string))
                 divTag.insert(dtc, pIndexTag)
@@ -1694,7 +1693,7 @@ class CatalogBuilder(object):
                         pAuthorTag['class'] = "author_index"
                         aTag = soup.new_tag("a")
                         if self.opts.generate_authors:
-                            aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor", self.generate_author_anchor(current_author))
+                            aTag['href'] = "{}.html#{}".format("ByAlphaAuthor", self.generate_author_anchor(current_author))
                         aTag.insert(0, NavigableString(current_author))
                         pAuthorTag.insert(0, aTag)
                         divTag.insert(dtc, pAuthorTag)
@@ -1710,7 +1709,7 @@ class CatalogBuilder(object):
                             pSeriesTag['class'] = "series_mobi"
                         if self.opts.generate_series:
                             aTag = soup.new_tag('a')
-                            aTag['href'] = "%s.html#%s" % ('BySeries', self.generate_series_anchor(new_entry['series']))
+                            aTag['href'] = "{}.html#{}".format('BySeries', self.generate_series_anchor(new_entry['series']))
                             aTag.insert(0, new_entry['series'])
                             pSeriesTag.insert(0, aTag)
                         else:
@@ -1812,7 +1811,7 @@ class CatalogBuilder(object):
                     emTag = soup.new_tag("em")
                     aTag = soup.new_tag("a")
                     if self.opts.generate_authors:
-                        aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor", self.generate_author_anchor(new_entry['author']))
+                        aTag['href'] = "{}.html#{}".format("ByAlphaAuthor", self.generate_author_anchor(new_entry['author']))
                     aTag.insert(0, NavigableString(new_entry['author']))
                     emTag.insert(0, aTag)
                     spanTag.insert(stc, emTag)
@@ -1934,7 +1933,7 @@ class CatalogBuilder(object):
                 pIndexTag = soup.new_tag("p")
                 pIndexTag['class'] = "date_index"
                 aTag = soup.new_tag("a")
-                aTag['name'] = "bdr_%s-%s-%s" % (current_date.year, current_date.month, current_date.day)
+                aTag['name'] = "bdr_{}-{}-{}".format(current_date.year, current_date.month, current_date.day)
                 pIndexTag.insert(0, aTag)
                 pIndexTag.insert(1, NavigableString(date_string))
                 divTag.insert(dtc, pIndexTag)
@@ -1964,7 +1963,7 @@ class CatalogBuilder(object):
                     emTag = soup.new_tag("em")
                     aTag = soup.new_tag("a")
                     if self.opts.generate_authors:
-                        aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor", self.generate_author_anchor(new_entry['author']))
+                        aTag['href'] = "{}.html#{}".format("ByAlphaAuthor", self.generate_author_anchor(new_entry['author']))
                     aTag.insert(0, NavigableString(new_entry['author']))
                     emTag.insert(0, aTag)
                     pBookTag.insert(ptc, emTag)
@@ -1995,7 +1994,7 @@ class CatalogBuilder(object):
                     dots = int((new_entry['percent_read'] + 5) // 10)
                     dot_string = self.SYMBOL_PROGRESS_READ * dots
                     empty_dots = self.SYMBOL_PROGRESS_UNREAD * (10 - dots)
-                    pBookTag.insert(ptc, NavigableString('%s%s' % (dot_string, empty_dots)))
+                    pBookTag.insert(ptc, NavigableString('{}{}'.format(dot_string, empty_dots)))
                     ptc += 1
 
                     aTag = soup.new_tag("a")
@@ -2013,7 +2012,7 @@ class CatalogBuilder(object):
                     emTag = soup.new_tag("em")
                     aTag = soup.new_tag("a")
                     if self.opts.generate_authors:
-                        aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor", self.generate_author_anchor(new_entry['author']))
+                        aTag['href'] = "{}.html#{}".format("ByAlphaAuthor", self.generate_author_anchor(new_entry['author']))
                     aTag.insert(0, NavigableString(new_entry['author']))
                     emTag.insert(0, aTag)
                     pBookTag.insert(ptc, emTag)
@@ -2185,7 +2184,7 @@ class CatalogBuilder(object):
                         books_by_current_author += 1
 
                 # Write the genre book list as an article
-                outfile = "%s/Genre_%s.html" % (self.content_dir, genre)
+                outfile = "{}/Genre_{}.html".format(self.content_dir, genre)
                 titles_spanned = self.generate_html_by_genre(genre,
                                                              True if index == 0 else False,
                                                              genre_tag_set[genre],
@@ -2261,7 +2260,7 @@ class CatalogBuilder(object):
                 pAuthorTag['class'] = "author_index"
                 aTag = soup.new_tag("a")
                 if self.opts.generate_authors:
-                    aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor", self.generate_author_anchor(book['author']))
+                    aTag['href'] = "{}.html#{}".format("ByAlphaAuthor", self.generate_author_anchor(book['author']))
                 aTag.insert(0, book['author'])
                 pAuthorTag.insert(0, aTag)
                 divTag.insert(dtc, pAuthorTag)
@@ -2277,7 +2276,7 @@ class CatalogBuilder(object):
                     pSeriesTag['class'] = "series_mobi"
                 if self.opts.generate_series:
                     aTag = soup.new_tag('a')
-                    aTag['href'] = "%s.html#%s" % ('BySeries', self.generate_series_anchor(book['series']))
+                    aTag['href'] = "{}.html#{}".format('BySeries', self.generate_series_anchor(book['series']))
                     aTag.insert(0, book['series'])
                     pSeriesTag.insert(0, aTag)
                 else:
@@ -2456,7 +2455,7 @@ class CatalogBuilder(object):
             # Link to author
             aTag = soup.new_tag("a")
             if self.opts.generate_authors:
-                aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor",
+                aTag['href'] = "{}.html#{}".format("ByAlphaAuthor",
                                             self.generate_author_anchor(' & '.join(book['authors'])))
             aTag.insert(0, NavigableString(' & '.join(book['authors'])))
             spanTag.insert(stc, aTag)
@@ -2621,7 +2620,7 @@ class CatalogBuilder(object):
             emTag = soup.new_tag("em")
             aTag = soup.new_tag("a")
             if self.opts.generate_authors:
-                aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor", self.generate_author_anchor(book['author']))
+                aTag['href'] = "{}.html#{}".format("ByAlphaAuthor", self.generate_author_anchor(book['author']))
             aTag.insert(0, NavigableString(book['author']))
             emTag.insert(0, aTag)
             spanTag.insert(stc, emTag)
@@ -2773,7 +2772,7 @@ class CatalogBuilder(object):
         if stars:
             star_string = self.SYMBOL_FULL_RATING * stars
             empty_stars = self.SYMBOL_EMPTY_RATING * (5 - stars)
-            rating = '%s%s <br/>' % (star_string, empty_stars)
+            rating = '{}{} <br/>'.format(star_string, empty_stars)
 
         # Notes
         note_source = ''
@@ -2806,14 +2805,14 @@ class CatalogBuilder(object):
         if aTag:
             if book['series']:
                 if self.opts.generate_series:
-                    aTag['href'] = "%s.html#%s" % ('BySeries', self.generate_series_anchor(book['series']))
+                    aTag['href'] = "{}.html#{}".format('BySeries', self.generate_series_anchor(book['series']))
             else:
                 aTag.extract()
 
         # Insert the author link
         aTag = body.find('a', attrs={'class': 'author'})
         if self.opts.generate_authors and aTag:
-            aTag['href'] = "%s.html#%s" % ("ByAlphaAuthor",
+            aTag['href'] = "{}.html#{}".format("ByAlphaAuthor",
                                         self.generate_author_anchor(book['author']))
 
         if publisher == ' ':
@@ -3111,7 +3110,7 @@ class CatalogBuilder(object):
             cm_tags = {}
 
             if book['date']:
-                navStr = '%s | %s' % (self.format_ncx_text(book['author'], dest='author'),
+                navStr = '{} | {}'.format(self.format_ncx_text(book['author'], dest='author'),
                         book['date'].split()[1])
             else:
                 navStr = '%s' % (self.format_ncx_text(book['author'], dest='author'))
@@ -3200,9 +3199,9 @@ class CatalogBuilder(object):
                 fmt_string = _("Series beginning with '%s'")
             sec_text = fmt_string % (title_letters[i] if len(title_letters[i]) > 1 else title_letters[i])
             if title_letters[i] == self.SYMBOLS:
-                content_src = "content/%s.html#%s_series" % (output, self.SYMBOLS)
+                content_src = "content/{}.html#{}_series".format(output, self.SYMBOLS)
             else:
-                content_src = "content/%s.html#%s_series" % (output, self.generate_unicode_name(title_letters[i]))
+                content_src = "content/{}.html#{}_series".format(output, self.generate_unicode_name(title_letters[i]))
 
             cm_tags = {'description': self.format_ncx_text(books, dest='description')}
             self.generate_ncx_subsection(navPointTag, sec_id, sec_text, content_src, cm_tags)
@@ -3279,14 +3278,14 @@ class CatalogBuilder(object):
         for (i, books) in enumerate(books_by_letter):
             sec_id = "%sTitles-ID" % (title_letters[i].upper())
             if len(title_letters[i]) > 1:
-                fmt_string = _(u"Titles beginning with %s")
+                fmt_string = _("Titles beginning with %s")
             else:
-                fmt_string = _(u"Titles beginning with '%s'")
+                fmt_string = _("Titles beginning with '%s'")
             sec_text = fmt_string % (title_letters[i] if len(title_letters[i]) > 1 else title_letters[i])
             if title_letters[i] == self.SYMBOLS:
-                content_src = "content/%s.html#%s_titles" % (output, self.SYMBOLS)
+                content_src = "content/{}.html#{}_titles".format(output, self.SYMBOLS)
             else:
-                content_src = "content/%s.html#%s_titles" % (output, self.generate_unicode_name(title_letters[i]))
+                content_src = "content/{}.html#{}_titles".format(output, self.generate_unicode_name(title_letters[i]))
 
             cm_tags = {'description': self.format_ncx_text(books, dest='description')}
             self.generate_ncx_subsection(navPointTag, sec_id, sec_text, content_src, cm_tags)
@@ -3356,14 +3355,14 @@ class CatalogBuilder(object):
         for authors_by_letter in master_author_list:
             sec_id = "%sauthors-ID" % (authors_by_letter[1])
             if authors_by_letter[1] == self.SYMBOLS:
-                fmt_string = _(u"Authors beginning with %s")
+                fmt_string = _("Authors beginning with %s")
             else:
-                fmt_string = _(u"Authors beginning with '%s'")
+                fmt_string = _("Authors beginning with '%s'")
             sec_text = fmt_string % authors_by_letter[1]
             if authors_by_letter[1] == self.SYMBOLS:
-                content_src = "%s#%s_authors" % (HTML_file, authors_by_letter[1])
+                content_src = "{}#{}_authors".format(HTML_file, authors_by_letter[1])
             else:
-                content_src = "%s#%s_authors" % (HTML_file, self.generate_unicode_name(authors_by_letter[1]))
+                content_src = "{}#{}_authors".format(HTML_file, self.generate_unicode_name(authors_by_letter[1]))
 
             cm_tags = {'description': authors_by_letter[0]}
             self.generate_ncx_subsection(navPointTag, sec_id, sec_text, content_src, cm_tags)
@@ -3431,7 +3430,7 @@ class CatalogBuilder(object):
         for books_by_date_range in master_date_range_list:
             sec_id = "%s-ID" % books_by_date_range[1].replace(' ', '')
             sec_text = books_by_date_range[1]
-            content_src = "%s#bda_%s" % (HTML_file,
+            content_src = "{}#bda_{}".format(HTML_file,
                 books_by_date_range[1].replace(' ', ''))
             navStr = '%d titles' % books_by_date_range[2] if books_by_date_range[2] > 1 else \
                         '%d title' % books_by_date_range[2]
@@ -3465,9 +3464,9 @@ class CatalogBuilder(object):
         # master_months_list{}: [0]:titles list [1]:date
         for books_by_month in master_month_list:
             datestr = strftime('%B %Y', books_by_month[1].timetuple())
-            sec_id = "bda_%s-%s-ID" % (books_by_month[1].year, books_by_month[1].month)
+            sec_id = "bda_{}-{}-ID".format(books_by_month[1].year, books_by_month[1].month)
             sec_text = datestr
-            content_src = "%s#bda_%s-%s" % (HTML_file,
+            content_src = "{}#bda_{}-{}".format(HTML_file,
                 books_by_month[1].year, books_by_month[1].month)
             navStr = '%d titles' % books_by_month[2] if books_by_month[2] > 1 else \
                         '%d title' % books_by_month[2]
@@ -3564,11 +3563,11 @@ class CatalogBuilder(object):
         # master_day_list{}: [0]:titles list [1]:date
         for books_by_day in master_day_list:
             datestr = strftime('%A, %B %d', books_by_day[1].timetuple())
-            sec_id = "bdr_%s-%s-%sID" % (books_by_day[1].year,
+            sec_id = "bdr_{}-{}-{}ID".format(books_by_day[1].year,
                                                             books_by_day[1].month,
                                                             books_by_day[1].day)
             sec_text = datestr
-            content_src = "%s#bdr_%s-%s-%s" % (HTML_file,
+            content_src = "{}#bdr_{}-{}-{}".format(HTML_file,
                                                         books_by_day[1].year,
                                                         books_by_day[1].month,
                                                         books_by_day[1].day)
@@ -3617,9 +3616,9 @@ class CatalogBuilder(object):
                     normalized_tag = self.genre_tags_dict[friendly_tag]
                     break
             sec_text = self.format_ncx_text(NavigableString(friendly_tag), dest='description')
-            content_src = "content/Genre_%s.html#Genre_%s" % (normalized_tag, normalized_tag)
+            content_src = "content/Genre_{}.html#Genre_{}".format(normalized_tag, normalized_tag)
             if len(genre['titles_spanned']) > 1:
-                author_range = "%s - %s" % (genre['titles_spanned'][0][0], genre['titles_spanned'][1][0])
+                author_range = "{} - {}".format(genre['titles_spanned'][0][0], genre['titles_spanned'][1][0])
             else:
                 author_range = "%s" % (genre['titles_spanned'][0][0])
             titles = []
@@ -3726,7 +3725,7 @@ class CatalogBuilder(object):
         # Write the OPF file
         pretty_opf(root), pretty_xml_tree(root)
         output = etree.tostring(root, encoding='utf-8')
-        with lopen("%s/%s.opf" % (self.catalog_path, self.opts.basename), 'wb') as outfile:
+        with lopen("{}/{}.opf".format(self.catalog_path, self.opts.basename), 'wb') as outfile:
             outfile.write(output.strip())
 
     def generate_rating_string(self, book):
@@ -3749,7 +3748,7 @@ class CatalogBuilder(object):
                 if stars:
                     star_string = self.SYMBOL_FULL_RATING * stars
                     empty_stars = self.SYMBOL_EMPTY_RATING * (5 - stars)
-                    rating = '%s%s' % (star_string, empty_stars)
+                    rating = '{}{}'.format(star_string, empty_stars)
         except:
             # Rating could be None
             pass
@@ -3854,7 +3853,7 @@ class CatalogBuilder(object):
                         word = word.replace(',', '')
                         suffix = re.search(r'[\D]', word)
                         if suffix:
-                            word = '%10.0f%s' % (float(word[:suffix.start()]), word[suffix.start():])
+                            word = '{:10.0f}{}'.format(float(word[:suffix.start()]), word[suffix.start():])
                         else:
                             word = '%10.0f' % (float(word))
 
@@ -3870,7 +3869,7 @@ class CatalogBuilder(object):
                     word = word.replace(',', '')
                     suffix = re.search(r'[\D]', word)
                     if suffix:
-                        word = '%10.0f%s' % (float(word[:suffix.start()]), word[suffix.start():])
+                        word = '{:10.0f}{}'.format(float(word[:suffix.start()]), word[suffix.start():])
                     else:
                         word = '%10.0f' % (float(word))
                 translated.append(word)
@@ -4348,11 +4347,11 @@ class CatalogBuilder(object):
             self.progress_int = 0.01
         self.reporter(self.progress_int, self.progress_string)
         if self.opts.cli_environment:
-            log_msg = "%3.0f%% %s" % (self.progress_int * 100, self.progress_string)
+            log_msg = "{:3.0f}% {}".format(self.progress_int * 100, self.progress_string)
             if self.opts.verbose:
                 log_msg += " (%s)" % unicode_type(datetime.timedelta(seconds=int(time.time() - self.opts.start_time)))
         else:
-            log_msg = ("%s (%s)" % (self.progress_string,
+            log_msg = ("{} ({})".format(self.progress_string,
                 unicode_type(datetime.timedelta(seconds=int(time.time() - self.opts.start_time)))))
         self.opts.log(log_msg)
 
@@ -4394,5 +4393,5 @@ class CatalogBuilder(object):
         self.update_progress_full_step(_("Saving NCX"))
         pretty_xml_tree(self.ncx_root)
         ncx = etree.tostring(self.ncx_root, encoding='utf-8')
-        with lopen("%s/%s.ncx" % (self.catalog_path, self.opts.basename), 'wb') as outfile:
+        with lopen("{}/{}.ncx".format(self.catalog_path, self.opts.basename), 'wb') as outfile:
             outfile.write(ncx)

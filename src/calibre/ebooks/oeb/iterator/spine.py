@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 from polyglot.builtins import map, unicode_type
 
@@ -51,7 +50,7 @@ class SpineItem(unicode_type):
         ppath = path.partition('#')[0]
         if not os.path.exists(path) and os.path.exists(ppath):
             path = ppath
-        obj = super(SpineItem, cls).__new__(cls, path)
+        obj = super().__new__(cls, path)
         with lopen(path, 'rb') as f:
             raw = f.read()
         if from_epub:
@@ -86,7 +85,7 @@ class SpineItem(unicode_type):
         return obj
 
 
-class IndexEntry(object):
+class IndexEntry:
 
     def __init__(self, spine, toc_entry, num):
         self.num = num

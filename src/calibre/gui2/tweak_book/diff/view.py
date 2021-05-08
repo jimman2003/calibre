@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -33,7 +32,7 @@ from calibre.utils.xml_parse import safe_xml_fromstring
 Change = namedtuple('Change', 'ltop lbot rtop rbot kind')
 
 
-class BusyCursor(object):
+class BusyCursor:
 
     def __enter__(self):
         QApplication.setOverrideCursor(QCursor(Qt.CursorShape.WaitCursor))

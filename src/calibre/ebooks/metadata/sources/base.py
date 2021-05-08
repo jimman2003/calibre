@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 __license__   = 'GPL v3'
 __copyright__ = '2011, Kovid Goyal <kovid@kovidgoyal.net>'
@@ -42,7 +40,7 @@ def cleanup_title(s):
 
 
 @total_ordering
-class InternalMetadataCompareKeyGen(object):
+class InternalMetadataCompareKeyGen:
 
     '''
     Generate a sort key for comparison of the relevance of Metadata objects,
@@ -162,7 +160,7 @@ def fixcase(x):
     return x
 
 
-class Option(object):
+class Option:
     __slots__ = ['type', 'default', 'label', 'desc', 'name', 'choices']
 
     def __init__(self, name, type_, default, label, desc, choices=None):
@@ -179,7 +177,7 @@ class Option(object):
         self.name, self.type, self.default, self.label, self.desc = (name,
                 type_, default, label, desc)
         if choices and not isinstance(choices, dict):
-            choices = dict([(x, x) for x in choices])
+            choices = {x: x for x in choices}
         self.choices = choices
 
 

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -599,7 +598,7 @@ class RuleEditor(QDialog):  # {{{
     def remove_image(self, name):
         try:
             os.remove(os.path.join(self.icon_folder, name))
-        except EnvironmentError:
+        except OSError:
             pass
         else:
             self.populate_icon_filenames()

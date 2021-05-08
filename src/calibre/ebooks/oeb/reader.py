@@ -33,7 +33,7 @@ from polyglot.urllib import unquote, urldefrag, urlparse
 __all__ = ['OEBReader']
 
 
-class OEBReader(object):
+class OEBReader:
     """Read an OEBPS 1.x or OPF/OPS 2.0 file collection."""
 
     COVER_SVG_XP    = XPath('h:body//svg:svg[position() = 1]')
@@ -90,10 +90,10 @@ class OEBReader(object):
                 continue
             if namespace(elem.tag) in DC_NSES:
                 tag = barename(elem.tag).lower()
-                elem.tag = '{%s}%s' % (DC11_NS, tag)
+                elem.tag = '{{{}}}{}'.format(DC11_NS, tag)
             if elem.tag.startswith('dc:'):
                 tag = elem.tag.partition(':')[-1].lower()
-                elem.tag = '{%s}%s' % (DC11_NS, tag)
+                elem.tag = '{{{}}}{}'.format(DC11_NS, tag)
             metadata.append(elem)
         for element in xpath(opf, 'o2:metadata//o2:meta'):
             metadata.append(element)

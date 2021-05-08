@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
@@ -379,16 +377,16 @@ class SearchDialog(QDialog):
         if template and value:
             cb = self.template_test_type_box
             op =  unicode_type(cb.itemData(cb.currentIndex()))
-            l = '{0}#@#:{1}:{2}'.format(template, op, value)
+            l = '{}#@#:{}:{}'.format(template, op, value)
             return 'template:"' + l + '"'
         return ''
 
     def date_search_string(self):
         field = unicode_type(self.date_field.itemData(self.date_field.currentIndex()) or '')
         op = current_dateop(self.dateop_date)
-        prefix = '%s:%s' % (field, op)
+        prefix = '{}:{}'.format(field, op)
         if self.sel_date.isChecked():
-            ans = '%s%s' % (prefix, self.date_year.value())
+            ans = '{}{}'.format(prefix, self.date_year.value())
             m = self.date_month.itemData(self.date_month.currentIndex())
             if m > 0:
                 ans += '-%s' % m
@@ -399,8 +397,8 @@ class SearchDialog(QDialog):
         if self.sel_daysago.isChecked():
             val = self.date_daysago.value()
             val *= {0:1, 1:7, 2:30, 3:365}[self.date_ago_type.currentIndex()]
-            return '%s%sdaysago' % (prefix, val)
-        return '%s%s' % (prefix, unicode_type(self.date_human.itemData(self.date_human.currentIndex()) or ''))
+            return '{}{}daysago'.format(prefix, val)
+        return '{}{}'.format(prefix, unicode_type(self.date_human.itemData(self.date_human.currentIndex()) or ''))
 
     def adv_search_string(self):
         mk = self.matchkind.currentIndex()

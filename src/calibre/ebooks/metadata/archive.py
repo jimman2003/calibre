@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -157,7 +156,7 @@ def get_comic_book_info(d, mi, series_index='volume'):
                 'Creator'):
             x = credit.get('person', '')
             if x:
-                x = ' '.join((reversed(x.split(', '))))
+                x = ' '.join(reversed(x.split(', ')))
                 authors.append(x)
     if authors:
         mi.authors = authors

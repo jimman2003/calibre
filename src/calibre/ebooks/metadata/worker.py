@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -68,12 +67,12 @@ def run_import_plugins(paths, group_id, tdir):
             path = os.path.join(tdir, '%s' % group_id, name + ext)
             try:
                 os.mkdir(os.path.dirname(path))
-            except EnvironmentError as err:
+            except OSError as err:
                 if err.errno != errno.EEXIST:
                     raise
             try:
                 os.rename(nfp, path)
-            except EnvironmentError:
+            except OSError:
                 shutil.copyfile(nfp, path)
         final_paths.append(path)
     return final_paths

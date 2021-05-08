@@ -1,4 +1,3 @@
-
 '''
 HTML-TOC-adding transform.
 '''
@@ -46,7 +45,7 @@ body > .calibre_toc_block {
     }
 
 
-class HTMLTOCAdder(object):
+class HTMLTOCAdder:
 
     def __init__(self, title=None, style='nested', position='end'):
         self.title = title

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -218,7 +217,7 @@ def windows_repair(library_path=None):
         app.quit()
 
 
-class EventAccumulator(object):
+class EventAccumulator:
 
     def __init__(self):
         self.events = []

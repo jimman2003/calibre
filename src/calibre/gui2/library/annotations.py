@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2020, Kovid Goyal <kovid at kovidgoyal.net>
 
 import codecs
@@ -220,7 +219,7 @@ def current_db():
     return (getattr(current_db, 'ans', None) or get_gui().current_db).new_api
 
 
-class BusyCursor(object):
+class BusyCursor:
 
     def __enter__(self):
         QApplication.setOverrideCursor(QCursor(Qt.CursorShape.WaitCursor))
@@ -721,7 +720,7 @@ class DetailsPanel(QWidget):
         series_text = ''
         if series:
             use_roman_numbers = config['use_roman_numerals_for_series_number']
-            series_text = '{0} of {1}'.format(fmt_sidx(sidx, use_roman=use_roman_numbers), series)
+            series_text = '{} of {}'.format(fmt_sidx(sidx, use_roman=use_roman_numbers), series)
         annot = r['annotation']
         atype = annotation_title(annot['type'], singular=True)
         book_format = r['format']

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -60,11 +59,11 @@ def get_stdout(process):
             if raw:
                 try:
                     sys.stdout.buffer.write(raw)
-                except EnvironmentError:
+                except OSError:
                     pass
             else:
                 time.sleep(0.1)
-        except (EOFError, EnvironmentError):
+        except (EOFError, OSError):
             break
 
 
@@ -89,7 +88,7 @@ class Failure(Exception):
         self.failure_message = tf.message
 
 
-class Worker(object):
+class Worker:
 
     def __init__(self, p, conn, events, name):
         self.process, self.conn = p, conn
@@ -294,7 +293,7 @@ class Pool(Thread):
             if worker.process.poll() is None:
                 try:
                     worker.process.terminate()
-                except EnvironmentError:
+                except OSError:
                     pass  # If the process has already been killed
         workers = [w.process for w in self.available_workers + list(self.busy_workers)]
         aw = list(self.available_workers)
@@ -323,14 +322,14 @@ class Pool(Thread):
             if w.poll() is None:
                 try:
                     w.kill()
-                except EnvironmentError:
+                except OSError:
                     pass
         del self.available_workers[:]
         self.busy_workers.clear()
         if hasattr(self, 'cd_file'):
             try:
                 os.remove(self.cd_file.name)
-            except EnvironmentError:
+            except OSError:
                 pass
 
 
@@ -420,7 +419,7 @@ def test():
     p.wait_for_tasks(30)
     results = {k:v.value for k, v in iteritems(get_results(p))}
     if results != expected_results:
-        raise SystemExit('%r != %r' % (expected_results, results))
+        raise SystemExit('{!r} != {!r}'.format(expected_results, results))
     p.shutdown(), p.join()
 
     # Test common_data
@@ -434,7 +433,7 @@ def test():
     p.wait_for_tasks(30)
     results = {k:v.value for k, v in iteritems(get_results(p))}
     if results != expected_results:
-        raise SystemExit('%r != %r' % (expected_results, results))
+        raise SystemExit('{!r} != {!r}'.format(expected_results, results))
     p.shutdown(), p.join()
 
     # Test large common data

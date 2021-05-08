@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #  j2h.py
 #
 # Copyright 2011 Hiroshi Miura <miurahr@linux.com>
@@ -28,7 +27,7 @@ from calibre.ebooks.unihandecode.pykakasi.jisyo import jisyo
 from polyglot.builtins import iteritems
 
 
-class J2H (object):
+class J2H :
 
     kanwa = None
 

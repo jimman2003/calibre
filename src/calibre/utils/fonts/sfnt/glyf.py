@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -27,7 +26,7 @@ SCALED_COMPONENT_OFFSET    = 0x0800  # composite designed to have the component 
 UNSCALED_COMPONENT_OFFSET  = 0x1000  # composite designed not to have the component offset scaled (designed for MS)
 
 
-class SimpleGlyph(object):
+class SimpleGlyph:
 
     def __init__(self, num_of_countours, raw):
         self.num_of_countours = num_of_countours
@@ -47,7 +46,7 @@ class SimpleGlyph(object):
 class CompositeGlyph(SimpleGlyph):
 
     def __init__(self, num_of_countours, raw):
-        super(CompositeGlyph, self).__init__(num_of_countours, raw)
+        super().__init__(num_of_countours, raw)
         self.is_composite = True
 
         flags = MORE_COMPONENTS

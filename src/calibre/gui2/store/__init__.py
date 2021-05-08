@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -8,7 +5,7 @@ __docformat__ = 'restructuredtext en'
 from calibre.utils.filenames import ascii_filename
 
 
-class StorePlugin(object):  # {{{
+class StorePlugin:  # {{{
 
     '''
     A plugin representing an online ebook repository (store). The store can

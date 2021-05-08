@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -22,7 +21,7 @@ from calibre.utils.tdir_in_cache import tdir_in_cache
 AUTO_ADDED = frozenset(BOOK_EXTENSIONS) - {'pdr', 'mbp', 'tan'}
 
 
-class AllAllowed(object):
+class AllAllowed:
 
     def __init__(self):
         self.disallowed = frozenset(gprefs['blocked_auto_formats'])
@@ -107,7 +106,7 @@ class Worker(Thread):
         def safe_mtime(x):
             try:
                 return os.path.getmtime(os.path.join(self.path, x))
-            except EnvironmentError:
+            except OSError:
                 return time.time()
 
         for fname in sorted(files, key=safe_mtime):

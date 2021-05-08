@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -101,7 +100,7 @@ an opf file). You can get id numbers from the search command.
     return parser
 
 
-class DBProxy(object):
+class DBProxy:
 
     # Proxy to allow do_save_book_to_disk() to work with remote database
 

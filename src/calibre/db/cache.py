@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -124,7 +123,7 @@ def _add_default_custom_column_values(mi, fm):
 dynamic_category_preferences = frozenset({'grouped_search_make_user_categories', 'grouped_search_terms', 'user_categories'})
 
 
-class Cache(object):
+class Cache:
 
     '''
     An in-memory cache of the metadata.db file from a calibre library.
@@ -1051,7 +1050,7 @@ class Cache(object):
         orders = tuple(1 if order else -1 for _, order in fields)
         Lazy = object()  # Lazy load the sort keys for sub-sort fields
 
-        class SortKey(object):
+        class SortKey:
 
             __slots__ = 'book_id', 'sort_key'
 
@@ -1309,7 +1308,7 @@ class Cache(object):
 
         try:
             return self.backend.read_backup(path)
-        except EnvironmentError:
+        except OSError:
             return None
 
     @write_api
@@ -2392,11 +2391,11 @@ class Cache(object):
             format_metadata[book_id] = {}
             for fmt in self._formats(book_id):
                 mdata = self.format_metadata(book_id, fmt)
-                key = '%s:%s:%s' % (key_prefix, book_id, fmt)
+                key = '{}:{}:{}'.format(key_prefix, book_id, fmt)
                 format_metadata[book_id][fmt] = key
                 with exporter.start_file(key, mtime=mdata.get('mtime')) as dest:
                     self._copy_format_to(book_id, fmt, dest, report_file_size=dest.ensure_space)
-            cover_key = '%s:%s:%s' % (key_prefix, book_id, '.cover')
+            cover_key = '{}:{}:{}'.format(key_prefix, book_id, '.cover')
             with exporter.start_file(cover_key) as dest:
                 if not self.copy_cover_to(book_id, dest, report_file_size=dest.ensure_space):
                     dest.discard()

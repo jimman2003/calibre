@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -25,7 +24,7 @@ def sort_key_for_action(ac):
         return primary_sort_key('')
 
 
-class FakeAction(object):
+class FakeAction:
 
     def __init__(self, name, gui_name, icon, tooltip=None,
             dont_add_to=frozenset(), dont_remove_from=frozenset()):

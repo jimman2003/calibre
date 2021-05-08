@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -315,7 +314,7 @@ class ManageUserDictionaries(Dialog):
         self.is_active.blockSignals(False)
         self.words.clear()
         for word, lang in sorted(d.words, key=lambda x:sort_key(x[0])):
-            i = QListWidgetItem('%s [%s]' % (word, get_language(lang)), self.words)
+            i = QListWidgetItem('{} [{}]'.format(word, get_language(lang)), self.words)
             i.setData(Qt.ItemDataRole.UserRole, (word, lang))
 
     def add_word(self):
@@ -570,16 +569,16 @@ class ManageDictionaries(Dialog):  # {{{
             x.setData(0, Qt.ItemDataRole.FontRole, bf if x is item else None)
         lc = unicode_type(item.parent().data(0, Qt.ItemDataRole.UserRole))
         pl = dprefs['preferred_locales']
-        pl[lc] = '%s-%s' % (lc, unicode_type(item.data(0, Qt.ItemDataRole.UserRole)))
+        pl[lc] = '{}-{}'.format(lc, unicode_type(item.data(0, Qt.ItemDataRole.UserRole)))
         dprefs['preferred_locales'] = pl
 
     def init_dictionary(self, item):
         saf = self.fb
         font = item.data(0, Qt.ItemDataRole.FontRole)
         preferred = bool(font and font.italic())
-        saf.setText((_(
+        saf.setText(_(
             'This is already the preferred dictionary') if preferred else
-            _('Use this as the preferred dictionary')))
+            _('Use this as the preferred dictionary'))
         saf.setEnabled(not preferred)
         self.remove_dictionary_button.setEnabled(not item.data(0, Qt.ItemDataRole.UserRole).builtin)
 
@@ -592,7 +591,7 @@ class ManageDictionaries(Dialog):  # {{{
         cc = unicode_type(item.parent().data(0, Qt.ItemDataRole.UserRole))
         lc = unicode_type(item.parent().parent().data(0, Qt.ItemDataRole.UserRole))
         d = item.data(0, Qt.ItemDataRole.UserRole)
-        locale = '%s-%s' % (lc, cc)
+        locale = '{}-{}'.format(lc, cc)
         pl = dprefs['preferred_dictionaries']
         pl[locale] = d.id
         dprefs['preferred_dictionaries'] = pl
@@ -665,7 +664,7 @@ class WordsModel(QAbstractTableModel):
                 pl = calibre_langcode_to_name(locale.langcode)
                 countrycode = locale.countrycode
                 if countrycode:
-                    pl = '%s (%s)' % (pl, countrycode)
+                    pl = '{} ({})'.format(pl, countrycode)
                 return pl
             if col == 3:
                 return self.misspelled_text((word, locale))

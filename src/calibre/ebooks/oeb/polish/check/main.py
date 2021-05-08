@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -24,7 +23,7 @@ from polyglot.builtins import as_unicode
 XML_TYPES = frozenset(map(guess_type, ('a.xml', 'a.svg', 'a.opf', 'a.ncx'))) | {'application/oebps-page-map+xml'}
 
 
-class CSSChecker(object):
+class CSSChecker:
 
     def __init__(self):
         self.jobs = []

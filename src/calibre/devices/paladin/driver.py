@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -18,7 +17,7 @@ from calibre.devices.usbms.books import CollectionsBookList, BookList
 DBPATH = 'paladin/database/books.db'
 
 
-class ImageWrapper(object):
+class ImageWrapper:
 
     def __init__(self, image_path):
         self.image_path = image_path
@@ -110,7 +109,7 @@ class PALADIN(USBMS):
                 for i, row in enumerate(cursor):
                     try:
                         comp_date = int(os.path.getmtime(self.normalize_path(prefix + row[0])) * 1000)
-                    except (OSError, IOError, TypeError):
+                    except (OSError, TypeError):
                         # In case the db has incorrect path info
                         continue
                     device_date = int(row[1])

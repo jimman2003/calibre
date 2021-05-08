@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>, 2012 Eli Algranti <idea00@hotmail.com>'
 __docformat__ = 'restructuredtext en'
@@ -281,7 +278,7 @@ class SearchAndReplaceWidget(Widget, Ui_Form):
                 rest[name] = val
 
         if rest:
-            super(SearchAndReplaceWidget, self).apply_recommendations(rest)
+            super().apply_recommendations(rest)
 
         self.set_value(self.opt_search_replace, None)
         if new_val is None and legacy:

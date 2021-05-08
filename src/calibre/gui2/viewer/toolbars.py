@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2019, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -23,7 +22,7 @@ from calibre.utils.icu import primary_sort_key
 from polyglot.builtins import iteritems
 
 
-class Action(object):
+class Action:
 
     __slots__ = ('icon', 'text', 'shortcut_action')
 
@@ -31,7 +30,7 @@ class Action(object):
         self.icon, self.text, self.shortcut_action = QIcon(I(icon)), text, shortcut_action
 
 
-class Actions(object):
+class Actions:
 
     def __init__(self, a):
         self.__dict__.update(a)

@@ -1,4 +1,3 @@
-
 '''
 Make strings safe for use as ASCII filenames, while trying to preserve as much
 meaning as possible.
@@ -208,7 +207,7 @@ def case_preserving_open_file(path, mode='wb', mkdir_mode=0o777):
         cl = fname.lower()
         try:
             candidates = [c for c in os.listdir(cpath) if c.lower() == cl]
-        except EnvironmentError:
+        except OSError:
             # The containing directory, somehow disappeared?
             candidates = []
         if len(candidates) == 1:
@@ -259,7 +258,7 @@ def samefile(src, dst):
         # Unix
         try:
             return os.path.samefile(src, dst)
-        except EnvironmentError:
+        except OSError:
             return False
 
     # All other platforms: check for same pathname.
@@ -294,13 +293,13 @@ def windows_hardlink(src, dest):
         try:
             if windows_get_size(dest) == src_size:
                 return
-        except EnvironmentError:
+        except OSError:
             pass
         time.sleep(0.3)
 
     sz = windows_get_size(dest)
     if sz != src_size:
-        msg = 'Creating hardlink from %s to %s failed: %%s' % (src, dest)
+        msg = 'Creating hardlink from {} to {} failed: %s'.format(src, dest)
         raise OSError(msg % ('hardlink size: %d not the same as source size' % sz))
 
 
@@ -309,7 +308,7 @@ def windows_fast_hardlink(src, dest):
     winutil.create_hard_link(dest, src)
     ssz, dsz = windows_get_size(src), windows_get_size(dest)
     if ssz != dsz:
-        msg = 'Creating hardlink from %s to %s failed: %%s' % (src, dest)
+        msg = 'Creating hardlink from {} to {} failed: %s'.format(src, dest)
         raise OSError(msg % ('hardlink size: %d not the same as source size: %s' % (dsz, ssz)))
 
 
@@ -320,7 +319,7 @@ def windows_nlinks(path):
     return winutil.nlinks(path)
 
 
-class WindowsAtomicFolderMove(object):
+class WindowsAtomicFolderMove:
 
     '''
     Move all the files inside a specified folder in an atomic fashion,
@@ -575,7 +574,7 @@ def copytree_using_links(path, dest, dest_is_parent=True, filecopyfunc=copyfile)
     hardlink = get_hardlink_function(path, dest)
     try:
         os.makedirs(dest)
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
     for dirpath, dirnames, filenames in os.walk(path):
@@ -584,7 +583,7 @@ def copytree_using_links(path, dest, dest_is_parent=True, filecopyfunc=copyfile)
         for dname in dirnames:
             try:
                 os.mkdir(os.path.join(dest_base, dname))
-            except EnvironmentError as e:
+            except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
         for fname in filenames:

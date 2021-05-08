@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 import os
@@ -767,7 +765,7 @@ class BookList(list):
         raise NotImplementedError()
 
 
-class CurrentlyConnectedDevice(object):
+class CurrentlyConnectedDevice:
 
     def __init__(self):
         self._device = None

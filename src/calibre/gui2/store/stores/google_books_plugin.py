@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 store_version = 7  # Needed for dynamic plugin loading
 
 __license__ = 'GPL 3'
@@ -91,8 +88,7 @@ class GoogleBooksStore(BasicStoreConfig, StorePlugin):
             d.exec_()
 
     def search(self, query, max_results=10, timeout=60):
-        for result in search_google(query, max_results=max_results, timeout=timeout):
-            yield result
+        yield from search_google(query, max_results=max_results, timeout=timeout)
 
     def get_details(self, search_result, timeout):
         br = browser()

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -30,7 +29,7 @@ def same_thread(func):
     return check_thread
 
 
-class Face(object):
+class Face:
 
     def __init__(self, face):
         self.start_thread = threading.current_thread()
@@ -64,7 +63,7 @@ class Face(object):
             yield self.face.glyph_id(ord(char))
 
 
-class FreeType(object):
+class FreeType:
 
     def __init__(self):
         self.start_thread = threading.current_thread()

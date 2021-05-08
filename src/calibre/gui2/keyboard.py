@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -168,7 +167,7 @@ class Manager(QObject):  # {{{
 # Model {{{
 
 
-class Node(object):
+class Node:
 
     def __init__(self, group_map, shortcut_map, name=None, shortcut=None):
         self.data = name if name is not None else shortcut
@@ -185,8 +184,7 @@ class Node(object):
         return self.children[row]
 
     def __iter__(self):
-        for child in self.children:
-            yield child
+        yield from self.children
 
 
 class ConfigModel(SearchQueryParser, QAbstractItemModel):
@@ -214,8 +212,7 @@ class ConfigModel(SearchQueryParser, QAbstractItemModel):
     @property
     def all_shortcuts(self):
         for group in self.data:
-            for sc in group:
-                yield sc
+            yield from group
 
     def rowCount(self, parent=ROOT):
         ip = parent.internalPointer()

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -16,13 +15,13 @@ from calibre.utils.img import (
 from calibre.utils.imghdr import identify
 
 
-class PixelWand(object):
+class PixelWand:
 
     def __init__(self):
         self.color = '#ffffff'
 
 
-class Image(object):
+class Image:
 
     def __init__(self):
         self.read_format = None

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2009, James Ralston <jralston at mindspring.com>'
 __docformat__ = 'restructuredtext en'
@@ -59,7 +56,7 @@ class JETBOOK(USBMS):
         au = mi.format_authors()
         if not au:
             au = 'Unknown'
-        return '%s#%s%s' % (au, title, fileext)
+        return '{}#{}{}'.format(au, title, fileext)
 
     @classmethod
     def metadata_from_path(cls, path):

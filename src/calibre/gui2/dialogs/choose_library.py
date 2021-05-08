@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -177,7 +176,7 @@ class ChooseLibrary(QDialog, Ui_Dialog):
         if action == 'move':
             try:
                 os.makedirs(loc)
-            except EnvironmentError as e:
+            except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
         if not loc or not os.path.exists(loc) or not os.path.isdir(loc):

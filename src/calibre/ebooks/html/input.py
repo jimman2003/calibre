@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -21,7 +20,7 @@ from polyglot.builtins import unicode_type
 from polyglot.urllib import urlparse, urlunparse
 
 
-class Link(object):
+class Link:
 
     '''
     Represents a link in a HTML file.
@@ -76,7 +75,7 @@ class IgnoreFile(Exception):
         self.errno = errno
 
 
-class HTMLFile(object):
+class HTMLFile:
 
     '''
     Contains basic information about an HTML file. This
@@ -122,10 +121,10 @@ class HTMLFile(object):
                     self.is_binary = not bool(pat.search(header))
                 if not self.is_binary:
                     src += f.read()
-        except IOError as err:
+        except OSError as err:
             msg = 'Could not read from file: %s with error: %s'%(self.path, as_unicode(err))
             if level == 0:
-                raise IOError(msg)
+                raise OSError(msg)
             raise IgnoreFile(msg, err.errno)
 
         if not src:

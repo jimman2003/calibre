@@ -1,5 +1,3 @@
-
-
 # Copyright (c) 2007 Mike Higgins (Falstaff)
 # Modifications from the original:
 #    Copyright (C) 2007 Kovid Goyal <kovid@kovidgoyal.net>
@@ -134,7 +132,7 @@ def appendTextElements(e, contentsList, se):
                 lastElement.tail = uconcat(lastElement.tail, content.text, se)
 
 
-class Delegator(object):
+class Delegator:
     """ A mixin class to create delegated methods that create elements. """
 
     def __init__(self, delegates):
@@ -217,7 +215,7 @@ class Delegator(object):
         self.toLrfDelegates(lrfWriter)
 
 
-class LrsAttributes(object):
+class LrsAttributes:
     """ A mixin class to handle default and user supplied attributes. """
 
     def __init__(self, defaults, alsoAllow=None, **settings):
@@ -233,7 +231,7 @@ class LrsAttributes(object):
             self.attrs[name] = value
 
 
-class LrsContainer(object):
+class LrsContainer:
     """ This class is a mixin class for elements that are contained in or
         contain an unknown number of other elements.
     """
@@ -305,11 +303,10 @@ class LrsContainer(object):
             if predicate(child):
                 yield child
             if hasattr(child, 'get_all'):
-                for grandchild in child.get_all(predicate):
-                    yield grandchild
+                yield from child.get_all(predicate)
 
 
-class LrsObject(object):
+class LrsObject:
     """ A mixin class for elements that need an object id. """
     nextObjId = 0
 
@@ -679,7 +676,7 @@ class Info(Delegator):
         lrfWriter.docInfoXml = xmlInfo
 
 
-class TableOfContents(object):
+class TableOfContents:
 
     def __init__(self):
         self.tocEntries = []
@@ -738,7 +735,7 @@ class TableOfContents(object):
         lrfWriter.setTocObject(lrfToc)
 
 
-class TocLabel(object):
+class TocLabel:
 
     def __init__(self, label, textBlock):
         self.label = escape(re.sub(r'&(\S+?);', entity_to_unicode, label))
@@ -750,7 +747,7 @@ class TocLabel(object):
                  refpage=unicode_type(self.textBlock.parent.objId))
 
 
-class BookInfo(object):
+class BookInfo:
 
     def __init__(self):
         self.title = "Untitled"
@@ -802,7 +799,7 @@ class BookInfo(object):
         return bi
 
 
-class DocInfo(object):
+class DocInfo:
 
     def __init__(self):
         self.thumbnail = None
@@ -922,7 +919,7 @@ class Solo(Main):
     pass
 
 
-class Template(object):
+class Template:
     """ Does nothing that I know of. """
 
     def appendReferencedObjects(self, parent):
@@ -1100,7 +1097,7 @@ class LrsStyle(LrsObject, LrsAttributes, LrsContainer):
     def update(self, settings):
         for name, value in settings.items():
             if name not in self.__class__.validSettings:
-                raise LrsError("%s not a valid setting for %s" % (name, self.__class__.__name__))
+                raise LrsError("{} not a valid setting for {}".format(name, self.__class__.__name__))
             self.attrs[name] = value
 
     def getLabel(self):
@@ -1549,7 +1546,7 @@ class LrsTextTag(LrsContainer):
         return p
 
 
-class LrsSimpleChar1(object):
+class LrsSimpleChar1:
 
     def isEmpty(self):
         for content in self.contents:

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -39,7 +38,7 @@ class KFXError(ValueError):
         ).format('https://www.mobileread.com/forums/showthread.php?t=283371'))
 
 
-class MobiReader(object):
+class MobiReader:
     PAGE_BREAK_PAT = re.compile(
         r'<\s*/{0,1}\s*mbp:pagebreak((?:\s+[^/>]*){0,1})/{0,1}\s*>\s*(?:<\s*/{0,1}\s*mbp:pagebreak\s*/{0,1}\s*>)*',
         re.IGNORECASE)
@@ -316,7 +315,7 @@ class MobiReader(object):
 
         css = [self.base_css_rules, '\n\n']
         for cls, rule in self.tag_css_rules.items():
-            css.append('.%s { %s }\n\n' % (cls, rule))
+            css.append('.{} {{ {} }}\n\n'.format(cls, rule))
         write_as_utf8('styles.css', ''.join(css))
 
         if self.book_header.exth is not None or self.embedded_mi is not None:

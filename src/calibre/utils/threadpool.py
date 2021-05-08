@@ -1,5 +1,3 @@
-
-
 """Easy to use object-oriented thread pool framework.
 
 A thread pool is an object that maintains a pool of worker threads to perform
@@ -289,7 +287,7 @@ if __name__ == '__main__':
 
     # this will be called each time a result is available
     def print_result(request, result):
-        print("**Result: %s from request #%s" % (result, request.requestID))
+        print("**Result: {} from request #{}".format(result, request.requestID))
 
     # this will be called when an exception occurs within a thread
     def handle_exception(request, exc_info):

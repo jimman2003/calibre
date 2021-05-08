@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -452,7 +451,7 @@ def many_many(book_id_val_map, db, field, allow_case_change, *args):
         )
         db.executemany('DELETE FROM %s WHERE book=?'%table.link_table,
                             ((k,) for k in updated))
-        db.executemany('INSERT INTO {0}(book,{1}) VALUES(?, ?)'.format(
+        db.executemany('INSERT INTO {}(book,{}) VALUES(?, ?)'.format(
             table.link_table, m['link_column']), vals)
         if is_authors:
             aus_map = {book_id:field.author_sort_for_book(book_id) for book_id
@@ -507,7 +506,7 @@ def dummy(book_id_val_map, *args):
     return set()
 
 
-class Writer(object):
+class Writer:
 
     def __init__(self, field):
         self.adapter = get_adapter(field.name, field.metadata)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -117,7 +116,7 @@ class StatusNotifierItemAPI(Object):
         bus = kw.get('bus')
         if bus is None:
             bus = kw['bus'] = dbus.SessionBus()
-        self.name = '%s-%s-%s' % (self.IFACE, os.getpid(), kw.get('num', 1))
+        self.name = '{}-{}-{}'.format(self.IFACE, os.getpid(), kw.get('num', 1))
         self.dbus_name = BusName(self.name, bus=bus, do_not_queue=True)
         self.app_id = kw.get('app_id') or QApplication.instance().applicationName() or 'unknown_application'
         self.category = kw.get('category') or 'ApplicationStatus'

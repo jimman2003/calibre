@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -29,7 +28,7 @@ def uniq(vals):
     return list(x for x in vals if x not in seen and not seen_add(x))
 
 
-class EXTHHeader(object):  # {{{
+class EXTHHeader:  # {{{
 
     def __init__(self, raw, codec, title):
         self.doctype = raw[:4]
@@ -188,7 +187,7 @@ class EXTHHeader(object):  # {{{
 # }}}
 
 
-class BookHeader(object):
+class BookHeader:
 
     def __init__(self, raw, ident, user_encoding, log, try_extra_data_fix=False):
         self.log = log

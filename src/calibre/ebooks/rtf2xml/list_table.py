@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -392,7 +391,7 @@ class ListTable:
                     continue
                 att = the_key
                 value = the_dict[att]
-                self.__list_table_final += '<%s>%s' % (att, value)
+                self.__list_table_final += '<{}>{}'.format(att, value)
             self.__list_table_final += '\n'
             levels = list[1:]
             level_num = 0
@@ -423,7 +422,7 @@ class ListTable:
                         # sys.stderr.write('%s\n' % att2)
                         bullet_text += value2
                     else:
-                        self.__list_table_final += '<%s>%s' % (att2, value2)
+                        self.__list_table_final += '<{}>{}'.format(att2, value2)
                 if is_bullet:
                     pass
                     # self.__list_table_final += '<bullet-type>%s' % (bullet_text)

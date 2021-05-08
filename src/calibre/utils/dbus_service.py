@@ -1,5 +1,3 @@
-
-
 # Copyright (C) 2003-2006 Red Hat Inc. <http://www.redhat.com/>
 # Copyright (C) 2003 David Zeuthen
 # Copyright (C) 2004 Rob Taylor
@@ -48,7 +46,7 @@ from dbus.proxies import LOCAL_PATH
 from polyglot.builtins import itervalues, zip, native_string_type
 
 
-class dbus_property(object):
+class dbus_property:
     """A decorator used to mark properties of a `dbus.service.Object`.
     """
 
@@ -146,7 +144,7 @@ class dbus_property(object):
 _logger = logging.getLogger('dbus.service')
 
 
-class _VariantSignature(object):
+class _VariantSignature:
     """A fake method signature which, when iterated, yields an endless stream
     of 'v' characters representing variants (handy with zip()).
 
@@ -162,7 +160,7 @@ class _VariantSignature(object):
         return 'v'
 
 
-class BusName(object):
+class BusName:
     """A base class for exporting your own Named Services across the Bus.
 
     When instantiated, objects of this class attempt to claim the given
@@ -242,7 +240,7 @@ class BusName(object):
             # else in this process, this can happen legitimately
             pass
         else:
-            raise RuntimeError('requesting bus name %s returned unexpected value %s' % (name, retval))
+            raise RuntimeError('requesting bus name {} returned unexpected value {}'.format(name, retval))
 
         # and create the object
         bus_name = object.__new__(cls)
@@ -275,7 +273,7 @@ class BusName(object):
         return self._name
 
     def __repr__(self):
-        return '<dbus.service.BusName %s on %r at %#x>' % (self._name, self._bus, id(self))
+        return '<dbus.service.BusName {} on {!r} at {:#x}>'.format(self._name, self._bus, id(self))
     __str__ = __repr__
 
 
@@ -340,7 +338,7 @@ def _method_lookup(self, method_name, dbus_interface):
         return (candidate_class.__dict__[method_name], parent_method)
     else:
         if dbus_interface:
-            raise UnknownMethodException('%s is not a valid method of interface %s' % (method_name, dbus_interface))
+            raise UnknownMethodException('{} is not a valid method of interface {}'.format(method_name, dbus_interface))
         else:
             raise UnknownMethodException('%s is not a valid method' % method_name)
 
@@ -373,7 +371,7 @@ def _method_reply_error(connection, message, exception):
     elif getattr(exception, '__module__', '') in ('', '__main__'):
         name = 'org.freedesktop.DBus.Python.%s' % exception.__class__.__name__
     else:
-        name = 'org.freedesktop.DBus.Python.%s.%s' % (exception.__module__, exception.__class__.__name__)
+        name = 'org.freedesktop.DBus.Python.{}.{}'.format(exception.__module__, exception.__class__.__name__)
 
     et, ev, etb = sys.exc_info()
     if isinstance(exception, DBusException) and not exception.include_traceback:
@@ -487,10 +485,10 @@ class InterfaceType(type):
             access = "write"
         else:
             return ""
-        reflection_data = '    <property access="%s" type="%s" name="%s"' % (access, signature, descriptor.__name__)
+        reflection_data = '    <property access="{}" type="{}" name="{}"'.format(access, signature, descriptor.__name__)
         if descriptor._emits_changed_signal is not None:
             value = {True: "true", False: "false", "invalidates": "invalidates"}[descriptor._emits_changed_signal]
-            reflection_data += '>\n      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="%s"/>\n    </property>\n' % (value,)
+            reflection_data += '>\n      <annotation name="org.freedesktop.DBus.Property.EmitsChangedSignal" value="{}"/>\n    </property>\n'.format(value)
         else:
             reflection_data += ' />\n'
         return reflection_data
@@ -512,16 +510,16 @@ class PropertiesInterface(Interface):
                 raise DBusException("No interface %s on object" % interface_name)
             prop = interface.get(property_name)
             if prop is None:
-                raise DBusException("No property %s on object interface %s" % (property_name, interface_name))
+                raise DBusException("No property {} on object interface {}".format(property_name, interface_name))
             if not isinstance(prop, dbus_property):
-                raise DBusException("Name %s on object interface %s is not a property" % (property_name, interface_name))
+                raise DBusException("Name {} on object interface {} is not a property".format(property_name, interface_name))
             return prop
         else:
             for interface in itervalues(interfaces):
                 prop = interface.get(property_name)
                 if prop and isinstance(prop, dbus_property):
                     return prop
-            raise DBusException("No property %s found" % (property_name,))
+            raise DBusException("No property {} found".format(property_name))
 
     @method(PROPERTIES_IFACE, in_signature="ss", out_signature="v")
     def Get(self, interface_name, property_name):
@@ -1002,7 +1000,7 @@ class Object(Interface):
         where = ''
         if (self._object_path is not _MANY and self._object_path is not None):
             where = ' at %s' % self._object_path
-        return '<%s.%s%s at %#x>' % (self.__class__.__module__,
+        return '<{}.{}{} at {:#x}>'.format(self.__class__.__module__,
                                    self.__class__.__name__, where,
                                    id(self))
     __str__ = __repr__
@@ -1040,7 +1038,7 @@ class FallbackObject(Object):
                 starting at this object-path, except where a more specific
                 object has been added.
         """
-        super(FallbackObject, self).__init__()
+        super().__init__()
         self._fallback = True
 
         if conn is None:

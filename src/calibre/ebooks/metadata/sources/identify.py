@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 __license__   = 'GPL v3'
 __copyright__ = '2011, Kovid Goyal <kovid@kovidgoyal.net>'
@@ -84,7 +82,7 @@ class xISBN(Thread):
             self.tb = traceback.format_exception()
 
 
-class ISBNMerge(object):
+class ISBNMerge:
 
     def __init__(self, log):
         self.pools = {}
@@ -389,7 +387,7 @@ def identify(log, abort,  # {{{
 
     log('Running identify query with parameters:')
     log(kwargs)
-    log('Using plugins:', ', '.join(['%s %s' % (p.name, p.version) for p in plugins]))
+    log('Using plugins:', ', '.join(['{} {}'.format(p.name, p.version) for p in plugins]))
     log('The log from individual plugins is below')
 
     workers = [Worker(p, kwargs, abort) for p in plugins]
@@ -400,7 +398,7 @@ def identify(log, abort,  # {{{
     results = {}
     for p in plugins:
         results[p] = []
-    logs = dict([(w.plugin, w.buf) for w in workers])
+    logs = {w.plugin: w.buf for w in workers}
 
     def get_results():
         found = False
@@ -457,7 +455,7 @@ def identify(log, abort,  # {{{
         results[plugin] = presults = filtered_results
 
         plog = logs[plugin].getvalue().strip()
-        log('\n'+'*'*30, plugin.name, '%s' % (plugin.version,), '*'*30)
+        log('\n'+'*'*30, plugin.name, '{}'.format(plugin.version), '*'*30)
         log('Found %d results'%len(presults))
         time_spent = getattr(plugin, 'dl_time_spent', None)
         if time_spent is None:
@@ -525,7 +523,7 @@ def identify(log, abort,  # {{{
                 if len(parts) <= 1:
                     return a
                 surname = parts[-1]
-                return '%s, %s' % (surname, ' '.join(parts[:-1]))
+                return '{}, {}'.format(surname, ' '.join(parts[:-1]))
             r.authors = [swap_to_ln_fn(a) for a in r.authors]
 
     if am_rules:

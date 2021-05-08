@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 __license__   = 'GPL v3'
 __copyright__ = '2009, Kovid Goyal <kovid@kovidgoyal.net>'
@@ -153,7 +152,7 @@ class Worker:
         env = self.env
         try:
             origwd = cwd or os.path.abspath(getcwd())
-        except EnvironmentError:
+        except OSError:
             # cwd no longer exists
             origwd = cwd or os.path.expanduser('~')
         env[native_string_type('ORIGWD')] = environ_item(as_hex_unicode(msgpack_dumps(origwd)))

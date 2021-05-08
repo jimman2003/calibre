@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -39,7 +38,7 @@ def partial(*args, **kwargs):
     return ans
 
 
-class LibraryViewMixin(object):  # {{{
+class LibraryViewMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass
@@ -312,7 +311,7 @@ class StatusBar(QStatusBar):  # {{{
         if self.library_total != self.total:
             base = _('{0}, {1} total').format(base, self.library_total)
 
-        self.defmsg.setText('\xa0%s\xa0\xa0\xa0\xa0[%s]' % (msg, base))
+        self.defmsg.setText('\xa0{}\xa0\xa0\xa0\xa0[{}]'.format(msg, base))
         self.clearMessage()
 
     def device_disconnected(self):
@@ -555,7 +554,7 @@ class VLTabs(QTabBar):  # {{{
 # }}}
 
 
-class LayoutMixin(object):  # {{{
+class LayoutMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass

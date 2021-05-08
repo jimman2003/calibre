@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -65,7 +64,7 @@ def send(ans):
         prints(x)
 
 
-class EbookConvert(object):
+class EbookConvert:
 
     def __init__(self, comp_line, pos):
         words = split(comp_line[:pos])

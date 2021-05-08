@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -208,7 +207,7 @@ def run_file_dialog(
         prints('stdout+stderr from file dialog helper:', unicode_type([h.stdoutdata, h.stderrdata]))
 
     if h.rc != 0:
-        raise Exception('File dialog failed (return code %s): %s' % (h.rc, get_errors()))
+        raise Exception('File dialog failed (return code {}): {}'.format(h.rc, get_errors()))
     server.join(2)
     if server.is_alive():
         raise Exception('Timed out waiting for read from pipe to complete')
@@ -262,7 +261,7 @@ def choose_dir(window, name, title, default_dir='~', no_save_dir=False):
 
 
 def choose_files(window, name, title,
-                 filters=(), all_files=True, select_only_single_file=False, default_dir=u'~'):
+                 filters=(), all_files=True, select_only_single_file=False, default_dir='~'):
     name, initial_folder = get_initial_folder(name, title, default_dir)
     file_types = list(filters)
     if all_files:
@@ -362,7 +361,7 @@ def test(helper=HELPER):
     server.join(2)
     parts = list(filter(None, server.data.split(b'\0')))
     if parts[0] != secret:
-        raise RuntimeError('Did not get back secret: %r != %r' % (secret, parts[0]))
+        raise RuntimeError('Did not get back secret: {!r} != {!r}'.format(secret, parts[0]))
     q = parts[1].decode('utf-8')
     if q != echo:
         raise RuntimeError('Unexpected response: %r' % server.data)

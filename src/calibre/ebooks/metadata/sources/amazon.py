@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2011, Kovid Goyal <kovid at kovidgoyal.net>
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
 import socket
@@ -403,7 +401,7 @@ class Worker(Thread):  # Get details {{{
         if not title or not authors or not asin:
             self.log.error(
                 'Could not find title/authors/asin for %r' % self.url)
-            self.log.error('ASIN: %r Title: %r Authors: %r' % (asin, title,
+            self.log.error('ASIN: {!r} Title: {!r} Authors: {!r}'.format(asin, title,
                                                                authors))
             return
 
@@ -1242,8 +1240,8 @@ class Amazon(Source):
                 q['field-keywords'] += ' ' + q.pop(f, '')
             q['field-keywords'] = q['field-keywords'].strip()
 
-        encoded_q = dict([(x.encode('utf-8', 'ignore'), y.encode(
-            'utf-8', 'ignore')) for x, y in q.items()])
+        encoded_q = {x.encode('utf-8', 'ignore'): y.encode(
+            'utf-8', 'ignore') for x, y in q.items()}
         url_query = urlencode(encoded_q)
         # amazon's servers want IRIs with unicode characters not percent esaped
         parts = []
@@ -1302,7 +1300,7 @@ class Amazon(Source):
             if title_ok(title):
                 url = a.get('href')
                 if url.startswith('/'):
-                    url = 'https://www.amazon.%s%s' % (
+                    url = 'https://www.amazon.{}{}'.format(
                         self.get_website_domain(domain), url)
                 matches.append(url)
 
@@ -1318,7 +1316,7 @@ class Amazon(Source):
                     if title_ok(title):
                         url = a.get('href')
                         if url.startswith('/'):
-                            url = 'https://www.amazon.%s%s' % (
+                            url = 'https://www.amazon.{}{}'.format(
                                 self.get_website_domain(domain), url)
                         matches.append(url)
                     break
@@ -1333,7 +1331,7 @@ class Amazon(Source):
                     if title_ok(title):
                         url = a.get('href')
                         if url.startswith('/'):
-                            url = 'https://www.amazon.%s%s' % (
+                            url = 'https://www.amazon.{}{}'.format(
                                 self.get_website_domain(domain), url)
                         matches.append(url)
                     break

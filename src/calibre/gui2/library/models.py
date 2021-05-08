@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -71,7 +70,7 @@ def group_numbers(numbers):
         yield first, last[1]
 
 
-class ColumnColor(object):  # {{{
+class ColumnColor:  # {{{
 
     def __init__(self, formatter):
         self.mi = None
@@ -100,7 +99,7 @@ class ColumnColor(object):  # {{{
 # }}}
 
 
-class ColumnIcon(object):  # {{{
+class ColumnIcon:  # {{{
 
     def __init__(self, formatter, model):
         self.mi = None
@@ -853,7 +852,7 @@ class BooksModel(QAbstractTableModel):  # {{{
                     book_id = idfunc(idx)
                     series = fffunc(field_obj, book_id, default_value=False)
                     if series:
-                        return ('%s [%s]' % (series, fmt_sidx(fffunc(sidx_field, book_id, default_value=1.0))))
+                        return ('{} [{}]'.format(series, fmt_sidx(fffunc(sidx_field, book_id, default_value=1.0))))
                     return None
             elif dt in {'int', 'float'}:
                 fmt = m['display'].get('number_format', None)
@@ -1141,7 +1140,7 @@ class BooksModel(QAbstractTableModel):  # {{{
             from calibre.gui2.ui import get_gui
             try:
                 return self._set_data(index, value)
-            except (IOError, OSError) as err:
+            except OSError as err:
                 import traceback
                 if getattr(err, 'errno', None) == errno.EACCES:  # Permission denied
                     fname = getattr(err, 'filename', None)
@@ -1316,7 +1315,7 @@ class OnDeviceSearch(SearchQueryParser):  # {{{
 # }}}
 
 
-class DeviceDBSortKeyGen(object):  # {{{
+class DeviceDBSortKeyGen:  # {{{
 
     def __init__(self, attr, keyfunc, db):
         self.attr = attr

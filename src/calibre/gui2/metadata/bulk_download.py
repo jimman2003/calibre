@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -165,7 +164,7 @@ def get_job_details(job):
             all_failed, det_msg, lm_map)
 
 
-class HeartBeat(object):
+class HeartBeat:
     CHECK_INTERVAL = 300  # seconds
     ''' Check that the file count in tdir changes every five minutes '''
 

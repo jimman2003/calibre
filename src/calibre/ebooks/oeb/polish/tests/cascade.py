@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -159,7 +158,7 @@ class CascadeTest(BaseTest):
                     if k == 'src':
                         files[v] = b'xxx'
                         v = 'url(%s)' % v
-                    styles.append('%s : %s;' % (k, v))
+                    styles.append('{} : {};'.format(k, v))
                 styles.append('}\n')
             html = '<html><head><link href="styles.css"></head><body>{}</body></html>'.format(html)
             files['styles.css'] = embeds + '\n'.join(styles)

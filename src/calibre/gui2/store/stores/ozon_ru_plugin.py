@@ -1,5 +1,4 @@
 ﻿# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 store_version = 3  # Needed for dynamic plugin loading
 
@@ -73,8 +72,7 @@ class OzonRUStore(StorePlugin):
             d.exec_()
 
     def search(self, query, max_results=15, timeout=60):
-        for s in search(query, max_results=max_results, timeout=timeout):
-            yield s
+        yield from search(query, max_results=max_results, timeout=timeout)
 
 
 def format_price_in_RUR(price):

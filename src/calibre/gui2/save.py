@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -214,7 +213,7 @@ class Saver(QObject):
         if os.path.dirname(base_dir) != base_dir:
             try:
                 os.makedirs(base_dir)
-            except EnvironmentError as err:
+            except OSError as err:
                 if err.errno != errno.EEXIST:
                     raise
 

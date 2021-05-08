@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -19,7 +16,7 @@ from calibre.constants import __appname__, __version__
 TEXT_RECORD_SIZE = 4096
 
 
-class TocItem(object):
+class TocItem:
 
     def __init__(self, name, size, flags):
         self.name = name
@@ -27,7 +24,7 @@ class TocItem(object):
         self.flags = flags
 
 
-class RBWriter(object):
+class RBWriter:
 
     def __init__(self, opts, log):
         self.opts = opts
@@ -145,7 +142,7 @@ class RBWriter(object):
             if len(metadata.creator) >= 1:
                 from calibre.ebooks.metadata import authors_to_string
                 text += 'AUTHOR=%s\n' % authors_to_string([x.value for x in metadata.creator])
-        text += 'GENERATOR=%s - %s\n' % (__appname__, __version__)
+        text += 'GENERATOR={} - {}\n'.format(__appname__, __version__)
         text += 'PARSE=1\n'
         text += 'OUTPUT=1\n'
         text += 'BODY=index.html\n'

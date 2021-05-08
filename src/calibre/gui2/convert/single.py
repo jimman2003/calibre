@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2009, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -265,8 +264,8 @@ class Config(QDialog):
             preferred_output_format in output_formats else \
             sort_formats_by_preference(output_formats,
                     [prefs['output_format']])[0]
-        self.input_formats.addItems((unicode_type(x.upper()) for x in input_formats))
-        self.output_formats.addItems((unicode_type(x.upper()) for x in output_formats))
+        self.input_formats.addItems(unicode_type(x.upper()) for x in input_formats)
+        self.output_formats.addItems(unicode_type(x.upper()) for x in output_formats)
         self.input_formats.setCurrentIndex(input_formats.index(input_format))
         self.output_formats.setCurrentIndex(output_formats.index(preferred_output_format))
 

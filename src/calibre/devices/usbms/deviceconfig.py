@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -9,7 +6,7 @@ from calibre.utils.config_base import Config, ConfigProxy
 from polyglot.builtins import unicode_type
 
 
-class DeviceConfig(object):
+class DeviceConfig:
 
     HELP_MESSAGE = _('Configure Device')
 

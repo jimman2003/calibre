@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2009, John Schember <john at nachtimwald.com> ' \
                 '2009, Kovid Goyal <kovid@kovidgoyal.net>'
@@ -260,7 +257,7 @@ class Device(DeviceConfig, DevicePlugin):
             elif self.windows_filter_pnp_id(pnp_id):
                 filtered.add(dl)
                 if debug:
-                    prints('Ignoring the drive %s because of a PNP filter on %s' % (dl, pnp_id))
+                    prints('Ignoring the drive {} because of a PNP filter on {}'.format(dl, pnp_id))
             elif not drive_is_ok(dl, debug=debug):
                 filtered.add(dl)
                 if debug:
@@ -292,7 +289,7 @@ class Device(DeviceConfig, DevicePlugin):
             try:
                 return subprocess.Popen(cmd,
                                     stdout=subprocess.PIPE).communicate()[0]
-            except IOError:  # Probably an interrupted system call
+            except OSError:  # Probably an interrupted system call
                 if i == 2:
                     raise
             time.sleep(2)
@@ -306,7 +303,7 @@ class Device(DeviceConfig, DevicePlugin):
             try:
                 return subprocess.Popen('mount',
                                     stdout=subprocess.PIPE).communicate()[0]
-            except IOError:  # Probably an interrupted system call
+            except OSError:  # Probably an interrupted system call
                 if i == 2:
                     raise
             time.sleep(2)
@@ -338,7 +335,7 @@ class Device(DeviceConfig, DevicePlugin):
         if not matches:
             from pprint import pformat
             raise DeviceError(
-                'Could not detect BSD names for %s. Try rebooting.\nOutput from osx_get_usb_drives():\n%s' % (self.name, pformat(drives)))
+                'Could not detect BSD names for {}. Try rebooting.\nOutput from osx_get_usb_drives():\n{}'.format(self.name, pformat(drives)))
 
         pat = re.compile(r'(?P<m>\d+)([a-z]+(?P<p>\d+)){0,1}')
 
@@ -436,8 +433,7 @@ class Device(DeviceConfig, DevicePlugin):
                 isfile = os.path.isfile(p)
                 yield p, isfile
                 if not isfile:
-                    for y, q in walk(p):
-                        yield y, q
+                    yield from walk(p)
 
         def raw2num(raw):
             raw = raw.lower()
@@ -496,7 +492,7 @@ class Device(DeviceConfig, DevicePlugin):
                     except:
                         ok[node] = False
                     if DEBUG and not ok[node]:
-                        print('\nIgnoring the node: %s as could not read size from: %s' % (node, sz))
+                        print('\nIgnoring the node: {} as could not read size from: {}'.format(node, sz))
 
                     devnodes.append(node)
 

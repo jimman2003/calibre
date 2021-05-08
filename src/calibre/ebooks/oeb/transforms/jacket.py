@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -37,7 +36,7 @@ class SafeFormatter(Formatter):
             return ''
 
 
-class Base(object):
+class Base:
 
     def remove_images(self, item, limit=1):
         path = XPath('//h:img[@src]')
@@ -187,7 +186,7 @@ class Series(unicode_type):
             combined = _('{1} of <em>{0}</em>').format(
                 escape(series), escape(fmt_sidx(series_index, use_roman=False)))
         else:
-            combined = roman = escape(series or u'')
+            combined = roman = escape(series or '')
         s = unicode_type.__new__(self, combined)
         s.roman = roman
         s.name = escape(series or '')
@@ -362,7 +361,7 @@ def render_jacket(mi, output_profile,
             print("Custom column values available in jacket template:")
             for key in args.keys():
                 if key.startswith('_') and not key.endswith('_label'):
-                    print(" %s: %s" % ('#' + key[1:], args[key]))
+                    print(" {}: {}".format('#' + key[1:], args[key]))
 
         # Used in the comment describing use of custom columns in templates
         # Don't change this unless you also change it in template.xhtml

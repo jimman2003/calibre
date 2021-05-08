@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -26,7 +25,7 @@ def compile_pats(binary):
         yield re.compile(raw, flags=re.IGNORECASE)
 
 
-class LazyEncodingPats(object):
+class LazyEncodingPats:
 
     def __call__(self, binary=False):
         attr = 'binary_pats' if binary else 'unicode_pats'
@@ -34,8 +33,7 @@ class LazyEncodingPats(object):
         if pats is None:
             pats = tuple(compile_pats(binary))
             setattr(self, attr, pats)
-        for pat in pats:
-            yield pat
+        yield from pats
 
 
 lazy_encoding_pats = LazyEncodingPats()
@@ -52,7 +50,7 @@ def strip_encoding_declarations(raw, limit=50*1024, preserve_newlines=False):
         else:
             sub = lambda m: '\n' * m.group().count('\n')
     else:
-        sub = b'' if is_binary else u''
+        sub = b'' if is_binary else ''
     for pat in lazy_encoding_pats(is_binary):
         prefix = pat.sub(sub, prefix)
     raw = prefix + suffix

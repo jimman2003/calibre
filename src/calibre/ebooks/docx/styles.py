@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -14,7 +13,7 @@ from calibre.ebooks.docx.tables import TableStyle
 from polyglot.builtins import iteritems, itervalues
 
 
-class PageProperties(object):
+class PageProperties:
 
     '''
     Class representing page level properties (page size/margins) read from
@@ -39,7 +38,7 @@ class PageProperties(object):
                 setval('margin_left', l), setval('margin_right', r)
 
 
-class Style(object):
+class Style:
     '''
     Class representing a <w:style> element. Can contain block, character, etc. styles.
     '''
@@ -104,7 +103,7 @@ class Style(object):
             self.character_style.resolve_based_on(parent.character_style)
 
 
-class Styles(object):
+class Styles:
 
     '''
     Collection of all styles defined in the document. Used to get the final styles applicable to elements in the document markup.
@@ -124,8 +123,7 @@ class Styles(object):
         self.default_paragraph_style = self.default_character_style = None
 
     def __iter__(self):
-        for s in itervalues(self.id_map):
-            yield s
+        yield from itervalues(self.id_map)
 
     def __getitem__(self, key):
         return self.id_map[key]
@@ -257,7 +255,7 @@ class Styles(object):
 
             if is_numbering and not is_section_break:
                 num_id, lvl = direct_formatting.numbering_id, direct_formatting.numbering_level
-                p.set('calibre_num_id', '%s:%s' % (lvl, num_id))
+                p.set('calibre_num_id', '{}:{}'.format(lvl, num_id))
                 ps = self.numbering.get_para_style(num_id, lvl)
                 if ps is not None:
                     parent_styles.append(ps)
@@ -265,7 +263,7 @@ class Styles(object):
                 not is_numbering and not is_section_break and linked_style is not None and has_numbering(linked_style.paragraph_style)
             ):
                 num_id, lvl = linked_style.paragraph_style.numbering_id, linked_style.paragraph_style.numbering_level
-                p.set('calibre_num_id', '%s:%s' % (lvl, num_id))
+                p.set('calibre_num_id', '{}:{}'.format(lvl, num_id))
                 is_numbering = True
                 ps = self.numbering.get_para_style(num_id, lvl)
                 if ps is not None:
@@ -505,7 +503,7 @@ class Styles(object):
 
         ans = []
         for (cls, css) in sorted(itervalues(self.classes), key=lambda x:x[0]):
-            b = ('\t%s: %s;' % (k, v) for k, v in iteritems(css))
+            b = ('\t{}: {};'.format(k, v) for k, v in iteritems(css))
             b = '\n'.join(b)
-            ans.append('.%s {\n%s\n}\n' % (cls, b.rstrip(';')))
+            ans.append('.{} {{\n{}\n}}\n'.format(cls, b.rstrip(';')))
         return prefix + '\n' + '\n'.join(ans)

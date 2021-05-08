@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -12,7 +11,7 @@ from calibre.ebooks.docx.writer.styles import read_css_block_borders as rcbb, bo
 from polyglot.builtins import iteritems, range, unicode_type
 
 
-class Dummy(object):
+class Dummy:
     pass
 
 
@@ -21,7 +20,7 @@ border_style_weight = {
     x:100-i for i, x in enumerate(('double', 'solid', 'dashed', 'dotted', 'ridge', 'outset', 'groove', 'inset'))}
 
 
-class SpannedCell(object):
+class SpannedCell:
 
     def __init__(self, spanning_cell, horizontal=True):
         self.spanning_cell = spanning_cell
@@ -79,7 +78,7 @@ def convert_width(tag_style):
     return ('auto', 0)
 
 
-class Cell(object):
+class Cell:
 
     BLEVEL = 2
 
@@ -211,7 +210,7 @@ class Cell(object):
         return getattr(ans, 'spanning_cell', ans)
 
 
-class Row(object):
+class Row:
 
     BLEVEL = 1
 
@@ -257,7 +256,7 @@ class Row(object):
             cell.serialize(tr, makeelement)
 
 
-class Table(object):
+class Table:
 
     BLEVEL = 0
 

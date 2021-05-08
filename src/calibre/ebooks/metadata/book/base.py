@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -59,7 +58,7 @@ ck = lambda typ: icu_lower(typ).strip().replace(':', '').replace(',', '')
 cv = lambda val: val.strip().replace(',', '|')
 
 
-class Metadata(object):
+class Metadata:
 
     '''
     A class representing all the metadata for a book. The various standard metadata

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -25,7 +24,7 @@ from calibre.utils.search_query_parser import ParseException
 from polyglot.builtins import iteritems, unicode_type
 
 
-class NewsTreeItem(object):
+class NewsTreeItem:
 
     def __init__(self, builtin, custom, scheduler_config, parent=None):
         self.builtin, self.custom = builtin, custom
@@ -165,8 +164,8 @@ class RecipeModel(QAbstractItemModel, AdaptSQP):
         try:
             with zipfile.ZipFile(P('builtin_recipes.zip',
                     allow_user_override=False), 'r') as zf:
-                self.favicons = dict([(x.filename, x) for x in zf.infolist() if
-                    x.filename.endswith('.png')])
+                self.favicons = {x.filename: x for x in zf.infolist() if
+                    x.filename.endswith('.png')}
         except:
             self.favicons = {}
         self.do_refresh()

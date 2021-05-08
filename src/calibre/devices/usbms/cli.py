@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -12,7 +9,7 @@ from calibre.devices.errors import PathError
 from calibre.utils.filenames import case_preserving_open_file
 
 
-class File(object):
+class File:
 
     def __init__(self, path):
         stats = os.stat(path)
@@ -33,7 +30,7 @@ def check_transfer(infile, dest):
     return infile.read() == dest.read()
 
 
-class CLI(object):
+class CLI:
 
     def get_file(self, path, outfile, end_session=True):
         path = self.munge_path(path)
@@ -54,7 +51,7 @@ class CLI(object):
         with dest:
             try:
                 shutil.copyfileobj(infile, dest)
-            except IOError:
+            except OSError:
                 print('WARNING: First attempt to send file to device failed')
                 time.sleep(0.2)
                 infile.seek(0)

@@ -45,7 +45,7 @@ class FetchError(Exception):
     pass
 
 
-class closing(object):
+class closing:
 
     'Context to automatically close something at the end of a block.'
 
@@ -106,7 +106,7 @@ def save_soup(soup, target):
 class response(bytes):
 
     def __new__(cls, *args):
-        obj = super(response, cls).__new__(cls, *args)
+        obj = super().__new__(cls, *args)
         obj.newurl = None
         return obj
 
@@ -115,7 +115,7 @@ def default_is_link_wanted(url, tag):
     raise NotImplementedError()
 
 
-class RecursiveFetcher(object):
+class RecursiveFetcher:
     LINK_FILTER = tuple(re.compile(i, re.IGNORECASE) for i in
                 ('.exe\\s*$', '.mp3\\s*$', '.ogg\\s*$', '^\\s*mailto:', '^\\s*$'))
     # ADBLOCK_FILTER = tuple(re.compile(i, re.IGNORECASE) for it in
@@ -255,7 +255,7 @@ class RecursiveFetcher(object):
                 data = response(f.read())
                 data.newurl = 'file:'+url  # This is what mechanize does for
                 # local URLs
-            self.log.debug('Fetched %s in %.1f seconds' % (url, time.monotonic() - st))
+            self.log.debug('Fetched {} in {:.1f} seconds'.format(url, time.monotonic() - st))
             return data
 
         delta = time.monotonic() - self.last_fetch_at
@@ -293,7 +293,7 @@ class RecursiveFetcher(object):
                 raise err
         finally:
             self.last_fetch_at = time.monotonic()
-        self.log.debug('Fetched %s in %f seconds' % (url, time.monotonic() - st))
+        self.log.debug('Fetched {} in {:f} seconds'.format(url, time.monotonic() - st))
         return data
 
     def start_fetch(self, url):
@@ -540,7 +540,7 @@ class RecursiveFetcher(object):
 
                     st = time.monotonic()
                     soup = self.get_soup(dsrc, url=iurl)
-                    self.log.debug('Parsed %s in %.1f seconds' % (iurl, time.monotonic() - st))
+                    self.log.debug('Parsed {} in {:.1f} seconds'.format(iurl, time.monotonic() - st))
 
                     base = soup.find('base', href=True)
                     if base is not None:

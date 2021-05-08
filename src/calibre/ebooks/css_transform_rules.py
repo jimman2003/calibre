@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -29,7 +28,7 @@ def all_properties(decl):
             yield p
 
 
-class StyleDeclaration(object):
+class StyleDeclaration:
 
     def __init__(self, css_declaration):
         self.css_declaration = css_declaration
@@ -164,7 +163,7 @@ def transform_number(val, op, raw):
     return unicode_type(v) + u
 
 
-class Rule(object):
+class Rule:
 
     def __init__(self, property='color', match_type='*', query='', action='remove', action_data=''):
         self.property_name = property.lower()
@@ -342,7 +341,7 @@ def export_rules(serialized_rules):
     lines = []
     for rule in serialized_rules:
         lines.extend('# ' + l for l in rule_to_text(rule).splitlines())
-        lines.extend('%s: %s' % (k, v.replace('\n', ' ')) for k, v in iteritems(rule) if k in allowed_keys)
+        lines.extend('{}: {}'.format(k, v.replace('\n', ' ')) for k, v in iteritems(rule) if k in allowed_keys)
         lines.append('')
     return '\n'.join(lines).encode('utf-8')
 

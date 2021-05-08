@@ -15,7 +15,7 @@ from calibre.utils.cleantext import clean_ascii_chars, clean_xml_chars
 from polyglot.builtins import unicode_type, string_or_bytes, map
 
 
-class Article(object):
+class Article:
 
     def __init__(self, id, title, url, author, summary, published, content):
         from lxml import html
@@ -107,7 +107,7 @@ Has content : %s
         return self.content == getattr(other_article, 'content', False)
 
 
-class Feed(object):
+class Feed:
 
     def __init__(self, get_article_url=lambda item: item.get('link', None),
             log=default_log):
@@ -172,8 +172,8 @@ class Feed(object):
             if delta.days*24*3600 + delta.seconds <= 24*3600*self.oldest_article:
                 self.articles.append(article)
             else:
-                t = strftime(u'%a, %d %b, %Y %H:%M', article.localtime.timetuple())
-                self.logger.debug(u'Skipping article %s (%s) from feed %s as it is too old.'%
+                t = strftime('%a, %d %b, %Y %H:%M', article.localtime.timetuple())
+                self.logger.debug('Skipping article %s (%s) from feed %s as it is too old.'%
                         (title, t, self.title))
             d = item.get('date', '')
             article.formatted_date = d

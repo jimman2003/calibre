@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -11,7 +10,7 @@ import sys, struct
 from calibre.utils.wmf import create_bmp_from_dib, to_png
 
 
-class WMFHeader(object):
+class WMFHeader:
 
     '''
     For header documentation, see
@@ -37,7 +36,7 @@ class WMFHeader(object):
         self.records_start_at = header_size * 2
 
 
-class WMF(object):
+class WMF:
 
     def __init__(self, log=None, verbose=0):
         if log is None:

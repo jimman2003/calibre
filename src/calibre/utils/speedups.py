@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -7,7 +6,7 @@ import os
 from polyglot.builtins import range, unicode_type
 
 
-class ReadOnlyFileBuffer(object):
+class ReadOnlyFileBuffer:
 
     ''' A zero copy implementation of a file like object. Uses memoryviews for efficiency. '''
 

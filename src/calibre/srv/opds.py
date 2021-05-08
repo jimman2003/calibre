@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -244,7 +243,7 @@ def ACQUISITION_ENTRY(book_id, updated, request_context):
 default_feed_title = __appname__ + ' ' + _('Library')
 
 
-class Feed(object):  # {{{
+class Feed:  # {{{
 
     def __init__(self, id_, updated, request_context, subtitle=None,
             title=None,
@@ -352,7 +351,7 @@ class CategoryGroupFeed(NavFeed):
             self.root.append(CATALOG_GROUP_ENTRY(item, which, request_context, updated))
 
 
-class RequestContext(object):
+class RequestContext:
 
     def __init__(self, ctx, rd):
         self.db, self.library_id, self.library_map, self.default_library = get_library_data(ctx, rd)

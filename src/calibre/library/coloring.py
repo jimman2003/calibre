@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2011, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -13,7 +12,7 @@ from polyglot.builtins import map
 color_row_key = '*row'
 
 
-class Rule(object):  # {{{
+class Rule:  # {{{
 
     SIGNATURE = '# BasicColorRule():'
 
@@ -139,9 +138,9 @@ class Rule(object):  # {{{
                 'gt': ('', '', '1')
         }[action]
         if col == 'size':
-            return "cmp(booksize(), %s, '%s', '%s', '%s')" % (val, lt, eq, gt)
+            return "cmp(booksize(), {}, '{}', '{}', '{}')".format(val, lt, eq, gt)
         else:
-            return "cmp(raw_field('%s'), %s, '%s', '%s', '%s')" % (col, val, lt, eq, gt)
+            return "cmp(raw_field('{}'), {}, '{}', '{}', '{}')".format(col, val, lt, eq, gt)
 
     def rating_condition(self, col, action, val):
         if action == 'is set':
@@ -153,7 +152,7 @@ class Rule(object):  # {{{
                 'lt': ('1', '', ''),
                 'gt': ('', '', '1')
         }[action]
-        return "cmp(field('%s'), %s, '%s', '%s', '%s')" % (col, val, lt, eq, gt)
+        return "cmp(field('{}'), {}, '{}', '{}', '{}')".format(col, val, lt, eq, gt)
 
     def date_condition(self, col, action, val):
         if action == 'count_days':
@@ -177,9 +176,9 @@ class Rule(object):  # {{{
                             "format_date(today(), 'yyyy-MM-dd')), '1', '', ''), '')")
                      %(col, val, col))
         if action == 'is set':
-            return (("test(field('%s'), '1', '')"%(col)))
+            return ("test(field('%s'), '1', '')"%(col))
         if action == 'is not set':
-            return (("test(field('%s'), '', '1')"%(col)))
+            return ("test(field('%s'), '', '1')"%(col))
         lt, eq, gt = {
                 'eq': ('', '1', ''),
                 'lt': ('1', '', ''),

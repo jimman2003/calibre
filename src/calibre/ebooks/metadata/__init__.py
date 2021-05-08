@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__   = 'GPL v3'
@@ -228,7 +227,7 @@ def fmt_sidx(i, fmt='%.2f', use_roman=False):
     return fmt%i
 
 
-class Resource(object):
+class Resource:
 
     '''
     Represents a resource (usually a file on the filesystem or a URL pointing
@@ -309,14 +308,13 @@ class Resource(object):
         return 'Resource(%s, %s)'%(repr(self.path), repr(self.href()))
 
 
-class ResourceCollection(object):
+class ResourceCollection:
 
     def __init__(self):
         self._resources = []
 
     def __iter__(self):
-        for r in self._resources:
-            yield r
+        yield from self._resources
 
     def __len__(self):
         return len(self._resources)

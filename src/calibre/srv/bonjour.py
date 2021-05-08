@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -8,7 +7,7 @@ __copyright__ = '2015, Kovid Goyal <kovid at kovidgoyal.net>'
 from threading import Event
 
 
-class BonJour(object):  # {{{
+class BonJour:  # {{{
 
     def __init__(self, name='Books in calibre', service_type='_calibre._tcp', path='/opds', add_hostname=True, wait_for_stop=True):
         self.service_name = name
@@ -36,7 +35,7 @@ class BonJour(object):  # {{{
 
         for s in mdns_services:
             self.services.append(publish(*s, use_ip_address=zipa, add_hostname=self.add_hostname))
-        loop.log('OPDS feeds advertised via BonJour at: %s port: %s' % (zipa, port))
+        loop.log('OPDS feeds advertised via BonJour at: {} port: {}'.format(zipa, port))
         self.advertised_port = port
         self.started.set()
 

@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
@@ -18,7 +16,7 @@ from calibre import isbytestring
 from polyglot.builtins import unicode_type, filter, map
 
 
-class Concatenate(object):
+class Concatenate:
     '''String concatenation aggregator for sqlite'''
 
     def __init__(self, sep=','):
@@ -72,7 +70,7 @@ def _connect(path):
     return conn
 
 
-class LibraryDatabase(object):
+class LibraryDatabase:
 
     @staticmethod
     def books_in_old_database(path):
@@ -1384,8 +1382,7 @@ ALTER TABLE books ADD COLUMN isbn TEXT DEFAULT "" COLLATE NOCASE;
 
     def get_feeds(self):
         feeds = self.conn.get('SELECT title, script FROM feeds')
-        for title, script in feeds:
-            yield title, script
+        yield from feeds
 
     def get_feed(self, id):
         return self.conn.get('SELECT script FROM feeds WHERE id=%d'%id,
@@ -1463,7 +1460,7 @@ ALTER TABLE books ADD COLUMN isbn TEXT DEFAULT "" COLLATE NOCASE;
         return self.conn.get('SELECT id FROM books where id=?', (id,), all=False) is not None
 
 
-class SearchToken(object):
+class SearchToken:
 
     FIELD_MAP = {'title'       : 1,
                   'author'      : 2,

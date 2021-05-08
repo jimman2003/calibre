@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -36,7 +35,7 @@ StretchDiBits = namedtuple(
 # }}}
 
 
-class EMF(object):
+class EMF:
 
     def __init__(self, raw, verbose=0):
         self.pos = 0

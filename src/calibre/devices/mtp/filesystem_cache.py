@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -20,7 +19,7 @@ from calibre.ebooks import BOOK_EXTENSIONS
 bexts = frozenset(BOOK_EXTENSIONS) - {'mbp', 'tan', 'rar', 'zip', 'xml'}
 
 
-class FileOrFolder(object):
+class FileOrFolder:
 
     def __init__(self, entry, fs_cache):
         self.all_storage_ids = fs_cache.all_storage_ids
@@ -108,10 +107,8 @@ class FileOrFolder(object):
         return tuple(parts)
 
     def __iter__(self):
-        for e in self.folders:
-            yield e
-        for e in self.files:
-            yield e
+        yield from self.folders
+        yield from self.files
 
     def add_child(self, entry):
         ans = FileOrFolder(entry, self.fs_cache())
@@ -181,7 +178,7 @@ class FileOrFolder(object):
         return 'mtp:::' + json.dumps(self.object_id) + ':::' + '/'.join(self.full_path)
 
 
-class FilesystemCache(object):
+class FilesystemCache:
 
     def __init__(self, all_storage, entries):
         self.entries = []

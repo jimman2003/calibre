@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -196,7 +195,7 @@ def module_cache_dir():
         _cache_dir = os.path.join(base, '.build-cache', 'pyj')
         try:
             os.makedirs(_cache_dir)
-        except EnvironmentError as e:
+        except OSError as e:
             if e.errno != errno.EEXIST:
                 raise
     return _cache_dir

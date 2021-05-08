@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -23,7 +22,7 @@ def no_endl(f):
 class TestResult(unittest.TextTestResult):
 
     def __init__(self, *args, **kwargs):
-        super(TestResult, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.start_time = {}
         for x in ('Success', 'Error', 'Failure', 'Skip', 'ExpectedFailure', 'UnexpectedSuccess'):
             x = 'add' + x
@@ -32,12 +31,12 @@ class TestResult(unittest.TextTestResult):
 
     def startTest(self, test):
         self.start_time[test] = monotonic()
-        return super(TestResult, self).startTest(test)
+        return super().startTest(test)
 
     def stopTest(self, test):
         orig = self.stream.writeln
         self.stream.writeln = self.stream.write
-        super(TestResult, self).stopTest(test)
+        super().stopTest(test)
         elapsed = monotonic()
         elapsed -= self.start_time.get(test, elapsed)
         self.times[test] = elapsed
@@ -45,10 +44,10 @@ class TestResult(unittest.TextTestResult):
         self.stream.writeln(' [%.1f s]' % elapsed)
 
     def stopTestRun(self):
-        super(TestResult, self).stopTestRun()
+        super().stopTestRun()
         if self.wasSuccessful():
             tests = sorted(self.times, key=self.times.get, reverse=True)
-            slowest = ['%s [%.1f s]' % (t.id(), self.times[t]) for t in tests[:3]]
+            slowest = ['{} [{:.1f} s]'.format(t.id(), self.times[t]) for t in tests[:3]]
             if len(slowest) > 1:
                 self.stream.writeln('\nSlowest tests: %s' % ' '.join(slowest))
 

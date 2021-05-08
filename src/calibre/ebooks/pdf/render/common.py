@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -212,14 +211,14 @@ class Stream(BytesIO):
         self.write(EOL)
 
     def write(self, raw):
-        super(Stream, self).write(raw if isinstance(raw, bytes) else
+        super().write(raw if isinstance(raw, bytes) else
                                   raw.encode('ascii'))
 
     def write_raw(self, raw):
         BytesIO.write(self, raw)
 
 
-class Reference(object):
+class Reference:
 
     def __init__(self, num, obj):
         self.num, self.obj = num, obj

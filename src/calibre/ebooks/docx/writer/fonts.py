@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -20,7 +19,7 @@ def obfuscate_font_data(data, key):
     return prefix + data[32:]
 
 
-class FontsManager(object):
+class FontsManager:
 
     def __init__(self, namespace, oeb, opts):
         self.namespace = namespace

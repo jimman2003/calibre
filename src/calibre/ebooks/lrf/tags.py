@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 ''''''
@@ -10,7 +8,7 @@ from calibre.ebooks.lrf import LRFParseError
 from polyglot.builtins import unicode_type
 
 
-class Tag(object):
+class Tag:
 
     tags = {
                 0x00 : (6, "*ObjectStart"),
@@ -208,7 +206,7 @@ class Tag(object):
         s = "Tag %04X " % self.id
         if self.name:
             s += self.name
-        s += " at %08X, contents: %s" % (self.offset, repr(self.contents))
+        s += " at {:08X}, contents: {}".format(self.offset, repr(self.contents))
         return s
 
     @property

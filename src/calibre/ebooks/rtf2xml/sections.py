@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -283,7 +282,7 @@ class Sections:
         keys = self.__section_values.keys()
         if len(keys) > 0:
             for key in keys:
-                my_string += '<%s>%s' % (key, self.__section_values[key])
+                my_string += '<{}>{}'.format(key, self.__section_values[key])
         my_string += '\n'
         my_string += self.__mark_end
         # # my_string += line
@@ -469,7 +468,7 @@ class Sections:
             keys =  self.__list_of_sec_values[0].keys()
             for key in keys:
                 self.__write_obj.write(
-                '<%s>%s\n' % (key, self.__list_of_sec_values[0][key]))
+                '<{}>{}\n'.format(key, self.__list_of_sec_values[0][key]))
             self.__list_of_sec_values = self.__list_of_sec_values[1:]
         self.__write_obj.write('<level>0')
         self.__write_obj.write('<type>rtf-native')

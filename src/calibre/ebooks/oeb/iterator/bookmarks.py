@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -12,8 +11,8 @@ from io import BytesIO
 from calibre.utils.zipfile import safe_replace
 from polyglot.builtins import unicode_type, as_unicode
 
-BM_FIELD_SEP = u'*|!|?|*'
-BM_LEGACY_ESC = u'esc-text-%&*#%(){}ads19-end-esc'
+BM_FIELD_SEP = '*|!|?|*'
+BM_LEGACY_ESC = 'esc-text-%&*#%(){}ads19-end-esc'
 
 
 def parse_bookmarks(raw):
@@ -35,7 +34,7 @@ def parse_bookmarks(raw):
             except Exception:
                 continue
             # Unescape from serialization
-            pos = pos.replace(BM_LEGACY_ESC, u'^')
+            pos = pos.replace(BM_LEGACY_ESC, '^')
             # Check for pos being a scroll fraction
             try:
                 pos = float(pos)
@@ -44,7 +43,7 @@ def parse_bookmarks(raw):
             yield {'type':'cfi', 'title':title, 'pos':pos, 'spine':spine}
 
 
-class BookmarksMixin(object):
+class BookmarksMixin:
 
     def __init__(self, copy_bookmarks_to_file=True):
         self.copy_bookmarks_to_file = copy_bookmarks_to_file
@@ -57,16 +56,16 @@ class BookmarksMixin(object):
         dat = []
         for bm in bookmarks:
             if bm['type'] == 'legacy':
-                rec = u'%s^%d#%s'%(bm['title'], bm['spine'], bm['pos'])
+                rec = '%s^%d#%s'%(bm['title'], bm['spine'], bm['pos'])
             else:
                 pos = bm['pos']
                 if isinstance(pos, numbers.Number):
                     pos = unicode_type(pos)
                 else:
-                    pos = pos.replace(u'^', BM_LEGACY_ESC)
+                    pos = pos.replace('^', BM_LEGACY_ESC)
                 rec = BM_FIELD_SEP.join([bm['title'], unicode_type(bm['spine']), pos])
             dat.append(rec)
-        return (u'\n'.join(dat) +u'\n')
+        return ('\n'.join(dat) +'\n')
 
     def read_bookmarks(self):
         self.bookmarks = []
@@ -93,7 +92,7 @@ class BookmarksMixin(object):
                     safe_replace(zf, 'META-INF/calibre_bookmarks.txt',
                             BytesIO(dat.encode('utf-8')),
                             add_missing=True)
-            except IOError:
+            except OSError:
                 return
 
     def add_bookmark(self, bm, no_copy_to_file=False):

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -9,7 +8,7 @@ import regex
 from polyglot.builtins import map, zip
 
 
-class Parser(object):
+class Parser:
 
     ''' See epubcfi.ebnf for the specification that this parser tries to
     follow. I have implemented it manually, since I dont want to depend on
@@ -21,7 +20,7 @@ class Parser(object):
         special_char = r'[\[\](),;=^]'
         unescaped_char = '[[\t\n\r -\ud7ff\ue000-\ufffd\U00010000-\U0010ffff]--%s]' % special_char
         escaped_char = r'\^' + special_char
-        chars = r'(?:%s|(?:%s))+' % (unescaped_char, escaped_char)
+        chars = r'(?:{}|(?:{}))+'.format(unescaped_char, escaped_char)
         chars_no_space = chars.replace('0020', '0021')
         # No leading zeros allowed for integers
         integer = r'(?:[1-9][0-9]*)|0'
@@ -47,11 +46,11 @@ class Parser(object):
         # Text assertion patterns
         self.ta1_pat = c(r'({0})(?:,({0})){{0,1}}'.format(chars))
         self.ta2_pat = c(r',(%s)' % chars)
-        self.parameters_pat = c(r'(?:;(%s)=((?:%s,?)+))+' % (chars_no_space, chars))
+        self.parameters_pat = c(r'(?:;({})=((?:{},?)+))+'.format(chars_no_space, chars))
         self.csv_pat = c(r'(?:(%s),?)+' % chars)
 
         # Unescape characters
-        unescape_pat = c(r'%s(%s)' % (escaped_char[:2], escaped_char[2:]))
+        unescape_pat = c(r'{}({})'.format(escaped_char[:2], escaped_char[2:]))
         self.unescape = lambda x: unescape_pat.sub(r'\1', x)
 
     def parse_epubcfi(self, raw):

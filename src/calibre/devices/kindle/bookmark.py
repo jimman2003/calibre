@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __docformat__ = 'restructuredtext en'
 
@@ -154,7 +151,7 @@ class Bookmark():  # {{{
                 split = my_clippings.find('documents') + len('documents/')
                 my_clippings = my_clippings[:split] + "My Clippings.txt"
                 try:
-                    with io.open(my_clippings, encoding='utf-8', errors='replace') as f2:
+                    with open(my_clippings, encoding='utf-8', errors='replace') as f2:
                         marker_found = 0
                         text = ''
                         search_str1 = '%s' % (mi.title)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -32,7 +31,7 @@ ROOT = QModelIndex()
 ignore_me
 
 
-class BusyCursor(object):
+class BusyCursor:
 
     def __enter__(self):
         QApplication.setOverrideCursor(QCursor(Qt.CursorShape.WaitCursor))
@@ -268,7 +267,7 @@ def make_highlighted_text(emph, text, positions):
         for p in positions:
             ch = get_char(text, p)
             parts.append(prepare_string_for_xml(text[pos:p]))
-            parts.append('<span style="%s">%s</span>' % (emph, prepare_string_for_xml(ch)))
+            parts.append('<span style="{}">{}</span>'.format(emph, prepare_string_for_xml(ch)))
             pos = p + len(ch)
         parts.append(prepare_string_for_xml(text[pos:]))
         return ''.join(parts)
@@ -827,7 +826,7 @@ class InsertSemantics(Dialog):
             'text': _('First "real" page of content'),
         }
         t = _
-        all_types = [(k, (('%s (%s)' % (t(v), type_map_help[k])) if k in type_map_help else t(v))) for k, v in iteritems(self.known_type_map)]
+        all_types = [(k, (('{} ({})'.format(t(v), type_map_help[k])) if k in type_map_help else t(v))) for k, v in iteritems(self.known_type_map)]
         all_types.sort(key=lambda x: sort_key(x[1]))
         self.all_types = OrderedDict(all_types)
 
@@ -1166,7 +1165,7 @@ class AddCover(Dialog):
         if name is not None:
             data = self.container.raw_data(name, decode=False)
             self.cover_view.set_pixmap(data)
-            self.info_label.setText('{0}x{1}px | {2}'.format(
+            self.info_label.setText('{}x{}px | {}'.format(
                 self.cover_view.pixmap.width(), self.cover_view.pixmap.height(), human_readable(len(data))))
 
     def import_image(self):

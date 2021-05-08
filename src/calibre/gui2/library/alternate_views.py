@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -287,7 +286,7 @@ def sync(func):
     return ans
 
 
-class AlternateViews(object):
+class AlternateViews:
 
     def __init__(self, main_view):
         self.views = {None:main_view}
@@ -396,7 +395,7 @@ class CoverDelegate(QStyledItemDelegate):
         self._animated_size = val
 
     def __init__(self, parent):
-        super(CoverDelegate, self).__init__(parent)
+        super().__init__(parent)
         self._animated_size = 1.0
         self.animation = QPropertyAnimation(self, b'animated_size', self)
         self.animation.setEasingCurve(QEasingCurve.Type.OutInCirc)
@@ -558,7 +557,7 @@ class CoverDelegate(QStyledItemDelegate):
                 title = db.field_for('title', book_id, default_value='')
                 authors = ' & '.join(db.field_for('authors', book_id, default_value=()))
                 painter.setRenderHint(QPainter.RenderHint.TextAntialiasing, True)
-                painter.drawText(rect, Qt.AlignmentFlag.AlignCenter|Qt.TextFlag.TextWordWrap, '%s\n\n%s' % (title, authors))
+                painter.drawText(rect, Qt.AlignmentFlag.AlignCenter|Qt.TextFlag.TextWordWrap, '{}\n\n{}'.format(title, authors))
                 if cdata is False:
                     self.render_queue.put(book_id)
                 if self.title_height != 0:
@@ -666,7 +665,7 @@ class CoverDelegate(QStyledItemDelegate):
             if title and authors:
                 title = '<b>%s</b>' % ('<br>'.join(wrap(p(title), 120)))
                 authors = '<br>'.join(wrap(p(' & '.join(authors)), 120))
-                tt = '%s<br><br>%s' % (title, authors)
+                tt = '{}<br><br>{}'.format(title, authors)
                 series = db.field_for('series', book_id)
                 if series:
                     use_roman_numbers=config['use_roman_numerals_for_series_number']
@@ -1152,7 +1151,7 @@ class GridView(QListView):
     def selectionCommand(self, index, event):
         if event and event.type() == QEvent.Type.KeyPress and event.key() in (Qt.Key.Key_Home, Qt.Key.Key_End) and event.modifiers() & Qt.Modifier.CTRL:
             return QItemSelectionModel.SelectionFlag.ClearAndSelect | QItemSelectionModel.SelectionFlag.Rows
-        return super(GridView, self).selectionCommand(index, event)
+        return super().selectionCommand(index, event)
 
     def wheelEvent(self, ev):
         if ev.phase() not in (Qt.ScrollPhase.ScrollUpdate, 0, Qt.ScrollPhase.ScrollMomentum):
@@ -1178,6 +1177,6 @@ class GridView(QListView):
         if size_changed:
             self.delegate.cover_cache.clear()
 
-        return super(GridView, self).paintEvent(ev)
+        return super().paintEvent(ev)
 
 # }}}

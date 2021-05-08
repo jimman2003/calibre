@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import json
 import re
@@ -130,7 +128,7 @@ def ddg_search(terms, site=None, br=None, log=prints, safe_search=False, dump_ra
     # https://duck.co/help/results/syntax
     terms = [quote_term(ddg_term(t)) for t in terms]
     if site is not None:
-        terms.append(quote_term(('site:' + site)))
+        terms.append(quote_term('site:' + site))
     q = '+'.join(terms)
     url = 'https://duckduckgo.com/html/?q={q}&kp={kp}'.format(
         q=q, kp=1 if safe_search else -1)
@@ -171,7 +169,7 @@ def bing_search(terms, site=None, br=None, log=prints, safe_search=False, dump_r
     # http://vlaurie.com/computers2/Articles/bing_advanced_search.htm
     terms = [quote_term(bing_term(t)) for t in terms]
     if site is not None:
-        terms.append(quote_term(('site:' + site)))
+        terms.append(quote_term('site:' + site))
     q = '+'.join(terms)
     url = 'https://www.bing.com/search?q={q}'.format(q=q)
     log('Making bing query: ' + url)
@@ -224,7 +222,7 @@ def google_url_processor(url):
 def google_search(terms, site=None, br=None, log=prints, safe_search=False, dump_raw=None, timeout=60):
     terms = [quote_term(google_term(t)) for t in terms]
     if site is not None:
-        terms.append(quote_term(('site:' + site)))
+        terms.append(quote_term('site:' + site))
     q = '+'.join(terms)
     url = 'https://www.google.com/search?q={q}'.format(q=q)
     log('Making google query: ' + url)

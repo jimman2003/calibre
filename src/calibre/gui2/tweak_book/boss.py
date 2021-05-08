@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2013, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -1428,7 +1427,7 @@ class Boss(QObject):
             if '/' in name or os.sep in name:
                 try:
                     os.makedirs(os.path.dirname(dest))
-                except EnvironmentError as err:
+                except OSError as err:
                     if err.errno != errno.EEXIST:
                         raise
             self.export_file(name, dest)

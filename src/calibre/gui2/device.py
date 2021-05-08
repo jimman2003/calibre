@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
@@ -125,7 +123,7 @@ def device_name_for_plugboards(device_class):
     return device_class.__class__.__name__
 
 
-class BusyCursor(object):
+class BusyCursor:
 
     def __enter__(self):
         QApplication.setOverrideCursor(QCursor(Qt.CursorShape.WaitCursor))
@@ -890,7 +888,7 @@ device_signals = DeviceSignals()
 # }}}
 
 
-class DeviceMixin(object):  # {{{
+class DeviceMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass

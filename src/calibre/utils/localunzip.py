@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -223,7 +222,7 @@ def _extractall(f, path=None, file_info=None):
             dest = os.path.join(path, *parts)
             try:
                 df = open(dest, 'wb')
-            except EnvironmentError:
+            except OSError:
                 if is_reserved_filename(os.path.basename(dest)):
                     raise ValueError('This ZIP file contains a file with a reserved filename'
                             ' that cannot be processed on Windows: {}'.format(os.path.basename(dest)))
@@ -257,7 +256,7 @@ def extractall(path_or_stream, path=None):
             f.close()
 
 
-class LocalZipFile(object):
+class LocalZipFile:
 
     def __init__(self, stream):
         self.file_info = OrderedDict()

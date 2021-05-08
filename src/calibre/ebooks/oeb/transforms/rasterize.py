@@ -1,4 +1,3 @@
-
 '''
 SVG rasterization transform.
 '''
@@ -28,7 +27,7 @@ class Unavailable(Exception):
     pass
 
 
-class SVGRasterizer(object):
+class SVGRasterizer:
 
     def __init__(self, base_css=''):
         self.base_css = base_css

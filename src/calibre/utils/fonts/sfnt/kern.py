@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -19,7 +18,7 @@ class KernTable(UnknownTable):
     version = FixedProperty('_version')
 
     def __init__(self, *args, **kwargs):
-        super(KernTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._version, self.num_tables = unpack_from(b'>HH', self.raw)
         if self._version == 1 and len(self.raw) >= 8:
             self._version, self.num_tables = unpack_from(b'>LL', self.raw)

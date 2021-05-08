@@ -1,4 +1,3 @@
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal kovid@kovidgoyal.net'
 __docformat__ = 'restructuredtext en'
@@ -43,7 +42,7 @@ class SplitError(ValueError):
                             path=path, size=size))
 
 
-class Split(object):
+class Split:
 
     def __init__(self, split_on_page_breaks=True, page_breaks_xpath=None,
             max_flow_size=0, remove_css_pagebreaks=True):
@@ -119,7 +118,7 @@ class Split(object):
                         elem.set('pb_before', '1' if before else '0')
                         page_breaks.add(elem)
             except SelectorError as err:
-                self.log.warn('Ignoring page breaks specified with invalid CSS selector: %r (%s)' % (selector, as_unicode(err)))
+                self.log.warn('Ignoring page breaks specified with invalid CSS selector: {!r} ({})'.format(selector, as_unicode(err)))
 
         for i, elem in enumerate(item.data.iter('*')):
             try:
@@ -186,7 +185,7 @@ class Split(object):
         return url
 
 
-class FlowSplitter(object):
+class FlowSplitter:
     'The actual splitting logic'
 
     def __init__(self, item, page_breaks, page_break_ids, max_flow_size, oeb,

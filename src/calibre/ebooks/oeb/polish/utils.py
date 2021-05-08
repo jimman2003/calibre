@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -60,7 +59,7 @@ def corrected_case_for_name(container, name):
         else:
             try:
                 candidates = {q for q in os.listdir(os.path.dirname(container.name_to_abspath(base)))}
-            except EnvironmentError:
+            except OSError:
                 return None  # one of the non-terminal components of name is a file instead of a directory
             for q in candidates:
                 if q.lower() == x.lower():
@@ -72,7 +71,7 @@ def corrected_case_for_name(container, name):
     return '/'.join(ans)
 
 
-class PositionFinder(object):
+class PositionFinder:
 
     def __init__(self, raw):
         pat = br'\n' if isinstance(raw, bytes) else r'\n'
@@ -87,7 +86,7 @@ class PositionFinder(object):
         return (lnum + 1, offset)
 
 
-class CommentFinder(object):
+class CommentFinder:
 
     def __init__(self, raw, pat=r'(?s)/\*.*?\*/'):
         self.starts, self.ends = [], []

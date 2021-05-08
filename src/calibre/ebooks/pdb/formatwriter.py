@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 '''
 Interface defining the necessary public functions for a pdb format writer.
 '''
@@ -10,7 +7,7 @@ __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
 
 
-class FormatWriter(object):
+class FormatWriter:
 
     def __init__(self, opts, log):
         raise NotImplementedError()

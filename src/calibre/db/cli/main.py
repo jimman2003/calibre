@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
 import json
@@ -125,7 +124,7 @@ def read_credentials(opts):
     return username, pw
 
 
-class DBCtx(object):
+class DBCtx:
 
     def __init__(self, opts):
         self.library_path = opts.library_path or prefs['library_path']

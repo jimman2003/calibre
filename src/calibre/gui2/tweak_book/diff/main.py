@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -57,7 +56,7 @@ class BusyWidget(QWidget):  # {{{
 # }}}
 
 
-class Cache(object):
+class Cache:
 
     def __init__(self):
         self._left, self._right = {}, {}

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -79,7 +78,7 @@ def default_scorer(*args, **kwargs):
         return PyScorer(*args, **kwargs)
 
 
-class Matcher(object):
+class Matcher:
 
     def __init__(
         self,
@@ -220,7 +219,7 @@ def process_item(ctx, haystack, needle):
     return final_score, final_positions
 
 
-class PyScorer(object):
+class PyScorer:
     __slots__ = (
         'level1', 'level2', 'level3', 'max_score_per_char', 'items', 'memory'
     )
@@ -246,7 +245,7 @@ class PyScorer(object):
 # }}}
 
 
-class CScorer(object):
+class CScorer:
 
     def __init__(
         self,
@@ -264,8 +263,7 @@ class CScorer(object):
 
     def __call__(self, query):
         scores, positions = self.m.calculate_scores(query)
-        for score, pos in zip(scores, positions):
-            yield score, pos
+        yield from zip(scores, positions)
 
 
 def test(return_tests=False):

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -40,7 +39,7 @@ class TestHTTP(BaseTest):
              b'\r\n', a='one', b='two 2 3', c='three')
 
         test('Non-ascii headers parsing',
-             'a:mūs\r'.encode('utf-8'), b'\r\n', a='mūs')
+             'a:mūs\r'.encode(), b'\r\n', a='mūs')
 
         test('Comma-separated parsing',
              b'Accept-Encoding: one',

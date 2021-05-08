@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -102,7 +101,7 @@ class CacheError(Exception):
     pass
 
 
-class ThumbnailCache(object):
+class ThumbnailCache:
 
     ' This is a persistent disk cache to speed up loading and resizing of covers '
 
@@ -136,7 +135,7 @@ class ThumbnailCache(object):
     def _do_delete(self, path):
         try:
             os.remove(path)
-        except EnvironmentError as err:
+        except OSError as err:
             self.log('Failed to delete cached thumbnail file:', as_unicode(err))
 
     def _load_index(self):
@@ -153,7 +152,7 @@ class ThumbnailCache(object):
         def listdir(*args):
             try:
                 return os.listdir(os.path.join(*args))
-            except EnvironmentError:
+            except OSError:
                 return ()  # not a directory or no permission or whatever
         entries = ('/'.join((parent, subdir, entry))
                    for parent in listdir(self.location)
@@ -164,13 +163,13 @@ class ThumbnailCache(object):
         try:
             with open(os.path.join(self.location, 'invalidate'), 'rb') as f:
                 raw = f.read().decode('utf-8')
-        except EnvironmentError as err:
+        except OSError as err:
             if getattr(err, 'errno', None) != errno.ENOENT:
                 self.log('Failed to read thumbnail invalidate data:', as_unicode(err))
         else:
             try:
                 os.remove(os.path.join(self.location, 'invalidate'))
-            except EnvironmentError as err:
+            except OSError as err:
                 self.log('Failed to remove thumbnail invalidate data:', as_unicode(err))
             else:
                 def record(line):
@@ -198,7 +197,7 @@ class ThumbnailCache(object):
                     self.total_size += size
                 else:
                     self._do_delete(path)
-        except EnvironmentError as err:
+        except OSError as err:
             self.log('Failed to read thumbnail cache dir:', as_unicode(err))
 
         self.items = OrderedDict(sorted(items, key=lambda x:order.get(x[0], 0)))
@@ -230,7 +229,7 @@ class ThumbnailCache(object):
                 data = '\n'.join(group_id + ' ' + unicode_type(book_id) for (group_id, book_id) in self.items)
                 with lopen(os.path.join(self.location, 'order'), 'wb') as f:
                     f.write(data.encode('utf-8'))
-            except EnvironmentError as err:
+            except OSError as err:
                 self.log('Failed to save thumbnail cache order:', as_unicode(err))
 
     def _read_order(self):
@@ -281,14 +280,14 @@ class ThumbnailCache(object):
             try:
                 with open(path, 'wb') as f:
                     f.write(data)
-            except EnvironmentError as err:
+            except OSError as err:
                 d = os.path.dirname(path)
                 if not os.path.exists(d):
                     try:
                         os.makedirs(d)
                         with open(path, 'wb') as f:
                             f.write(data)
-                    except EnvironmentError as err:
+                    except OSError as err:
                         self.log('Failed to write cached thumbnail:', path, as_unicode(err))
                         return self._apply_size()
                 else:
@@ -326,7 +325,7 @@ class ThumbnailCache(object):
             if entry.thumbnail_size != self.thumbnail_size:
                 try:
                     os.remove(entry.path)
-                except EnvironmentError as err:
+                except OSError as err:
                     if getattr(err, 'errno', None) != errno.ENOENT:
                         self.log('Failed to remove cached thumbnail:', entry.path, as_unicode(err))
                 self.total_size -= entry.size
@@ -335,7 +334,7 @@ class ThumbnailCache(object):
             try:
                 with open(entry.path, 'rb') as f:
                     data = f.read()
-            except EnvironmentError as err:
+            except OSError as err:
                 self.log('Failed to read cached thumbnail:', entry.path, as_unicode(err))
                 return None, None
             return data, entry.timestamp
@@ -350,7 +349,7 @@ class ThumbnailCache(object):
                     raw = '\n'.join('%s %d' % (self.group_id, book_id) for book_id in book_ids)
                     with open(os.path.join(self.location, 'invalidate'), 'ab') as f:
                         f.write(raw.encode('ascii'))
-                except EnvironmentError as err:
+                except OSError as err:
                     self.log('Failed to write invalidate thumbnail record:', as_unicode(err))
 
     @property
@@ -364,7 +363,7 @@ class ThumbnailCache(object):
         with self.lock:
             try:
                 os.remove(os.path.join(self.location, 'order'))
-            except EnvironmentError:
+            except OSError:
                 pass
             if not hasattr(self, 'total_size'):
                 self._load_index()

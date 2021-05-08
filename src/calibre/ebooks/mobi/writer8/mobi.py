@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -200,12 +199,12 @@ class MOBIHeader(Header):  # {{{
     def __init__(self, file_version=8):
         self.DEFINITION = self.DEFINITION.format(file_version=file_version,
                 record_size=RECORD_SIZE)
-        super(MOBIHeader, self).__init__()
+        super().__init__()
 
     def format_value(self, name, val):
         if name == 'compression':
             val = PALMDOC if val else UNCOMPRESSED
-        return super(MOBIHeader, self).format_value(name, val)
+        return super().format_value(name, val)
 
 # }}}
 
@@ -218,7 +217,7 @@ HEADER_FIELDS = {'compression', 'text_length', 'last_text_record', 'book_type',
                     'flis_record', 'fcis_record', 'uid'}
 
 
-class KF8Book(object):
+class KF8Book:
 
     def __init__(self, writer, for_joint=False):
         self.build_records(writer, for_joint)

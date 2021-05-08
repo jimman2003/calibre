@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -70,12 +69,10 @@ def iterrules(container, sheet_name, rules=None, media_rule_ok=media_allowed, ru
                     else:
                         csheet = container.parsed(name)
                         if isinstance(csheet, CSSStyleSheet):
-                            for cr in riter(name, rules=csheet):
-                                yield cr
+                            yield from riter(name, rules=csheet)
         elif rule.type == CSSRule.MEDIA_RULE:
             if media_rule_ok(rule.media):
-                for cr in riter(sheet_name, rules=rule.cssRules):
-                    yield cr
+                yield from riter(sheet_name, rules=rule.cssRules)
 
         elif rule_type is None or rule.type == rule_type:
             num = next(rule_index_counter)
@@ -176,7 +173,7 @@ def resolve_styles(container, name, select=None, sheet_callback=None):
                 try:
                     matches = tuple(select(text))
                 except SelectorError as err:
-                    container.log.error('Ignoring CSS rule with invalid selector: %r (%s)' % (text, as_unicode(err)))
+                    container.log.error('Ignoring CSS rule with invalid selector: {!r} ({})'.format(text, as_unicode(err)))
                     continue
                 m = pseudo_pat.search(text)
                 style = normalize_style_declaration(rule.style, sheet_name)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -110,4 +109,4 @@ class BaseTest(unittest.TestCase):
             for link in container.iterlinks(name, get_line_numbers=False):
                 dest = container.href_to_name(link, name)
                 if dest:
-                    self.assertTrue(container.exists(dest), 'The link %s in %s does not exist' % (link, name))
+                    self.assertTrue(container.exists(dest), 'The link {} in {} does not exist'.format(link, name))

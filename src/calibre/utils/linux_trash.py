@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 # Copyright 2010 Hardcoded Software (http://www.hardcoded.net)
@@ -85,7 +84,7 @@ def trash_move(src, dst, topdir=None):
     destname = filename
     while op.exists(op.join(filespath, destname)) or op.exists(op.join(infopath, destname + INFO_SUFFIX)):
         counter += 1
-        destname = '%s %s%s' % (base_name, counter, ext)
+        destname = '{} {}{}'.format(base_name, counter, ext)
 
     check_create(filespath)
     check_create(infopath)

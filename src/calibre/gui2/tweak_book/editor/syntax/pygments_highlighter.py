@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -35,8 +34,7 @@ def create_lexer(base_class):
                         if type(action) is _TokenType:
                             yield pos, action, m.group()
                         else:
-                            for item in action(self, m):
-                                yield item
+                            yield from action(self, m)
                     pos = m.end()
                     if new_state is not None:
                         # state transition
@@ -100,7 +98,7 @@ def create_lexer(base_class):
     })
 
 
-class State(object):
+class State:
 
     __slots__ = ('parse', 'pygments_stack')
 

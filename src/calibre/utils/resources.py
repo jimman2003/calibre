@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -16,7 +15,7 @@ from polyglot.builtins import builtins
 user_dir = os.path.join(config_dir, 'resources')
 
 
-class PathResolver(object):
+class PathResolver:
 
     def __init__(self):
         self.locations = [sys.resources_location]

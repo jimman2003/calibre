@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #  h2a.py
 #
 # Copyright 2011 Hiroshi Miura <miurahr@linux.com>
@@ -25,7 +24,7 @@
 from polyglot.builtins import range
 
 
-class H2a (object):
+class H2a :
 
     H2a_table = {
         "\u3041":"a", "\u3042":"a",

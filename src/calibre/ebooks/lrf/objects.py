@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 import struct, array, zlib, io, collections, re
@@ -19,7 +17,7 @@ ruby_tags = {
 }
 
 
-class LRFObject(object):
+class LRFObject:
 
     tag_map = {
         0xF500: ['', ''],
@@ -83,11 +81,10 @@ class LRFObject(object):
             if h[1] != '' and h[0] != '':
                 setattr(self, h[0], val)
         else:
-            raise LRFParseError("Unknown tag in %s: %s" % (self.__class__.__name__, unicode_type(tag)))
+            raise LRFParseError("Unknown tag in {}: {}".format(self.__class__.__name__, unicode_type(tag)))
 
     def __iter__(self):
-        for i in range(0):
-            yield i
+        yield from range(0)
 
     def __str__(self):
         return self.__class__.__name__
@@ -127,11 +124,10 @@ class LRFContentObject(LRFObject):
                 func, args = action[0], (action[1],)
             getattr(self, func)(tag, *args)
         else:
-            raise LRFParseError("Unknown tag in %s: %s" % (self.__class__.__name__, unicode_type(tag)))
+            raise LRFParseError("Unknown tag in {}: {}".format(self.__class__.__name__, unicode_type(tag)))
 
     def __iter__(self):
-        for i in self._contents:
-            yield i
+        yield from self._contents
 
 
 class LRFStream(LRFObject):
@@ -192,7 +188,7 @@ class PageTree(LRFObject):
             yield self._document.objects[id]
 
 
-class StyleObject(object):
+class StyleObject:
 
     def _tags_to_xml(self):
         s = ''
@@ -245,7 +241,7 @@ class PageAttr(StyleObject, LRFObject):
         return ''
 
 
-class Color(object):
+class Color:
 
     def __init__(self, val):
         self.a, self.r, self.g, self.b = val & 0xFF, (val>>8)&0xFF, (val>>16)&0xFF, (val>>24)&0xFF
@@ -263,11 +259,10 @@ class Color(object):
         return 'rgb(%d, %d, %d)'%(self.r, self.g, self.b)
 
 
-class EmptyPageElement(object):
+class EmptyPageElement:
 
     def __iter__(self):
-        for i in range(0):
-            yield i
+        yield from range(0)
 
     def __str__(self):
         return unicode_type(self)
@@ -419,8 +414,7 @@ class Page(LRFStream):
         self.content = Page.Content(self.stream, self._document.objects)
 
     def __iter__(self):
-        for i in self.content:
-            yield i
+        yield from self.content
 
     def __str__(self):
         s = '\n<Page pagestyle="%d" objid="%d">\n'%(self.style_id, self.id)
@@ -486,7 +480,7 @@ class BlockAttr(StyleObject, LRFObject):
         return ans
 
 
-class TextCSS(object):
+class TextCSS:
 
     @classmethod
     def to_css(cls, obj, inline=False):
@@ -682,7 +676,7 @@ class Text(LRFStream):
            0xF5D2: 'cr',
         }
 
-    class TextTag(object):
+    class TextTag:
 
         def __init__(self, name, attrs={}, self_closing=False):
             self.name = name
@@ -997,8 +991,7 @@ class Canvas(LRFStream):
         return s
 
     def __iter__(self):
-        for i in self._contents:
-            yield i
+        yield from self._contents
 
 
 class Header(Canvas):
@@ -1198,7 +1191,7 @@ class SimpleText(Text):
     pass
 
 
-class TocLabel(object):
+class TocLabel:
 
     def __init__(self, refpage, refobject, label):
         self.refpage, self.refobject, self.label = refpage, refobject, label
@@ -1224,8 +1217,7 @@ class TOCObject(LRFStream):
             c -= 1
 
     def __iter__(self):
-        for i in self._contents:
-            yield i
+        yield from self._contents
 
     def __str__(self):
         s = '<TOC>\n'

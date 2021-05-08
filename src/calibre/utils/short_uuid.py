@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -30,7 +29,7 @@ def string_to_num(string, alphabet_map, alphabet_len):
     return ans
 
 
-class ShortUUID(object):
+class ShortUUID:
 
     def __init__(self, alphabet=None):
         # We do not include zero and one in the default alphabet as they can be

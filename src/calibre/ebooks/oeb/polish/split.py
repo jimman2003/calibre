@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -149,7 +148,7 @@ def do_split(split_point, log, before=True):
     return tree, tree2
 
 
-class SplitLinkReplacer(object):
+class SplitLinkReplacer:
 
     def __init__(self, base, bottom_anchors, top_name, bottom_name, container):
         self.bottom_anchors, self.bottom_name = bottom_anchors, bottom_name
@@ -231,12 +230,12 @@ def split(container, name, loc_or_xpath, before=True, totals=None):
                 purl = urlparse(url)
                 if purl.fragment in anchors_in_top:
                     if r is root2:
-                        a.set('href', '%s#%s' % (container.name_to_href(name, bottom_name), purl.fragment))
+                        a.set('href', '{}#{}'.format(container.name_to_href(name, bottom_name), purl.fragment))
                     else:
                         a.set('href', '#' + purl.fragment)
                 elif purl.fragment in anchors_in_bottom:
                     if r is root1:
-                        a.set('href', '%s#%s' % (container.name_to_href(bottom_name, name), purl.fragment))
+                        a.set('href', '{}#{}'.format(container.name_to_href(bottom_name, name), purl.fragment))
                     else:
                         a.set('href', '#' + purl.fragment)
 
@@ -298,7 +297,7 @@ def multisplit(container, name, xpath, before=True):
     return all_names[1:]
 
 
-class MergeLinkReplacer(object):
+class MergeLinkReplacer:
 
     def __init__(self, base, anchor_map, master, container):
         self.container, self.anchor_map = container, anchor_map

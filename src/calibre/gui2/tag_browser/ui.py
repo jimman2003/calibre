@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -25,7 +24,7 @@ from calibre.gui2.dialogs.edit_authors_dialog import EditAuthorsDialog
 from polyglot.builtins import unicode_type, iteritems
 
 
-class TagBrowserMixin(object):  # {{{
+class TagBrowserMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -209,9 +208,9 @@ def get_library_init_data(ctx, rd, db, num, sorts, orders, vl):
         ans['book_display_fields'] = get_field_list(db)
         mdata = ans['metadata'] = {}
         try:
-            extra_books = set(
+            extra_books = {
                 int(x) for x in rd.query.get('extra_books', '').split(',')
-            )
+            }
         except Exception:
             extra_books = ()
         for coll in (ans['search_result']['book_ids'], extra_books):

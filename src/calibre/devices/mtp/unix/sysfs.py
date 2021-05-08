@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -9,7 +8,7 @@ __docformat__ = 'restructuredtext en'
 import os, glob
 
 
-class MTPDetect(object):
+class MTPDetect:
 
     SYSFS_PATH = os.environ.get('SYSFS_PATH', '/sys')
 
@@ -31,7 +30,7 @@ class MTPDetect(object):
             try:
                 with lopen(x, 'rb') as f:
                     return f.read()
-            except EnvironmentError:
+            except OSError:
                 pass
 
         ipath = os.path.join(self.base, '{0}-*/{0}-*/interface'.format(dev.busnum))
@@ -44,7 +43,7 @@ class MTPDetect(object):
             try:
                 if raw and int(raw) == dev.devnum:
                     if debug is not None:
-                        debug('Unknown device {0} claims to be an MTP device'
+                        debug('Unknown device {} claims to be an MTP device'
                               .format(dev))
                     return True
             except (ValueError, TypeError):

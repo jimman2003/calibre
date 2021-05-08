@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2006, Ed Summers <ehs@pobox.com>'
 __docformat__ = 'restructuredtext en'
 
 
-class URL(object):
+class URL:
     '''
     Class for representing a URL in an opensearch v1.1 query
     '''

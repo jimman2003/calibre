@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2013, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -908,7 +907,7 @@ version="1.1" width="100%%" height="100%%" viewBox="0 0 {w} {h}" preserveAspectR
 </svg></div>'''.format(w=width, h=height, a='xMidYMid meet' if preserve_aspect_ratio else 'none')
             else:
                 alt = _('Image')
-                template = '<img alt="{0}" src="%s" />'.format(alt)
+                template = '<img alt="{}" src="%s" />'.format(alt)
         text = template % href
         c.insertText(text)
         if self.syntax == 'html' and not fullpage:

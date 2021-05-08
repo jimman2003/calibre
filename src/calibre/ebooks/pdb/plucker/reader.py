@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __copyright__ = '20011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -111,7 +108,7 @@ MIBNUM_TO_NAME = {
 }
 
 
-class HeaderRecord(object):
+class HeaderRecord:
     '''
     Plucker header. PDB record 0.
     '''
@@ -137,7 +134,7 @@ class HeaderRecord(object):
                 self.home_html = id
 
 
-class SectionHeader(object):
+class SectionHeader:
     '''
     Every sections (record) has this header. It gives
     details about the section such as it's uid.
@@ -151,7 +148,7 @@ class SectionHeader(object):
         self.flags, = struct.unpack('>B', raw[7])
 
 
-class SectionHeaderText(object):
+class SectionHeaderText:
     '''
     Sub header for text records.
     '''
@@ -176,7 +173,7 @@ class SectionHeaderText(object):
             self.paragraph_offsets.append(running_offset)
 
 
-class SectionMetadata(object):
+class SectionMetadata:
     '''
     Metadata.
 
@@ -234,7 +231,7 @@ class SectionMetadata(object):
             adv += 2*length
 
 
-class SectionText(object):
+class SectionText:
     '''
     Text data. Stores a text section header and the PHTML.
     '''
@@ -244,7 +241,7 @@ class SectionText(object):
         self.data = raw[section_header.paragraphs * 4:]
 
 
-class SectionCompositeImage(object):
+class SectionCompositeImage:
     '''
     A composite image consists of a 2D array
     of rows and columns. The entries in the array
@@ -363,9 +360,9 @@ class Reader(FormatReader):
         # plugin assemble the order based on hyperlinks.
         with CurrentDir(output_dir):
             for uid, num in self.uid_text_secion_number.items():
-                self.log.debug('Writing record with uid: %s as %s.html' % (uid, uid))
+                self.log.debug('Writing record with uid: {} as {}.html'.format(uid, uid))
                 with open('%s.html' % uid, 'wb') as htmlf:
-                    html = u'<html><body>'
+                    html = '<html><body>'
                     section_header, section_data = self.sections[num]
                     if section_header.type == DATATYPE_PHTML:
                         html += self.process_phtml(section_data.data, section_data.header.paragraph_offsets)
@@ -396,9 +393,9 @@ class Reader(FormatReader):
                     try:
                         save_cover_data_to(idata, '%s.jpg' % uid, compression_quality=70)
                         images.add(uid)
-                        self.log.debug('Wrote image with uid %s to images/%s.jpg' % (uid, uid))
+                        self.log.debug('Wrote image with uid {} to images/{}.jpg'.format(uid, uid))
                     except Exception as e:
-                        self.log.error('Failed to write image with uid %s: %s' % (uid, e))
+                        self.log.error('Failed to write image with uid {}: {}'.format(uid, e))
                 else:
                     self.log.error('Failed to write image with uid %s: No data.' % uid)
             # Composite images.
@@ -439,9 +436,9 @@ class Reader(FormatReader):
                             y_off += largest_height
                     with lopen('%s.jpg' % uid) as out:
                         out.write(canvas.export(compression_quality=70))
-                    self.log.debug('Wrote composite image with uid %s to images/%s.jpg' % (uid, uid))
+                    self.log.debug('Wrote composite image with uid {} to images/{}.jpg'.format(uid, uid))
                 except Exception as e:
-                    self.log.error('Failed to write composite image with uid %s: %s' % (uid, e))
+                    self.log.error('Failed to write composite image with uid {}: {}'.format(uid, e))
 
         # Run the HTML through the html processing plugin.
         from calibre.customize.ui import plugin_for_input_format
@@ -477,7 +474,7 @@ class Reader(FormatReader):
             return decompress_doc(data)
 
     def process_phtml(self, d, paragraph_offsets=[]):
-        html = u'<p id="p0">'
+        html = '<p id="p0">'
         offset = 0
         paragraph_open = True
         link_open = False
@@ -488,11 +485,11 @@ class Reader(FormatReader):
         while offset < len(d):
             if not paragraph_open:
                 if need_set_p_id:
-                    html += u'<p id="p%s">' % p_num
+                    html += '<p id="p%s">' % p_num
                     p_num += 1
                     need_set_p_id = False
                 else:
-                    html += u'<p>'
+                    html += '<p>'
                 paragraph_open = True
 
             c = ord(d[offset:offset+1])
@@ -524,7 +521,7 @@ class Reader(FormatReader):
                     offset += 2
                     pid = struct.unpack('>H', d[offset:offset+2])[0]
                     if id in self.uid_text_secion_number:
-                        html += '<a href="%s.html#p%s">' % (id, pid)
+                        html += '<a href="{}.html#p{}">'.format(id, pid)
                         link_open = True
                     offset += 1
                 # Targeted paragraph link begins
@@ -616,23 +613,23 @@ class Reader(FormatReader):
                 elif c == 0x33:
                     offset += 3
                     if paragraph_open:
-                        html += u'</p>'
+                        html += '</p>'
                         paragraph_open = False
-                    html += u'<hr />'
+                    html += '<hr />'
                 # New line
                 # 0 Bytes
                 elif c == 0x38:
                     if paragraph_open:
-                        html += u'</p>\n'
+                        html += '</p>\n'
                         paragraph_open = False
                 # Italic text begins
                 # 0 Bytes
                 elif c == 0x40:
-                    html += u'<i>'
+                    html += '<i>'
                 # Italic text ends
                 # 0 Bytes
                 elif c == 0x48:
-                    html += u'</i>'
+                    html += '</i>'
                 # Set text color
                 # 3 Bytes
                 # 8-bit red, 8-bit green, 8-bit blue
@@ -649,19 +646,19 @@ class Reader(FormatReader):
                 # Underline text begins
                 # 0 Bytes
                 elif c == 0x60:
-                    html += u'<u>'
+                    html += '<u>'
                 # Underline text ends
                 # 0 Bytes
                 elif c == 0x68:
-                    html += u'</u>'
+                    html += '</u>'
                 # Strike-through text begins
                 # 0 Bytes
                 elif c == 0x70:
-                    html += u'<s>'
+                    html += '<s>'
                 # Strike-through text ends
                 # 0 Bytes
                 elif c == 0x78:
-                    html += u'</s>'
+                    html += '</s>'
                 # 16-bit Unicode character
                 # 3 Bytes
                 # alternate text length, 16-bit unicode character
@@ -721,11 +718,11 @@ class Reader(FormatReader):
             if offset in paragraph_offsets:
                 need_set_p_id = True
                 if paragraph_open:
-                    html += u'</p>\n'
+                    html += '</p>\n'
                     paragraph_open = False
 
         if paragraph_open:
-            html += u'</p>'
+            html += '</p>'
 
         return html
 

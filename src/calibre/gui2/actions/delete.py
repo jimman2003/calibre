@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -381,7 +380,7 @@ class DeleteAction(InterfaceAction):
         if len(to_delete_ids) < 5:
             try:
                 view.model().delete_books_by_id(to_delete_ids)
-            except IOError as err:
+            except OSError as err:
                 if err.errno == errno.EACCES:
                     import traceback
                     fname = os.path.basename(getattr(err, 'filename', 'file') or 'file')

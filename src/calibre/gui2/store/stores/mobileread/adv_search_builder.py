@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -67,7 +63,7 @@ class AdvSearchBuilderDialog(QDialog, Ui_Dialog):
             self.mc = '='
         else:
             self.mc = '~'
-        all, any, phrase, none = list(map(lambda x: type(u'')(x.text()),
+        all, any, phrase, none = list(map(lambda x: type('')(x.text()),
                 (self.all, self.any, self.phrase, self.none)))
         all, any, none = list(map(self.tokens, (all, any, none)))
         phrase = phrase.strip()
@@ -86,11 +82,11 @@ class AdvSearchBuilderDialog(QDialog, Ui_Dialog):
         return ans
 
     def token(self):
-        txt = type(u'')(self.text.text()).strip()
+        txt = type('')(self.text.text()).strip()
         if txt:
             if self.negate.isChecked():
                 txt = '!'+txt
-            tok = self.FIELDS[type(u'')(self.field.currentText())]+txt
+            tok = self.FIELDS[type('')(self.field.currentText())]+txt
             if re.search(r'\s', tok):
                 tok = '"%s"'%tok
             return tok
@@ -106,13 +102,13 @@ class AdvSearchBuilderDialog(QDialog, Ui_Dialog):
 
         ans = []
         self.box_last_values = {}
-        title = type(u'')(self.title_box.text()).strip()
+        title = type('')(self.title_box.text()).strip()
         if title:
             ans.append('title:"' + self.mc + title + '"')
-        author = type(u'')(self.author_box.text()).strip()
+        author = type('')(self.author_box.text()).strip()
         if author:
             ans.append('author:"' + self.mc + author + '"')
-        format = type(u'')(self.format_box.text()).strip()
+        format = type('')(self.format_box.text()).strip()
         if format:
             ans.append('format:"' + self.mc + format + '"')
         if ans:

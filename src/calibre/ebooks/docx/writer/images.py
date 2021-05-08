@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -38,7 +37,7 @@ def get_image_margins(style):
     return ans
 
 
-class ImagesManager(object):
+class ImagesManager:
 
     def __init__(self, oeb, document_relationships, opts):
         self.oeb, self.log = oeb, oeb.log

@@ -1,8 +1,6 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import bz2
 import hashlib
@@ -44,7 +42,7 @@ def load_plugin(src):
             return x
 
 
-class PatchedSearchEngines(object):
+class PatchedSearchEngines:
 
     def __init__(self, ns):
         self.__ns = ns

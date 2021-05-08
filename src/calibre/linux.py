@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2008, Kovid Goyal <kovid at kovidgoyal.net>
 
 ''' Post installation script for linux '''
@@ -54,7 +53,7 @@ def polyglot_write(stream):
     return write
 
 
-class PreserveMIMEDefaults(object):  # {{{
+class PreserveMIMEDefaults:  # {{{
 
     def __init__(self):
         self.initial_values = {}
@@ -94,7 +93,7 @@ class PreserveMIMEDefaults(object):  # {{{
                             f.seek(0)
                             f.truncate()
                             f.write(val)
-                except EnvironmentError as e:
+                except OSError as e:
                     if e.errno != errno.EACCES:
                         raise
 # }}}
@@ -235,7 +234,7 @@ CALIBRE_LINUX_INSTALLER_HEREDOC
 # Completion {{{
 
 
-class ZshCompleter(object):  # {{{
+class ZshCompleter:  # {{{
 
     def __init__(self, opts):
         self.opts = opts
@@ -343,7 +342,7 @@ class ZshCompleter(object):  # {{{
             recipe = recipe.replace(':', '\\:').replace('"', '\\"')
             w('\n    "%s.recipe"'%(recipe))
         w('\n  ); _describe -t recipes "ebook-convert builtin recipes" extras')
-        w('\n  _files -g "%s"'%' '.join(('*.%s'%x for x in iexts)))
+        w('\n  _files -g "%s"'%' '.join('*.%s'%x for x in iexts))
         w('\n}\n')
 
         # Arg 2
@@ -352,7 +351,7 @@ class ZshCompleter(object):  # {{{
         for x in output_fmts:
             w('\n    ".{0}:Convert to a .{0} file with the same name as the input file"'.format(x))
         w('\n  ); _describe -t output "ebook-convert output" extras')
-        w('\n  _files -g "%s"'%' '.join(('*.%s'%x for x in oexts)))
+        w('\n  _files -g "%s"'%' '.join('*.%s'%x for x in oexts))
         w('\n  _path_files -/')
         w('\n}\n')
 
@@ -439,23 +438,23 @@ class ZshCompleter(object):  # {{{
             opt_lines.append(ostrings + help_txt + ' \\')
         opt_lines = ('\n' + (' ' * 8)).join(opt_lines)
 
-        polyglot_write(f)(('''
-_ebook_edit() {
+        polyglot_write(f)('''
+_ebook_edit() {{
     local curcontext="$curcontext" state line ebookfile expl
     typeset -A opt_args
 
     _arguments -C -s \\
-        %s
-        "1:ebook file:_files -g '(#i)*.(%s)'" \\
+        {}
+        "1:ebook file:_files -g '(#i)*.({})'" \\
         '*:file in ebook:->files' && return 0
 
     case $state in
         files)
-            ebookfile=${~${(Q)line[1]}}
+            ebookfile=${{~${{(Q)line[1]}}}}
 
             if [[ -f "$ebookfile" && "$ebookfile" =~ '\\.[eE][pP][uU][bB]$' ]]; then
                 _zip_cache_name="$ebookfile"
-                _zip_cache_list=( ${(f)"$(zipinfo -1 $_zip_cache_name 2>/dev/null)"} )
+                _zip_cache_list=( ${{(f)"$(zipinfo -1 $_zip_cache_name 2>/dev/null)"}} )
             else
                 return 1
             fi
@@ -465,8 +464,8 @@ _ebook_edit() {
     esac
 
     return 1
-}
-''' % (opt_lines, '|'.join(tweakable_fmts)) + '\n\n'))
+}}
+'''.format(opt_lines, '|'.join(tweakable_fmts)) + '\n\n')
 
     def do_calibredb(self, f):
         from calibre.db.cli.main import COMMANDS, option_parser_for
@@ -508,7 +507,7 @@ _ebook_edit() {
             subcommands.append(';;')
 
         w('\n_calibredb() {')
-        w((
+        w(
             r'''
     local state line state_descr context
     typeset -A opt_args
@@ -531,7 +530,7 @@ _ebook_edit() {
     esac
 
     return ret
-    '''%'\n    '.join(subcommands)))
+    '''%'\n    '.join(subcommands))
         w('\n}\n\n')
 
     def write(self):
@@ -835,7 +834,7 @@ class PostInstall:
                 print('You need python-lxml >= 2.0.5 for calibre')
                 sys.exit(1)
             raise
-        except EnvironmentError as e:
+        except OSError as e:
             if e.errno == errno.EACCES:
                 self.warning('Failed to setup completion, permission denied')
             if self.opts.fatal_errors:
@@ -877,7 +876,7 @@ class PostInstall:
     def install_xdg_junk(self, cc, env):
 
         def install_single_icon(iconsrc, basename, size, context, is_last_icon=False):
-            filename = '%s-%s.png' % (basename, size)
+            filename = '{}-{}.png'.format(basename, size)
             render_img(iconsrc, filename, width=int(size), height=int(size))
             cmd = ['xdg-icon-resource', 'install', '--noupdate', '--context', context, '--size', unicode_type(size), filename, basename]
             if is_last_icon:

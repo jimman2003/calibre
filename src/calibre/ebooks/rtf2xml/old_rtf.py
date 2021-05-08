@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -138,7 +137,7 @@ class OldRtf:
                 elif result == 'old_rtf':
                     if self.__run_level > 3:
                         sys.stderr.write(
-                            'Old rtf construction %s (bracket %s, line %s)\n' % (
+                            'Old rtf construction {} (bracket {}, line {})\n'.format(
                                 self.__inline_info, unicode_type(self.__ob_group), line_num)
                         )
                     return True

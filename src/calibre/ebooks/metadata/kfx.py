@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>, John Howell <jhowell@acm.org>'
 
 
@@ -68,7 +67,7 @@ def hexs(string, sep=' '):
     return sep.join('%02x' % b for b in string)
 
 
-class PackedData(object):
+class PackedData:
 
     '''
     Simplify unpacking of packed binary data structures

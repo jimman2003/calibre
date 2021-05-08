@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -23,7 +22,7 @@ class AbortCommit(Exception):
     pass
 
 
-class ConfigWidgetInterface(object):
+class ConfigWidgetInterface:
 
     '''
     This class defines the interface that all widgets displayed in the
@@ -88,7 +87,7 @@ class ConfigWidgetInterface(object):
         pass
 
 
-class Setting(object):
+class Setting:
 
     CHOICES_SEARCH_FLAGS = Qt.MatchFlag.MatchExactly | Qt.MatchFlag.MatchCaseSensitive
 

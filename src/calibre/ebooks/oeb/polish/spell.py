@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -21,7 +20,7 @@ from polyglot.builtins import iteritems, unicode_type, filter
 _patterns = None
 
 
-class Patterns(object):
+class Patterns:
 
     __slots__ = ('sanitize_invisible_pat', 'split_pat', 'digit_pat', 'fr_elision_pat')
 
@@ -37,7 +36,7 @@ class Patterns(object):
         # French words with prefixes are reduced to the stem word, so that the
         # words appear only once in the word list
         self.fr_elision_pat = regex.compile(
-            u"^(?:l|d|m|t|s|j|c|ç|lorsqu|puisqu|quoiqu|qu)['’]", flags=regex.UNICODE | regex.VERSION1 | regex.IGNORECASE)
+            "^(?:l|d|m|t|s|j|c|ç|lorsqu|puisqu|quoiqu|qu)['’]", flags=regex.UNICODE | regex.VERSION1 | regex.IGNORECASE)
 
 
 def patterns():
@@ -47,7 +46,7 @@ def patterns():
     return _patterns
 
 
-class CharCounter(object):
+class CharCounter:
 
     def __init__(self):
         self.counter = Counter()
@@ -55,7 +54,7 @@ class CharCounter(object):
         self.update = self.counter.update
 
 
-class Location(object):
+class Location:
 
     __slots__ = ('file_name', 'sourceline', 'original_word', 'location_node', 'node_item', 'elided_prefix')
 
@@ -64,7 +63,7 @@ class Location(object):
         self.location_node, self.node_item, self.sourceline = location_node, node_item, location_node.sourceline
 
     def __repr__(self):
-        return '%s @ %s:%s' % (self.original_word, self.file_name, self.sourceline)
+        return '{} @ {}:{}'.format(self.original_word, self.file_name, self.sourceline)
     __str__ = __repr__
 
     def replace(self, new_word):

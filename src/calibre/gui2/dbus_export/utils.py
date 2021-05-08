@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -23,7 +22,7 @@ def log(*args, **kw):
 from calibre.ptempfile import PersistentTemporaryDirectory
 
 
-class IconCache(object):
+class IconCache:
 
     # Avoiding sending status notifier icon data over DBus, makes dbus-monitor
     # easier to read.  Also Canonical's StatusNotifier implementation cannot
@@ -51,7 +50,7 @@ class IconCache(object):
             sdir = os.path.join(self.theme_dir, '%dx%d' % (size.width(), size.height()), 'apps')
             try:
                 os.makedirs(sdir)
-            except EnvironmentError as err:
+            except OSError as err:
                 if err.errno != errno.EEXIST:
                     raise
             fname = os.path.join(sdir, '%s.png' % name)

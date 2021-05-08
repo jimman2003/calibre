@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -276,7 +275,7 @@ def get_builtin_recipe_by_id(id_, log=None, download_recipe=False):
             return get_builtin_recipe(urn)
 
 
-class SchedulerConfig(object):
+class SchedulerConfig:
 
     def __init__(self):
         from calibre.utils.config import config_dir

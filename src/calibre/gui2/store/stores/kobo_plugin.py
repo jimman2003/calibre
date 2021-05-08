@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 store_version = 7  # Needed for dynamic plugin loading
 
 __license__ = 'GPL 3'
@@ -92,7 +89,7 @@ class KoboStore(BasicStoreConfig, StorePlugin):
         murl = 'https://click.linksynergy.com/fs-bin/click?id=%s&subid=&offerid=280046.1&type=10&tmpid=9310&RD_PARM1=http%%3A%%2F%%2Fkobo.com' % pub_id
 
         if detail_item:
-            purl = 'https://click.linksynergy.com/link?id=%s&offerid=280046&type=2&murl=%s' % (pub_id, quote_plus(detail_item))
+            purl = 'https://click.linksynergy.com/link?id={}&offerid=280046&type=2&murl={}'.format(pub_id, quote_plus(detail_item))
             url = purl
         else:
             purl = None
@@ -107,8 +104,7 @@ class KoboStore(BasicStoreConfig, StorePlugin):
             d.exec_()
 
     def search(self, query, max_results=10, timeout=60):
-        for result in search_kobo(query, max_results=max_results, timeout=timeout):
-            yield result
+        yield from search_kobo(query, max_results=max_results, timeout=timeout)
 
     def get_details(self, search_result, timeout):
         br = browser()

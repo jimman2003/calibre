@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2020, Kovid Goyal <kovid at kovidgoyal.net>
 
 import atexit
@@ -173,7 +172,7 @@ class Worker(QWebEnginePage):
         self.work_done.emit(self, result)
 
 
-class Pool(object):
+class Pool:
 
     def __init__(self):
         self.workers = []

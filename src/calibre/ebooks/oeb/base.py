@@ -60,39 +60,39 @@ OPF2_NSMAP   = {'opf': OPF2_NS, 'dc': DC11_NS, 'dcterms': DCTERMS_NS,
 
 
 def XML(name):
-    return '{%s}%s' % (XML_NS, name)
+    return '{{{}}}{}'.format(XML_NS, name)
 
 
 def OPF(name):
-    return '{%s}%s' % (OPF2_NS, name)
+    return '{{{}}}{}'.format(OPF2_NS, name)
 
 
 def DC(name):
-    return '{%s}%s' % (DC11_NS, name)
+    return '{{{}}}{}'.format(DC11_NS, name)
 
 
 def XSI(name):
-    return '{%s}%s' % (XSI_NS, name)
+    return '{{{}}}{}'.format(XSI_NS, name)
 
 
 def DCTERMS(name):
-    return '{%s}%s' % (DCTERMS_NS, name)
+    return '{{{}}}{}'.format(DCTERMS_NS, name)
 
 
 def NCX(name):
-    return '{%s}%s' % (NCX_NS, name)
+    return '{{{}}}{}'.format(NCX_NS, name)
 
 
 def SVG(name):
-    return '{%s}%s' % (SVG_NS, name)
+    return '{{{}}}{}'.format(SVG_NS, name)
 
 
 def XLINK(name):
-    return '{%s}%s' % (XLINK_NS, name)
+    return '{{{}}}{}'.format(XLINK_NS, name)
 
 
 def CALIBRE(name):
-    return '{%s}%s' % (CALIBRE_NS, name)
+    return '{{{}}}{}'.format(CALIBRE_NS, name)
 
 
 _css_url_re = re.compile(r'url\s*\([\'"]{0,1}(.*?)[\'"]{0,1}\)', re.I)
@@ -370,7 +370,7 @@ def qname(name, nsmap):
     prefix, local = name.split(':', 1)
     if prefix not in nsmap:
         return name
-    return '{%s}%s' % (nsmap[prefix], local)
+    return '{{{}}}{}'.format(nsmap[prefix], local)
 
 
 def isqname(name):
@@ -468,7 +468,7 @@ def urlnormalize(href):
     try:
         parts = urlparse(href)
     except ValueError as e:
-        raise ValueError('Failed to parse the URL: %r with underlying error: %s' % (href, as_unicode(e)))
+        raise ValueError('Failed to parse the URL: {!r} with underlying error: {}'.format(href, as_unicode(e)))
     if not parts.scheme or parts.scheme == 'file':
         path, frag = urldefrag(href)
         parts = ('', '', path, '', '', frag)
@@ -521,7 +521,7 @@ class OEBError(Exception):
     pass
 
 
-class NullContainer(object):
+class NullContainer:
     """An empty container.
 
     For use with book formats which do not support container-like access.
@@ -543,7 +543,7 @@ class NullContainer(object):
         return []
 
 
-class DirContainer(object):
+class DirContainer:
     """Filesystem directory container."""
 
     def __init__(self, path, log, ignore_opf=False):
@@ -623,7 +623,7 @@ class DirContainer(object):
         return names
 
 
-class Metadata(object):
+class Metadata:
     """A collection of OEB data model metadata.
 
     Provides access to the list of items associated with a particular metadata
@@ -645,7 +645,7 @@ class Metadata(object):
     OPF2_NSMAP    = {'opf': OPF2_NS, 'dc': DC11_NS, 'dcterms': DCTERMS_NS,
                      'xsi': XSI_NS, 'calibre': CALIBRE_NS}
 
-    class Item(object):
+    class Item:
         """An item of OEB data model metadata.
 
         The metadata term or name may be accessed via the :attr:`term` or
@@ -658,7 +658,7 @@ class Metadata(object):
         their local names using Python attribute syntax.  Only attributes
         allowed by the OPF 2.0 specification are supported.
         """
-        class Attribute(object):
+        class Attribute:
             """Smart accessor for allowed OEB metadata item attributes."""
 
             def __init__(self, attr, allowed=None):
@@ -674,7 +674,7 @@ class Metadata(object):
                 allowed = self.allowed
                 if allowed is not None and term not in allowed:
                     raise AttributeError(
-                        'attribute %r not valid for metadata term %r' % (
+                        'attribute {!r} not valid for metadata term {!r}'.format(
                             self.attr(term), barename(obj.term)))
                 return self.attr(term)
 
@@ -804,8 +804,7 @@ class Metadata(object):
         return item
 
     def iterkeys(self):
-        for key in self.items:
-            yield key
+        yield from self.items
     __iter__ = iterkeys
 
     def clear(self, key):
@@ -876,7 +875,7 @@ class Metadata(object):
         return elem
 
 
-class Manifest(object):
+class Manifest:
     """Collection of files composing an OEB data model book.
 
     Provides access to the content of the files composing the book and
@@ -892,7 +891,7 @@ class Manifest(object):
         manifest items and the values are the items themselves.
     """
 
-    class Item(object):
+    class Item:
         """An OEB data model book content file.
 
         Provides the following data members for accessing the file content and
@@ -1211,8 +1210,7 @@ class Manifest(object):
         return id, unicode_type(href)
 
     def __iter__(self):
-        for item in self.items:
-            yield item
+        yield from self.items
 
     def __len__(self):
         return len(self.items)
@@ -1268,7 +1266,7 @@ class Manifest(object):
         self._main_stylesheet = item
 
 
-class Spine(object):
+class Spine:
     """Collection of manifest items composing an OEB data model book's main
     textual content.
 
@@ -1322,8 +1320,7 @@ class Spine(object):
         return -1
 
     def __iter__(self):
-        for item in self.items:
-            yield item
+        yield from self.items
 
     def __getitem__(self, index):
         return self.items[index]
@@ -1351,7 +1348,7 @@ class Spine(object):
         return elem
 
 
-class Guide(object):
+class Guide:
     """Collection of references to standard frequently-occurring sections
     within an OEB data model book.
 
@@ -1359,7 +1356,7 @@ class Guide(object):
     type identifiers and the values are `Reference` objects.
     """
 
-    class Reference(object):
+    class Reference:
         """Reference to a standard book section.
 
         Provides the following instance data members:
@@ -1436,16 +1433,14 @@ class Guide(object):
             self.remove(r)
 
     def iterkeys(self):
-        for type in self.refs:
-            yield type
+        yield from self.refs
     __iter__ = iterkeys
 
     def values(self):
         return sorted(itervalues(self.refs), key=lambda ref: ref.ORDER.get(ref.type, 10000))
 
     def items(self):
-        for type, ref in self.refs.items():
-            yield type, ref
+        yield from self.refs.items()
 
     def __getitem__(self, key):
         return self.refs[key]
@@ -1483,7 +1478,7 @@ class Guide(object):
         return elem
 
 
-class TOC(object):
+class TOC:
     """Represents a hierarchical table of contents or navigation tree for
     accessing arbitrary semantic sections within an OEB data model book.
 
@@ -1534,8 +1529,7 @@ class TOC(object):
         """Iterate over this node and all descendants in depth-first order."""
         yield self
         for child in self.nodes:
-            for node in child.iter():
-                yield node
+            yield from child.iter()
 
     def count(self):
         return len(list(self.iter())) - 1
@@ -1563,17 +1557,14 @@ class TOC(object):
             for child in self.nodes:
                 yield child
             for child in self.nodes:
-                for node in child.iterdescendants(breadth_first=True):
-                    yield node
+                yield from child.iterdescendants(breadth_first=True)
         else:
             for child in self.nodes:
-                for node in child.iter():
-                    yield node
+                yield from child.iter()
 
     def __iter__(self):
         """Iterate over all immediate child nodes."""
-        for node in self.nodes:
-            yield node
+        yield from self.nodes
 
     def __getitem__(self, index):
         return self.nodes[index]
@@ -1666,14 +1657,14 @@ class TOC(object):
                 x.play_order = y.play_order
 
 
-class PageList(object):
+class PageList:
     """Collection of named "pages" to mapped positions within an OEB data model
     book's textual content.
 
     Provides list-like access to the pages.
     """
 
-    class Page(object):
+    class Page:
         """Represents a mapping between a page name and a position within
         the book content.
 
@@ -1711,8 +1702,7 @@ class PageList(object):
         return len(self.pages)
 
     def __iter__(self):
-        for page in self.pages:
-            yield page
+        yield from self.pages
 
     def __getitem__(self, index):
         return self.pages[index]
@@ -1746,7 +1736,7 @@ class PageList(object):
         return pmap
 
 
-class OEBBook(object):
+class OEBBook:
     """Representation of a book in the IDPF OEB data model."""
 
     COVER_SVG_XP    = XPath('h:body//svg:svg[position() = 1]')

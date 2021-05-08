@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #  jisyo.py
 #
 # Copyright 2011 Hiroshi Miura <miurahr@linux.com>
@@ -9,7 +8,7 @@ from zlib import decompress
 from polyglot.builtins import unicode_type
 
 
-class jisyo (object):
+class jisyo :
     kanwadict = None
     itaijidict = None
     kanadict = None

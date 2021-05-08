@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -343,7 +342,7 @@ def jump_to_location(loc):
             editor.find(regex.compile(regex.escape(loc.text_on_line)))
 
 
-class Jump(object):
+class Jump:
 
     def __init__(self):
         self.pos_map = defaultdict(lambda : -1)
@@ -971,7 +970,7 @@ class CSSRulesModel(QAbstractItemModel):
             elif isinstance(entry, CSSFileMatch):
                 return _('{0} [{1} elements]').format(entry.file_name, len(entry.locations))
             elif isinstance(entry, MatchLocation):
-                return '%s @ %s' % (entry.tag, entry.sourceline)
+                return '{} @ {}'.format(entry.tag, entry.sourceline)
         elif role == Qt.ItemDataRole.UserRole:
             return self.index_to_entry(index)
         elif role == Qt.ItemDataRole.FontRole:
@@ -1193,9 +1192,9 @@ class ClassesModel(CSSRulesModel):
             elif isinstance(entry, ClassFileMatch):
                 return _('{0} [{1} elements]').format(entry.file_name, len(entry.class_elements))
             elif isinstance(entry, ClassElement):
-                return '%s @ %s' % (entry.tag, entry.line_number)
+                return '{} @ {}'.format(entry.tag, entry.line_number)
             elif isinstance(entry, CSSRule):
-                return '%s @ %s:%s' % (entry.selector, entry.location.file_name, entry.location.line)
+                return '{} @ {}:{}'.format(entry.selector, entry.location.file_name, entry.location.line)
         elif role == Qt.ItemDataRole.UserRole:
             return self.index_to_entry(index)
         elif role == Qt.ItemDataRole.FontRole:
@@ -1342,7 +1341,7 @@ class ReportsWidget(QWidget):
             self.stack.widget(i)(data)
             if DEBUG:
                 category = self.reports.item(i).data(Qt.ItemDataRole.DisplayRole)
-                print('Widget time for %12s: %.2fs seconds' % (category, time.time() - st))
+                print('Widget time for {:>12}: {:.2f}s seconds'.format(category, time.time() - st))
 
     def save(self):
         save_state('splitter-state', bytearray(self.splitter.saveState()))
@@ -1444,7 +1443,7 @@ class Reports(Dialog):
         data, timing = data
         if DEBUG:
             for x, t in sorted(iteritems(timing), key=itemgetter(1)):
-                print('Time for %6s data: %.3f seconds' % (x, t))
+                print('Time for {:>6} data: {:.3f} seconds'.format(x, t))
         self.reports(data)
 
     def accept(self):

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -86,7 +85,7 @@ def used_font(style, embedded_fonts):
     return True, matching_set[0]
 
 
-class EmbedFonts(object):
+class EmbedFonts:
 
     '''
     Embed all referenced fonts, if found on system. Must be called after CSS flattening.
@@ -230,12 +229,12 @@ class EmbedFonts(object):
             name = f['full_name']
             ext = 'otf' if f['is_otf'] else 'ttf'
             name = ascii_filename(name).replace(' ', '-').replace('(', '').replace(')', '')
-            fid, href = self.oeb.manifest.generate(id=u'font', href=u'fonts/%s.%s'%(name, ext))
+            fid, href = self.oeb.manifest.generate(id='font', href='fonts/%s.%s'%(name, ext))
             item = self.oeb.manifest.add(fid, href, guess_type('dummy.'+ext)[0], data=data)
             item.unload_data_from_memory()
             page_sheet = self.get_page_sheet()
             href = page_sheet.relhref(item.href)
-            css = '''@font-face { font-family: "%s"; font-weight: %s; font-style: %s; font-stretch: %s; src: url(%s) }''' % (
+            css = '''@font-face {{ font-family: "{}"; font-weight: {}; font-style: {}; font-stretch: {}; src: url({}) }}'''.format(
                 f['font-family'], f['font-weight'], f['font-style'], f['font-stretch'], href)
             sheet = self.parser.parseString(css, validate=False)
             page_sheet.data.insertRule(sheet.cssRules[0], len(page_sheet.data.cssRules))
@@ -243,7 +242,7 @@ class EmbedFonts(object):
 
         for f in fonts:
             if f['weight'] == weight and f['font-style'] == style.get('font-style', 'normal') and f['font-stretch'] == style.get('font-stretch', 'normal'):
-                self.log('Embedding font %s from %s' % (f['full_name'], f['path']))
+                self.log('Embedding font {} from {}'.format(f['full_name'], f['path']))
                 return do_embed(f)
         try:
             f = find_matching_font(fonts, style.get('font-weight', 'normal'), style.get('font-style', 'normal'), style.get('font-stretch', 'normal'))
@@ -252,5 +251,5 @@ class EmbedFonts(object):
                 self.log.exception('Failed to find a matching font for family', ff, 'not embedding')
                 self.warned2.add(ff)
                 return
-        self.log('Embedding font %s from %s' % (f['full_name'], f['path']))
+        self.log('Embedding font {} from {}'.format(f['full_name'], f['path']))
         return do_embed(f)

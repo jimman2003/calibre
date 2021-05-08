@@ -329,7 +329,7 @@ class SMTP:
                 try:
                     port = int(port)
                 except ValueError:
-                    raise socket.error("nonnumeric port")
+                    raise OSError("nonnumeric port")
         if not port:
             port = self.default_port
         if self.debuglevel > 0:
@@ -349,7 +349,7 @@ class SMTP:
         if hasattr(self, 'sock') and self.sock:
             try:
                 self.sock.sendall(str)
-            except socket.error:
+            except OSError:
                 self.close()
                 raise SMTPServerDisconnected('Server not connected')
         else:
@@ -358,9 +358,9 @@ class SMTP:
     def putcmd(self, cmd, args=""):
         """Send a command to the server."""
         if args == "":
-            str = '%s%s' % (cmd, CRLF)
+            str = '{}{}'.format(cmd, CRLF)
         else:
-            str = '%s %s%s' % (cmd, args, CRLF)
+            str = '{} {}{}'.format(cmd, args, CRLF)
         self.send(str)
 
     def getreply(self):
@@ -382,7 +382,7 @@ class SMTP:
         while True:
             try:
                 line = self.file.readline(_MAXLINE + 1)
-            except socket.error as e:
+            except OSError as e:
                 self.close()
                 raise SMTPServerDisconnected("Connection unexpectedly closed: " + str(e))
             if line == '':
@@ -407,7 +407,7 @@ class SMTP:
 
         errmsg = "\n".join(resp)
         if self.debuglevel > 0:
-            self.debug('reply: retcode (%s); Msg: %s' % (errcode,errmsg))
+            self.debug('reply: retcode ({}); Msg: {}'.format(errcode,errmsg))
         return errcode, errmsg
 
     def docmd(self, cmd, args=""):
@@ -499,7 +499,7 @@ class SMTP:
         optionlist = ''
         if options and self.does_esmtp:
             optionlist = ' ' + ' '.join(options)
-        self.putcmd("mail", "FROM:%s%s" % (quoteaddr(sender), optionlist))
+        self.putcmd("mail", "FROM:{}{}".format(quoteaddr(sender), optionlist))
         return self.getreply()
 
     def rcpt(self, recip, options=[]):
@@ -507,7 +507,7 @@ class SMTP:
         optionlist = ''
         if options and self.does_esmtp:
             optionlist = ' ' + ' '.join(options)
-        self.putcmd("rcpt", "TO:%s%s" % (quoteaddr(recip), optionlist))
+        self.putcmd("rcpt", "TO:{}{}".format(quoteaddr(recip), optionlist))
         return self.getreply()
 
     def data(self, msg):
@@ -596,7 +596,7 @@ class SMTP:
             return encode_base64(response, eol="")
 
         def encode_plain(user, password):
-            return encode_base64("\0%s\0%s" % (user, password), eol="")
+            return encode_base64("\0{}\0{}".format(user, password), eol="")
 
         AUTH_PLAIN = "PLAIN"
         AUTH_CRAM_MD5 = "CRAM-MD5"
@@ -633,7 +633,7 @@ class SMTP:
                 AUTH_PLAIN + " " + encode_plain(user, password))
         elif authmethod == AUTH_LOGIN:
             (code, resp) = self.docmd("AUTH",
-                "%s %s" % (AUTH_LOGIN, encode_base64(user, eol="")))
+                "{} {}".format(AUTH_LOGIN, encode_base64(user, eol="")))
             if code != 334:
                 raise SMTPAuthenticationError(code, resp)
             (code, resp) = self.docmd(encode_base64(password, eol=""))
@@ -868,7 +868,7 @@ class LMTP(SMTP):
         try:
             self.sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             self.sock.connect(host)
-        except socket.error:
+        except OSError:
             if self.debuglevel > 0:
                 self.debug('connect fail:', host)
             if self.sock:

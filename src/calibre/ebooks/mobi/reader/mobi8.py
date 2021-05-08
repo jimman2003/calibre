@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -71,7 +70,7 @@ def get_first_resource_index(first_image_index, num_of_text_records, first_text_
     return first_resource_index
 
 
-class Mobi8Reader(object):
+class Mobi8Reader:
 
     def __init__(self, mobi6_reader, log, for_tweak=False):
         self.for_tweak = for_tweak
@@ -567,7 +566,7 @@ class Mobi8Reader(object):
             elif elem is start:
                 reached = True
 
-        depths = sorted(set(x[-1] for x in links))
+        depths = sorted({x[-1] for x in links})
         depth_map = {x:i for i, x in enumerate(depths)}
         for text, href, frag, depth in links:
             depth = depth_map[depth]

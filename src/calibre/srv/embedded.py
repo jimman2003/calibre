@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -29,7 +28,7 @@ def read_json(path):
     try:
         with lopen(path, 'rb') as f:
             raw = f.read()
-    except EnvironmentError as err:
+    except OSError as err:
         if err.errno != errno.ENOENT:
             raise
         return
@@ -49,7 +48,7 @@ custom_list_template.path = os.path.join(config_dir, 'server-custom-list-templat
 search_the_net_urls.path = os.path.join(config_dir, 'server-search-the-net.json')
 
 
-class Server(object):
+class Server:
 
     loop = current_thread = exception = None
     state_callback = start_failure_callback = None
@@ -59,7 +58,7 @@ class Server(object):
         lp, lap = log_paths()
         try:
             os.makedirs(cache_dir())
-        except EnvironmentError as err:
+        except OSError as err:
             if err.errno != errno.EEXIST:
                 raise
         log_size = opts.max_log_size * 1024 * 1024

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -291,7 +290,7 @@ class EPUBOutput(OutputFormatPlugin):
         from calibre.ebooks.oeb.polish.cover import fix_conversion_titlepage_links_in_nav
         try:
             os.mkdir(os.path.join(tdir, 'META-INF'))
-        except EnvironmentError:
+        except OSError:
             pass
         with open(os.path.join(tdir, 'META-INF', 'container.xml'), 'wb') as f:
             f.write(simple_container_xml(os.path.basename(opf)).encode('utf-8'))
@@ -307,7 +306,7 @@ class EPUBOutput(OutputFormatPlugin):
         os.remove(f.name)
         try:
             os.rmdir(os.path.join(tdir, 'META-INF'))
-        except EnvironmentError:
+        except OSError:
             pass
 
     def encrypt_fonts(self, uris, tdir, uuid):  # {{{

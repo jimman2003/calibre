@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -33,7 +32,7 @@ class BaseTest(unittest.TestCase):
         gc.collect(), gc.collect()
         try:
             shutil.rmtree(self.library_path)
-        except EnvironmentError:
+        except OSError:
             # Try again in case something transient has a file lock on windows
             gc.collect(), gc.collect()
             time.sleep(2)

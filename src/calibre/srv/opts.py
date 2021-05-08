@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -21,7 +20,7 @@ Option = namedtuple('Option', 'name default longdoc shortdoc choices')
 class Choices(frozenset):
 
     def __new__(cls, *args):
-        self = super(Choices, cls).__new__(cls, args)
+        self = super().__new__(cls, args)
         self.default = args[0]
         return self
 
@@ -220,7 +219,7 @@ options = OrderedDict([(o.name, o) for o in sorted(options, key=attrgetter('name
 del raw_options
 
 
-class Options(object):
+class Options:
 
     __slots__ = tuple(name for name in options)
 
@@ -276,7 +275,7 @@ def parse_config_file(path=DEFAULT_CONFIG):
     try:
         with ExclusiveFile(path) as f:
             raw = f.read().decode('utf-8')
-    except EnvironmentError as err:
+    except OSError as err:
         if err.errno != errno.ENOENT:
             raise
         raw = ''
@@ -296,10 +295,10 @@ def parse_config_file(path=DEFAULT_CONFIG):
             try:
                 val = type(opt.default)(rest)
             except Exception:
-                raise ValueError('The value for %s: %s is not a valid number' % (key, rest))
+                raise ValueError('The value for {}: {} is not a valid number'.format(key, rest))
         elif opt.choices:
             if rest not in opt.choices:
-                raise ValueError('The value for %s: %s is not valid' % (key, rest))
+                raise ValueError('The value for {}: {} is not valid'.format(key, rest))
         ans[key] = val
     return Options(**ans)
 
@@ -312,7 +311,7 @@ def write_config_file(opts, path=DEFAULT_CONFIG):
         lines.append('# ' + o.shortdoc)
         if o.longdoc:
             lines.append('# ' + o.longdoc)
-        lines.append('%s %s' % (name, changed[name]))
+        lines.append('{} {}'.format(name, changed[name]))
     raw = '\n'.join(lines).encode('utf-8')
     with ExclusiveFile(path) as f:
         f.truncate()

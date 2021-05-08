@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -17,7 +16,7 @@ from calibre.gui2.tweak_book.boss import get_boss
 from polyglot.builtins import itervalues, unicode_type
 
 
-class Tool(object):
+class Tool:
 
     '''
     The base class for individual tools in an Edit Book plugin. Useful members include:
@@ -144,7 +143,7 @@ def create_plugin_action(plugin, tool, for_toolbar, actions=None, toolbar_action
         return
     sid = plugin_action_sid(plugin, tool, for_toolbar)
     if actions is not None and sid in actions:
-        prints('The %s tool from the %s plugin has a non unique name, ignoring' % (tool.name, plugin.name))
+        prints('The {} tool from the {} plugin has a non unique name, ignoring'.format(tool.name, plugin.name))
     else:
         if actions is not None:
             actions[sid] = ac

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 __license__   = 'GPL v3'
 __copyright__ = '2011, Kovid Goyal <kovid@kovidgoyal.net>'
@@ -119,7 +118,7 @@ def make_config_dir():
         os.makedirs(plugin_dir, mode=CONFIG_DIR_MODE)
 
 
-class Option(object):
+class Option:
 
     def __init__(self, name, switches=[], help='', type=None, choices=None,
                  check=None, group=None, default=None, action=None, metavar=None):
@@ -153,13 +152,13 @@ class Option(object):
         return repr(self)
 
 
-class OptionValues(object):
+class OptionValues:
 
     def copy(self):
         return deepcopy(self)
 
 
-class OptionSet(object):
+class OptionSet:
 
     OVERRIDE_PAT = re.compile(r'#{3,100} Override Options #{15}(.*?)#{3,100} End Override #{3,100}',
                               re.DOTALL|re.IGNORECASE)
@@ -255,7 +254,7 @@ class OptionSet(object):
             if opt.help:
                 opt.help = t(opt.help)
                 if opt.name == 'use_primary_find_in_search':
-                    opt.help = opt.help.format(u'ñ')
+                    opt.help = opt.help.format('ñ')
 
     def option_parser(self, user_defaults=None, usage='', gui_mode=False):
         from calibre.utils.config import OptionParser
@@ -295,7 +294,7 @@ class OptionSet(object):
     def parse_string(self, src):
         options = {}
         if src:
-            is_old_style = (isinstance(src, bytes) and src.startswith(b'#')) or (isinstance(src, unicode_type) and src.startswith(u'#'))
+            is_old_style = (isinstance(src, bytes) and src.startswith(b'#')) or (isinstance(src, unicode_type) and src.startswith('#'))
             if is_old_style:
                 options = parse_old_style(src)
             else:
@@ -323,7 +322,7 @@ class OptionSet(object):
         return json_dumps(data, ignore_unserializable=ignore_unserializable)
 
 
-class ConfigInterface(object):
+class ConfigInterface:
 
     def __init__(self, description):
         self.option_set       = OptionSet(description=description)
@@ -429,7 +428,7 @@ class StringConfig(ConfigInterface):
         self.set_src(self.option_set.serialize(opts))
 
 
-class ConfigProxy(object):
+class ConfigProxy:
     '''
     A Proxy to minimize file reads for widely used config settings
     '''
@@ -477,7 +476,7 @@ def create_global_prefs(conf_obj=None):
     c.add_opt('database_path',
               default=os.path.expanduser('~/library1.db'),
               help=_('Path to the database in which books are stored'))
-    c.add_opt('filename_pattern', default=u'(?P<title>.+) - (?P<author>[^_]+)',
+    c.add_opt('filename_pattern', default='(?P<title>.+) - (?P<author>[^_]+)',
               help=_('Pattern to guess metadata from filenames'))
     c.add_opt('isbndb_com_key', default='',
               help=_('Access key for isbndb.com'))
@@ -532,10 +531,10 @@ def create_global_prefs(conf_obj=None):
                 'separated by commas. Only takes effect if you set the option '
                 'to limit search columns above.'))
     c.add_opt('use_primary_find_in_search', default=True,
-            help=_(u'Characters typed in the search box will match their '
+            help=_('Characters typed in the search box will match their '
                    'accented versions, based on the language you have chosen '
                    'for the calibre interface. For example, in '
-                   u'English, searching for n will match both {} and n, but if '
+                   'English, searching for n will match both {} and n, but if '
                    'your language is Spanish it will only match n. Note that '
                    'this is much slower than a simple search on very large '
                    'libraries. Also, this option will have no effect if you turn '
@@ -656,7 +655,7 @@ def reset_tweaks_to_default():
     tweaks.update(default_tweaks)
 
 
-class Tweak(object):
+class Tweak:
 
     def __init__(self, name, value):
         self.name, self.value = name, value

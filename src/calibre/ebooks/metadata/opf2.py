@@ -30,7 +30,7 @@ from polyglot.urllib import unquote, urlparse
 pretty_print_opf = False
 
 
-class PrettyPrint(object):
+class PrettyPrint:
 
     def __enter__(self):
         global pretty_print_opf
@@ -44,7 +44,7 @@ class PrettyPrint(object):
 pretty_print = PrettyPrint()
 
 
-class Resource(object):  # {{{
+class Resource:  # {{{
 
     '''
     Represents a resource (usually a file on the filesystem or a URL pointing
@@ -127,14 +127,13 @@ class Resource(object):  # {{{
 # }}}
 
 
-class ResourceCollection(object):  # {{{
+class ResourceCollection:  # {{{
 
     def __init__(self):
         self._resources = []
 
     def __iter__(self):
-        for r in self._resources:
-            yield r
+        yield from self._resources
 
     def __len__(self):
         return len(self._resources)
@@ -203,7 +202,7 @@ class ManifestItem(Resource):  # {{{
         self.mime_type = val
 
     def __unicode__representation__(self):
-        return u'<item id="%s" href="%s" media-type="%s" />'%(self.id, self.href(), self.media_type)
+        return '<item id="%s" href="%s" media-type="%s" />'%(self.id, self.href(), self.media_type)
 
     __str__ = __unicode__representation__
 
@@ -408,7 +407,7 @@ class Guide(ResourceCollection):  # {{{
 # }}}
 
 
-class MetadataField(object):
+class MetadataField:
 
     def __init__(self, name, is_dc=True, formatter=None, none_is=None,
             renderer=lambda x: unicode_type(x)):
@@ -523,7 +522,7 @@ def dump_dict(cats):
             skipkeys=True)
 
 
-class OPF(object):  # {{{
+class OPF:  # {{{
 
     MIMETYPE         = 'application/oebps-package+xml'
     NAMESPACES       = {
@@ -1121,8 +1120,7 @@ class OPF(object):  # {{{
         self.set_text(matches[0], unicode_type(val))
 
     def identifier_iter(self):
-        for item in self.identifier_path(self.metadata):
-            yield item
+        yield from self.identifier_path(self.metadata)
 
     @property
     def raw_unique_identifier(self):
@@ -1273,11 +1271,11 @@ class OPF(object):  # {{{
 
     def create_metadata_element(self, name, attrib=None, is_dc=True):
         if is_dc:
-            name = '{%s}%s' % (self.NAMESPACES['dc'], name)
+            name = '{{{}}}{}'.format(self.NAMESPACES['dc'], name)
         else:
             attrib = attrib or {}
             attrib['name'] = 'calibre:' + name
-            name = '{%s}%s' % (self.NAMESPACES['opf'], 'meta')
+            name = '{{{}}}{}'.format(self.NAMESPACES['opf'], 'meta')
         nsmap = dict(self.NAMESPACES)
         del nsmap['opf']
         elem = etree.SubElement(self.metadata, name, attrib=attrib,
@@ -1785,8 +1783,8 @@ def suite():
         def testReading(self, opf=None):
             if opf is None:
                 opf = self.opf
-            self.assertEqual(opf.title, u'A Cool & \xa9 \xdf Title')
-            self.assertEqual(opf.authors, u'Monkey Kitchen,Next'.split(','))
+            self.assertEqual(opf.title, 'A Cool & \xa9 \xdf Title')
+            self.assertEqual(opf.authors, 'Monkey Kitchen,Next'.split(','))
             self.assertEqual(opf.author_sort, 'Monkey')
             self.assertEqual(opf.title_sort, 'Wow')
             self.assertEqual(opf.tags, ['One', 'Two'])
@@ -1832,12 +1830,12 @@ def test():
 def test_user_metadata():
     mi = Metadata('Test title', ['test author1', 'test author2'])
     um = {
-        '#myseries': {'#value#': u'test series\xe4', 'datatype':'text',
-            'is_multiple': None, 'name': u'My Series'},
+        '#myseries': {'#value#': 'test series\xe4', 'datatype':'text',
+            'is_multiple': None, 'name': 'My Series'},
         '#myseries_index': {'#value#': 2.45, 'datatype': 'float',
             'is_multiple': None},
         '#mytags': {'#value#':['t1','t2','t3'], 'datatype':'text',
-            'is_multiple': '|', 'name': u'My Tags'}
+            'is_multiple': '|', 'name': 'My Tags'}
         }
     mi.set_all_user_metadata(um)
     raw = metadata_to_opf(mi)

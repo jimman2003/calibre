@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 '''
 Read content from Haodoo.net pdb file.
 '''
@@ -23,32 +20,32 @@ BPDB_IDENT = b'BOOKMTIT'
 UPDB_IDENT = b'BOOKMTIU'
 
 punct_table = {
-    u"︵": u"（",
-    u"︶": u"）",
-    u"︷": u"｛",
-    u"︸": u"｝",
-    u"︹": u"〔",
-    u"︺": u"〕",
-    u"︻": u"【",
-    u"︼": u"】",
-    u"︗": u"〖",
-    u"︘": u"〗",
-    u"﹇": u"［］",
-    u"﹈": u"［］",
-    u"︽": u"《",
-    u"︾": u"》",
-    u"︿": u"〈",
-    u"﹀": u"〉",
-    u"﹁": u"「",
-    u"﹂": u"」",
-    u"﹃": u"『",
-    u"﹄": u"』",
-    u"｜": u"—",
-    u"︙": u"…",
-    u"ⸯ": u"～",
-    u"│": u"…",
-    u"￤": u"…",
-    u"　": u"  ",
+    "︵": "（",
+    "︶": "）",
+    "︷": "｛",
+    "︸": "｝",
+    "︹": "〔",
+    "︺": "〕",
+    "︻": "【",
+    "︼": "】",
+    "︗": "〖",
+    "︘": "〗",
+    "﹇": "［］",
+    "﹈": "［］",
+    "︽": "《",
+    "︾": "》",
+    "︿": "〈",
+    "﹀": "〉",
+    "﹁": "「",
+    "﹂": "」",
+    "﹃": "『",
+    "﹄": "』",
+    "｜": "—",
+    "︙": "…",
+    "ⸯ": "～",
+    "│": "…",
+    "￤": "…",
+    "　": "  ",
     }
 
 
@@ -58,7 +55,7 @@ def fix_punct(line):
     return line
 
 
-class LegacyHeaderRecord(object):
+class LegacyHeaderRecord:
 
     def __init__(self, raw):
         fields = raw.lstrip().replace(b'\x1b\x1b\x1b', b'\x1b').split(b'\x1b')
@@ -69,7 +66,7 @@ class LegacyHeaderRecord(object):
             fields[2:]))
 
 
-class UnicodeHeaderRecord(object):
+class UnicodeHeaderRecord:
 
     def __init__(self, raw):
         fields = raw.lstrip().replace(b'\x1b\x00\x1b\x00\x1b\x00',
@@ -125,9 +122,9 @@ class Reader(FormatReader):
     def extract_content(self, output_dir):
         txt = ''
 
-        self.log.info(u'Decompressing text...')
+        self.log.info('Decompressing text...')
         for i in range(1, self.header_record.num_records + 1):
-            self.log.debug(u'\tDecompressing text section %i' % i)
+            self.log.debug('\tDecompressing text section %i' % i)
             title = self.header_record.chapter_titles[i-1]
             lines = []
             title_added = False
@@ -144,7 +141,7 @@ class Reader(FormatReader):
                 lines.insert(0, '<h1 class="chapter">' + title + '</h1>\n')
             txt += '\n'.join(lines)
 
-        self.log.info(u'Converting text to OEB...')
+        self.log.info('Converting text to OEB...')
         html = HTML_TEMPLATE % (self.header_record.title, txt)
         with open(os.path.join(output_dir, 'index.html'), 'wb') as index:
             index.write(html.encode('utf-8'))

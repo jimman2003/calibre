@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -35,7 +34,7 @@ def basic_mount_options():
     return ['rw', 'noexec', 'nosuid', 'nodev', 'uid=%d'%os.geteuid(), 'gid=%d'%os.getegid()]
 
 
-class UDisks(object):
+class UDisks:
 
     def __init__(self):
         import dbus
@@ -82,7 +81,7 @@ class NoUDisks2(Exception):
     pass
 
 
-class UDisks2(object):
+class UDisks2:
 
     BLOCK = 'org.freedesktop.UDisks2.Block'
     FILESYSTEM = 'org.freedesktop.UDisks2.Filesystem'
@@ -186,7 +185,7 @@ def get_udisks1():
         except NoUDisks2:
             pass
     if u is None:
-        raise EnvironmentError('UDisks not available on your system')
+        raise OSError('UDisks not available on your system')
     return u
 
 

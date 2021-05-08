@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -9,7 +8,7 @@ __docformat__ = 'restructuredtext en'
 from calibre.ebooks.oeb.base import XPath
 
 
-class CSSCleanup(object):
+class CSSCleanup:
 
     def __init__(self, log, opts):
         self.log, self.opts = log, opts

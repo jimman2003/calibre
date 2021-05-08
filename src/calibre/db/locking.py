@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -62,7 +61,7 @@ def create_locks():
     return wrapper(l), wrapper(l, is_shared=False)
 
 
-class SHLock(object):  # {{{
+class SHLock:  # {{{
     '''
     Shareable lock class. Used to implement the Multiple readers-single writer
     paradigm. As best as I can tell, neither writer nor reader starvation
@@ -222,7 +221,7 @@ class SHLock(object):  # {{{
 # }}}
 
 
-class RWLockWrapper(object):
+class RWLockWrapper:
 
     def __init__(self, shlock, is_shared=True):
         self._shlock = shlock
@@ -266,7 +265,7 @@ class DebugRWLockWrapper(RWLockWrapper):
     __exit__ = release
 
 
-class SafeReadLock(object):
+class SafeReadLock:
 
     def __init__(self, read_lock):
         self.read_lock = read_lock

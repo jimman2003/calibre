@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2018, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -15,7 +14,7 @@ from calibre.ebooks.metadata.utils import parse_opf, pretty_print_opf
 from polyglot.builtins import itervalues
 
 
-class Data(object):
+class Data:
     pass
 
 

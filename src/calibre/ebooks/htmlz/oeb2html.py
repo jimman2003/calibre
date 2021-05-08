@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -26,7 +23,7 @@ from polyglot.urllib import urldefrag
 SELF_CLOSING_TAGS = {'area', 'base', 'basefont', 'br', 'hr', 'input', 'img', 'link', 'meta'}
 
 
-class OEB2HTML(object):
+class OEB2HTML:
     '''
     Base class. All subclasses should implement dump_text to actually transform
     content. Also, callers should use oeb2html to get the transformed html.
@@ -58,7 +55,7 @@ class OEB2HTML(object):
 
     def mlize_spine(self, oeb_book):
         output = [
-            u'<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><title>%s</title></head><body>' % (
+            '<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><title>%s</title></head><body>' % (
                 prepare_string_for_xml(self.book_title))
         ]
         for item in oeb_book.spine:
@@ -86,7 +83,7 @@ class OEB2HTML(object):
             if item.media_type in OEB_IMAGES:
                 if item.href not in self.images:
                     ext = os.path.splitext(item.href)[1]
-                    fname = '%s%s' % (len(self.images), ext)
+                    fname = '{}{}'.format(len(self.images), ext)
                     fname = fname.zfill(10)
                     self.images[item.href] = fname
             if item in oeb_book.spine:
@@ -139,10 +136,10 @@ class OEB2HTML(object):
 
     def prepare_string_for_html(self, raw):
         raw = prepare_string_for_xml(raw)
-        raw = raw.replace(u'\u00ad', '&shy;')
-        raw = raw.replace(u'\u2014', '&mdash;')
-        raw = raw.replace(u'\u2013', '&ndash;')
-        raw = raw.replace(u'\u00a0', '&nbsp;')
+        raw = raw.replace('\u00ad', '&shy;')
+        raw = raw.replace('\u2014', '&mdash;')
+        raw = raw.replace('\u2013', '&ndash;')
+        raw = raw.replace('\u00a0', '&nbsp;')
         return raw
 
 
@@ -192,10 +189,10 @@ class OEB2HTMLNoCSSizer(OEB2HTML):
         at = ''
         for k, v in attribs.items():
             k = k.split('}')[-1]
-            at += ' %s="%s"' % (k, prepare_string_for_xml(v, attribute=True))
+            at += ' {}="{}"'.format(k, prepare_string_for_xml(v, attribute=True))
 
         # Write the tag.
-        text.append('<%s%s' % (tag, at))
+        text.append('<{}{}'.format(tag, at))
         if tag in SELF_CLOSING_TAGS:
             text.append(' />')
         else:
@@ -285,7 +282,7 @@ class OEB2HTMLInlineCSSizer(OEB2HTML):
         at = ''
         for k, v in attribs.items():
             k = k.split('}')[-1]
-            at += ' %s="%s"' % (k, prepare_string_for_xml(v, attribute=True))
+            at += ' {}="{}"'.format(k, prepare_string_for_xml(v, attribute=True))
 
         # Turn style into strings for putting in the tag.
         style_t = ''
@@ -293,7 +290,7 @@ class OEB2HTMLInlineCSSizer(OEB2HTML):
             style_t = ' style="%s"' % style_a.replace('"', "'")
 
         # Write the tag.
-        text.append('<%s%s%s' % (tag, at, style_t))
+        text.append('<{}{}{}'.format(tag, at, style_t))
         if tag in SELF_CLOSING_TAGS:
             text.append(' />')
         else:
@@ -340,9 +337,9 @@ class OEB2HTMLClassCSSizer(OEB2HTML):
             css = '<link href="style.css" rel="stylesheet" type="text/css" />'
         else:
             css =  '<style type="text/css">' + self.get_css(oeb_book) + '</style>'
-        title = u'<title>%s</title>' % prepare_string_for_xml(self.book_title)
-        output = [u'<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />'] + \
-            [css] + [title, u'</head><body>'] + output + [u'</body></html>']
+        title = '<title>%s</title>' % prepare_string_for_xml(self.book_title)
+        output = ['<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8" />'] + \
+            [css] + [title, '</head><body>'] + output + ['</body></html>']
         return ''.join(output)
 
     def dump_text(self, elem, stylizer, page):
@@ -378,10 +375,10 @@ class OEB2HTMLClassCSSizer(OEB2HTML):
         at = ''
         for k, v in attribs.items():
             k = k.split('}')[-1]
-            at += ' %s="%s"' % (k, prepare_string_for_xml(v, attribute=True))
+            at += ' {}="{}"'.format(k, prepare_string_for_xml(v, attribute=True))
 
         # Write the tag.
-        text.append('<%s%s' % (tag, at))
+        text.append('<{}{}'.format(tag, at))
         if tag in SELF_CLOSING_TAGS:
             text.append(' />')
         else:

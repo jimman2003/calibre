@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -186,9 +183,9 @@ class SearchDialog(QDialog, Ui_Dialog):
         # Don't start a search if there is nothing to search for.
         query = []
         if self.search_title.text():
-            query.append(u'title2:"~%s"' % unicode_type(self.search_title.text()).replace('"', ' '))
+            query.append('title2:"~%s"' % unicode_type(self.search_title.text()).replace('"', ' '))
         if self.search_author.text():
-            query.append(u'author2:"%s"' % unicode_type(self.search_author.text()).replace('"', ' '))
+            query.append('author2:"%s"' % unicode_type(self.search_author.text()).replace('"', ' '))
         if self.search_edit.text():
             query.append(unicode_type(self.search_edit.text()))
         query = " ".join(query)

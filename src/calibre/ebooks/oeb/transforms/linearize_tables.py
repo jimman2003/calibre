@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -9,7 +8,7 @@ __docformat__ = 'restructuredtext en'
 from calibre.ebooks.oeb.base import OEB_DOCS, XPath, XHTML
 
 
-class LinearizeTables(object):
+class LinearizeTables:
 
     def linearize(self, root):
         for x in XPath('//h:table|//h:td|//h:tr|//h:th|//h:caption|'

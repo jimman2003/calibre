@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -324,7 +323,7 @@ def test_mem():
 
 def test():
     raw = P('fonts/liberation/LiberationSerif-Regular.ttf', data=True)
-    sf, old_stats, new_stats = subset(raw, set(('a', 'b', 'c')), ())
+    sf, old_stats, new_stats = subset(raw, {'a', 'b', 'c'}, ())
     if len(sf) > 0.3 * len(raw):
         raise Exception('Subsetting failed')
 
@@ -343,7 +342,7 @@ def all():
             total += 1
             try:
                 w = []
-                sf, old_stats, new_stats = subset(raw, set(('a', 'b', 'c')),
+                sf, old_stats, new_stats = subset(raw, {'a', 'b', 'c'},
                         (), w)
                 if w:
                     warnings[font['full_name'] + ' (%s)'%font['path']] = w

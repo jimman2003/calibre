@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -21,7 +20,7 @@ from polyglot.builtins import iteritems, itervalues, range
 # http://www.adobe.com/content/dam/Adobe/en/devnet/font/pdfs/5177.Type2.pdf
 
 
-class CFF(object):
+class CFF:
 
     def __init__(self, raw):
         (self.major_version, self.minor_version, self.header_size,
@@ -125,14 +124,14 @@ class Index(list):
 class Strings(Index):
 
     def __init__(self, raw, offset):
-        super(Strings, self).__init__(raw, offset, prepend=[x.encode('ascii')
+        super().__init__(raw, offset, prepend=[x.encode('ascii')
             for x in cff_standard_strings])
 
 
 class Charset(list):
 
     def __init__(self, raw, offset, strings, num_glyphs, is_CID):
-        super(Charset, self).__init__()
+        super().__init__()
         self.standard_charset = offset if offset in {0, 1, 2} else None
         if is_CID and self.standard_charset is not None:
             raise ValueError("CID font must not use a standard charset")

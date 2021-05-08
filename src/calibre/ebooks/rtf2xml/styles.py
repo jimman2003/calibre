@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -550,7 +549,7 @@ class Styles:
                                 pass
                             else:
                                 if self.__run_level > 4:
-                                    msg = '%s %s is based on %s\n' % (type, key, value)
+                                    msg = '{} {} is based on {}\n'.format(type, key, value)
                                     msg = 'There is no style with %s\n' % value
                                     raise self.__bug_handler(msg)
                             del self.__styles_dict[type][key][style]
@@ -581,13 +580,13 @@ class Styles:
             style_numbers = self.__styles_dict[type].keys()
             for num in style_numbers:
                 self.__write_obj.write(
-                'mi<tg<empty-att_<%s-style-in-table<num>%s' % (prefix, num)
+                'mi<tg<empty-att_<{}-style-in-table<num>{}'.format(prefix, num)
                 )
                 attributes = self.__styles_dict[type][num].keys()
                 for att in attributes:
                     this_value = self.__styles_dict[type][num][att]
                     self.__write_obj.write(
-                        '<%s>%s' % (att, this_value)
+                        '<{}>{}'.format(att, this_value)
                         )
                 self.__write_obj.write('\n')
             self.__write_obj.write(
@@ -662,7 +661,7 @@ class Styles:
             value = None
         if value:
             self.__write_obj.write(
-            'cw<ss<%s-style<nu<%s\n' % (prefix, value)
+            'cw<ss<{}-style<nu<{}\n'.format(prefix, value)
             )
         else:
             self.__write_obj.write(

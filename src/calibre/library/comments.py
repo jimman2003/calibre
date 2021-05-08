@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 # License: GPLv3 Copyright: 2010, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -48,7 +47,7 @@ def comments_to_html(comments):
 
     '''
     if not comments:
-        return u'<p></p>'
+        return '<p></p>'
     if not isinstance(comments, unicode_type):
         comments = comments.decode(preferred_encoding, 'replace')
 
@@ -58,7 +57,7 @@ def comments_to_html(comments):
 
     if '<' not in comments:
         comments = prepare_string_for_xml(comments)
-        parts = [u'<p class="description">%s</p>'%x.replace(u'\n', u'<br />')
+        parts = ['<p class="description">%s</p>'%x.replace('\n', '<br />')
                 for x in comments.split('\n\n')]
         return '\n'.join(parts)
 
@@ -68,22 +67,22 @@ def comments_to_html(comments):
         except:
             import traceback
             traceback.print_exc()
-            return u'<p></p>'
+            return '<p></p>'
 
     # Explode lost CRs to \n\n
     comments = lost_cr_exception_pat.sub(lambda m: m.group().replace('.',
         '.\r'), comments)
     for lost_cr in lost_cr_pat.finditer(comments):
         comments = comments.replace(lost_cr.group(),
-                                    '%s%s\n\n%s' % (lost_cr.group(1),
+                                    '{}{}\n\n{}'.format(lost_cr.group(1),
                                                     lost_cr.group(2),
                                                     lost_cr.group(3)))
 
-    comments = comments.replace(u'\r', u'')
+    comments = comments.replace('\r', '')
     # Convert \n\n to <p>s
-    comments = comments.replace(u'\n\n', u'<p>')
+    comments = comments.replace('\n\n', '<p>')
     # Convert solo returns to <br />
-    comments = comments.replace(u'\n', '<br />')
+    comments = comments.replace('\n', '<br />')
     # Convert two hyphens to emdash
     comments = comments.replace('--', '&mdash;')
 

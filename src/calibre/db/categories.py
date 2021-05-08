@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -17,7 +16,7 @@ from calibre.utils.icu import sort_key, collation_order
 CATEGORY_SORTS = ('name', 'popularity', 'rating')  # This has to be a tuple not a set
 
 
-class Tag(object):
+class Tag:
 
     __slots__ = ('name', 'original_name', 'id', 'count', 'state', 'is_hierarchical',
             'is_editable', 'is_searchable', 'id_set', 'avg_rating', 'sort',
@@ -44,7 +43,7 @@ class Tag(object):
 
     @property
     def string_representation(self):
-        return u'%s:%s:%s:%s:%s'%(self.name, self.count, self.id, self.state, self.category)
+        return '%s:%s:%s:%s:%s'%(self.name, self.count, self.id, self.state, self.category)
 
     def __str__(self):
         return self.string_representation

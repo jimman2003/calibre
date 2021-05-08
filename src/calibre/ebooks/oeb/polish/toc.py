@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -31,7 +30,7 @@ ns.prefix = 'calibre'
 ns['lower-case'] = lambda c, x: x.lower() if hasattr(x, 'lower') else x
 
 
-class TOC(object):
+class TOC:
 
     toc_title = None
 
@@ -65,8 +64,7 @@ class TOC(object):
         self.parent = None
 
     def __iter__(self):
-        for c in self.children:
-            yield c
+        yield from self.children
 
     def __len__(self):
         return len(self.children)
@@ -78,8 +76,7 @@ class TOC(object):
                 yield child
             else:
                 yield level, child
-            for gc in child.iterdescendants(level=gc_level):
-                yield gc
+            yield from child.iterdescendants(level=gc_level)
 
     def remove_duplicates(self, only_text=True):
         seen = set()

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -308,7 +307,7 @@ class CreateVirtualLibrary(QDialog):  # {{{
 # }}}
 
 
-class SearchRestrictionMixin(object):
+class SearchRestrictionMixin:
 
     no_restriction = '<' + _('None') + '>'
 
@@ -656,7 +655,7 @@ class SearchRestrictionMixin(object):
                             db.data.get_search_restriction_name()) if x]
             t = ' :: '.join(restrictions)
             if len(t) > 20:
-                t = t[:19] + u'…'
+                t = t[:19] + '…'
             self.clear_vl.setVisible(True)
             self.clear_vl.setVisible(not gprefs['show_vl_tabs'])
         else:  # No restriction or not library view

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 '''
 Created on 13 Jan 2011
@@ -27,7 +26,7 @@ from calibre.utils.localization import calibre_langcode_to_name, canonicalize_la
 from polyglot.builtins import iteritems, itervalues, unicode_type
 
 
-class FormatterFunctions(object):
+class FormatterFunctions:
 
     error_function_body = ('def evaluate(self, formatter, kwargs, mi, locals):\n'
                        '\treturn "' +
@@ -120,7 +119,7 @@ def formatter_functions():
     return _ff
 
 
-class FormatterFunction(object):
+class FormatterFunction:
 
     doc = _('No documentation provided')
     name = 'no name provided'
@@ -1734,7 +1733,7 @@ class BuiltinUserCategories(BuiltinFormatterFunction):
 
     def evaluate(self, formatter, kwargs, mi, locals_):
         if hasattr(mi, '_proxy_metadata'):
-            cats = set(k for k, v in iteritems(mi._proxy_metadata.user_categories) if v)
+            cats = {k for k, v in iteritems(mi._proxy_metadata.user_categories) if v}
             cats = sorted(cats, key=sort_key)
             return ', '.join(cats)
         return _('This function can be used only in the GUI')
@@ -1748,7 +1747,7 @@ class BuiltinTransliterate(BuiltinFormatterFunction):
                       'formed by approximating the sound of the words in the '
                       'source string. For example, if the source is "{0}"'
                       ' the function returns "{1}".').format(
-                          u"Фёдор Миха́йлович Достоевский", 'Fiodor Mikhailovich Dostoievskii')
+                          "Фёдор Миха́йлович Достоевский", 'Fiodor Mikhailovich Dostoievskii')
 
     def evaluate(self, formatter, kwargs, mi, locals, source):
         from calibre.utils.filenames import ascii_text
@@ -1824,7 +1823,7 @@ class BuiltinConnectedDeviceName(BuiltinFormatterFunction):
             try:
                 if storage_location not in {'main', 'carda', 'cardb'}:
                     raise ValueError(
-                         _('connected_device_name: invalid storage location "{0}"'
+                         _('connected_device_name: invalid storage location "{}"'
                                     .format(storage_location)))
                 info = info['info'][4]
                 if storage_location not in info:
@@ -1858,7 +1857,7 @@ class BuiltinConnectedDeviceUUID(BuiltinFormatterFunction):
             try:
                 if storage_location not in {'main', 'carda', 'cardb'}:
                     raise ValueError(
-                         _('connected_device_name: invalid storage location "{0}"'
+                         _('connected_device_name: invalid storage location "{}"'
                                     .format(storage_location)))
                 info = info['info'][4]
                 if storage_location not in info:

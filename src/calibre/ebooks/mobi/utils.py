@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -584,7 +583,7 @@ def create_text_record(text):
     return data, overlap
 
 
-class CNCX(object):  # {{{
+class CNCX:  # {{{
 
     '''
     Create the CNCX records. These are records containing all the strings from

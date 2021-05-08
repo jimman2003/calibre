@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -554,7 +553,7 @@ class ParseRtf:
                 pass
                 # sys.stderr.write( msg + ' in ' + file_name + "\n")
             else:
-                msg = '%s in file %s' % (msg, file_name)
+                msg = '{} in file {}'.format(msg, file_name)
                 print(msg, file=sys.stderr)
 
     def __return_code(self, num):

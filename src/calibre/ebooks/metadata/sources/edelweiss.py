@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 __license__   = 'GPL v3'
 __copyright__ = '2013, Kovid Goyal <kovid at kovidgoyal.net>'
@@ -168,7 +166,7 @@ def get_basic_data(browser, log, *skus):
                 break
         try:
             pubdate = parse_only_date(astext(row.xpath('descendant::*[contains(@class, "pev_shipDate")]')[0]
-                ).split(':')[-1].split(u'\xa0')[-1].strip(), assume_utc=True)
+                ).split(':')[-1].split('\xa0')[-1].strip(), assume_utc=True)
         except Exception:
             log.exception('Error parsing published date')
             pubdate = None

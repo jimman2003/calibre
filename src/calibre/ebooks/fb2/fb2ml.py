@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -25,7 +22,7 @@ from polyglot.binary import as_base64_unicode
 from polyglot.urllib import urlparse
 
 
-class FB2MLizer(object):
+class FB2MLizer:
     '''
     Todo: * Include more FB2 specific tags in the conversion.
           * Handle notes and anchor links.
@@ -124,7 +121,7 @@ class FB2MLizer(object):
                 lc = self.oeb_book.metadata.language[0].value
             metadata['lang'] = lc or 'en'
         else:
-            metadata['lang'] = u'en'
+            metadata['lang'] = 'en'
         metadata['id'] = None
         metadata['cover'] = self.get_cover()
         metadata['genre'] = self.opts.fb2_genre
@@ -164,7 +161,7 @@ class FB2MLizer(object):
             index = '1'
             if self.oeb_book.metadata.series_index:
                 index = self.oeb_book.metadata.series_index[0]
-            metadata['sequence'] = '<sequence name="%s" number="%s"/>' % (prepare_string_for_xml('%s' % self.oeb_book.metadata.series[0]), index)
+            metadata['sequence'] = '<sequence name="{}" number="{}"/>'.format(prepare_string_for_xml('%s' % self.oeb_book.metadata.series[0]), index)
 
         year = publisher = isbn = ''
         identifiers = self.oeb_book.metadata['identifier']
@@ -333,7 +330,7 @@ class FB2MLizer(object):
                     # Don't put the encoded image on a single line.
                     step = 72
                     data = '\n'.join(raw_data[i:i+step] for i in range(0, len(raw_data), step))
-                    images.append('<binary id="%s" content-type="%s">%s</binary>' % (self.image_hrefs[item.href], content_type, data))
+                    images.append('<binary id="{}" content-type="{}">{}</binary>'.format(self.image_hrefs[item.href], content_type, data))
                 except Exception as e:
                     self.log.error('Error: Could not include file %s because '
                         '%s.' % (item.href, e))
@@ -483,7 +480,7 @@ class FB2MLizer(object):
                 tags += p_tag
                 fb2_out.append('<image l:href="#%s"/>' % self.image_hrefs[ihref])
             else:
-                self.log.warn(u'Ignoring image not in manifest: %s' % ihref)
+                self.log.warn('Ignoring image not in manifest: %s' % ihref)
         if tag in ('br', 'hr') or ems >= 1:
             if ems < 1:
                 multiplier = 1

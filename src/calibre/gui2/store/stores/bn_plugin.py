@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 store_version = 2  # Needed for dynamic plugin loading
 
 __license__ = 'GPL 3'
@@ -40,7 +37,7 @@ class BNStore(BasicStoreConfig, StorePlugin):
             d.exec_()
 
     def search(self, query, max_results=10, timeout=60):
-        url = 'http://www.barnesandnoble.com/s/%s?keyword=%s&store=ebook&view=list' % (query.decode('utf-8').replace(' ', '-'), quote_plus(query))
+        url = 'http://www.barnesandnoble.com/s/{}?keyword={}&store=ebook&view=list'.format(query.decode('utf-8').replace(' ', '-'), quote_plus(query))
 
         br = browser()
 

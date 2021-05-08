@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -9,7 +8,7 @@ from collections import OrderedDict
 from polyglot.builtins import iteritems, unicode_type
 
 
-class Note(object):
+class Note:
 
     def __init__(self, namespace, parent, rels):
         self.type = namespace.get(parent, 'w:type', 'normal')
@@ -18,11 +17,10 @@ class Note(object):
         self.namespace = namespace
 
     def __iter__(self):
-        for p in self.namespace.descendants(self.parent, 'w:p', 'w:tbl'):
-            yield p
+        yield from self.namespace.descendants(self.parent, 'w:p', 'w:tbl')
 
 
-class Footnotes(object):
+class Footnotes:
 
     def __init__(self, namespace):
         self.namespace = namespace

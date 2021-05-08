@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -146,7 +145,7 @@ CategoriesSettings = namedtuple(
     ' template using_hierarchy grouped_search_terms hidden_categories hide_empty_categories')
 
 
-class GroupedSearchTerms(object):
+class GroupedSearchTerms:
 
     __slots__ = ('keys', 'vals', 'hash')
 
@@ -476,8 +475,7 @@ def process_category_node(
 def iternode_descendants(node):
     for child in node['children']:
         yield child
-        for x in iternode_descendants(child):
-            yield x
+        yield from iternode_descendants(child)
 
 
 def fillout_tree(root, items, node_id_map, category_nodes, category_data, field_metadata, opts, book_rating_map):
@@ -554,7 +552,7 @@ def dump_categories_tree(data):
         if rating:
             rating = ',rating=%.1f' % rating
         try:
-            ans.append(indent*level + item['name'] + ' [count=%s%s]' % (item['count'], rating or ''))
+            ans.append(indent*level + item['name'] + ' [count={}{}]'.format(item['count'], rating or ''))
         except KeyError:
             print(item)
             raise

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
@@ -1844,7 +1841,7 @@ class StoreWeightlessBooksStore(StoreBase):
 class StoreWHSmithUKStore(StoreBase):
     name = 'WH Smith UK'
     author = 'Charles Haley'
-    description = u"Shop for savings on Books, discounted Magazine subscriptions and great prices on Stationery, Toys & Games"
+    description = "Shop for savings on Books, discounted Magazine subscriptions and great prices on Stationery, Toys & Games"
     actual_plugin = 'calibre.gui2.store.stores.whsmith_uk_plugin:WHSmithUKStore'
 
     headquarters = 'UK'

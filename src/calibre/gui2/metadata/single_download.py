@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -148,11 +147,11 @@ class ResultsModel(QAbstractTableModel):  # {{{
         if col == 1:
             t = book.title if book.title else _('Unknown')
             a = authors_to_string(book.authors) if book.authors else ''
-            return '<b>%s</b><br><i>%s</i>' % (t, a)
+            return '<b>{}</b><br><i>{}</i>'.format(t, a)
         if col == 2:
             d = format_date(book.pubdate, 'yyyy') if book.pubdate else _('Unknown')
             p = book.publisher if book.publisher else ''
-            return '<b>%s</b><br><i>%s</i>' % (d, p)
+            return '<b>{}</b><br><i>{}</i>'.format(d, p)
 
     def data(self, index, role):
         row, col = index.row(), index.column()
@@ -241,7 +240,7 @@ class ResultsView(QTableView):  # {{{
         self.resizeColumnsToContents()
 
     def resizeEvent(self, ev):
-        ret = super(ResultsView, self).resizeEvent(ev)
+        ret = super().resizeEvent(ev)
         self.resize_delegate()
         return ret
 

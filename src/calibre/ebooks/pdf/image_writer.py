@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2019, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -13,7 +12,7 @@ from calibre.utils.imghdr import identify
 from polyglot.builtins import as_unicode
 
 
-class PDFMetadata(object):  # {{{
+class PDFMetadata:  # {{{
 
     def __init__(self, mi=None):
         from calibre import force_unicode
@@ -91,7 +90,7 @@ def get_page_layout(opts, for_comic=False):
 # }}}
 
 
-class Image(object):  # {{{
+class Image:  # {{{
 
     def __init__(self, path_or_bytes):
         if not isinstance(path_or_bytes, bytes):

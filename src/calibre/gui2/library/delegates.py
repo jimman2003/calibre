@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -30,7 +29,7 @@ from calibre.gui2.languages import LanguagesEdit
 from polyglot.builtins import unicode_type
 
 
-class UpdateEditorGeometry(object):
+class UpdateEditorGeometry:
 
     def updateEditorGeometry(self, editor, option, index):
         if editor is None:

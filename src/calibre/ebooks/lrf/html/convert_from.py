@@ -1,4 +1,3 @@
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2008, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -86,7 +85,7 @@ def tag_regex(tagname):
                 close=r'</\s*%(t)s\s*>'%dict(t=tagname))
 
 
-class HTMLConverter(object):
+class HTMLConverter:
     SELECTOR_PAT   = re.compile(r"([A-Za-z0-9\-\_\:\.]+[A-Za-z0-9\-\_\:\.\s\,]*)\s*\{([^\}]*)\}")
     PAGE_BREAK_PAT = re.compile(r'page-break-(?:after|before)\s*:\s*(\w+)', re.IGNORECASE)
     IGNORED_TAGS   = (Comment, Declaration, ProcessingInstruction)
@@ -926,7 +925,7 @@ class HTMLConverter(object):
 
         try:
             im = PILImage.open(path)
-        except IOError as err:
+        except OSError as err:
             self.log.warning('Unable to process image: %s\n%s'%(original_path, err))
             return
         encoding = detect_encoding(im)
@@ -943,7 +942,7 @@ class HTMLConverter(object):
                 pt.close()
                 self.scaled_images[path] = pt
                 return pt.name
-            except (IOError, SystemError) as err:  # PIL chokes on interlaced PNG images as well a some GIF images
+            except (OSError, SystemError) as err:  # PIL chokes on interlaced PNG images as well a some GIF images
                 self.log.warning(
                     _('Unable to process image %(path)s. Error: %(err)s')%dict(
                         path=path, err=err))
@@ -990,7 +989,7 @@ class HTMLConverter(object):
                 path = pt.name
                 self.rotated_images[path] = pt
                 width, height = im.size
-            except IOError:  # PIL chokes on interlaced PNG files and since auto-rotation is not critical we ignore the error
+            except OSError:  # PIL chokes on interlaced PNG files and since auto-rotation is not critical we ignore the error
                 self.log.debug(_('Unable to process interlaced PNG %s')% original_path)
             finally:
                 pt.close()
@@ -1536,7 +1535,7 @@ class HTMLConverter(object):
                         if match and not re.match('avoid', match.group(1), re.IGNORECASE):
                             self.page_break_found = True
                         ncss, npcss = self.parse_css(src)
-                    except IOError:
+                    except OSError:
                         self.log.warn('Could not read stylesheet: '+tag['href'])
                 if ncss:
                     update_css(ncss, self.css)
@@ -1814,7 +1813,7 @@ def process_file(path, options, logger):
                 tf.close()
                 tim.save(tf.name)
                 tpath = tf.name
-            except IOError as err:  # PIL sometimes fails, for example on interlaced PNG files
+            except OSError as err:  # PIL sometimes fails, for example on interlaced PNG files
                 logger.warn(_('Could not read cover image: %s'), err)
                 options.cover = None
         else:

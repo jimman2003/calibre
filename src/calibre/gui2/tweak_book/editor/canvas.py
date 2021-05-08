@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -37,7 +36,7 @@ def painter(func):
     return ans
 
 
-class SelectionState(object):
+class SelectionState:
 
     __slots__ = ('last_press_point', 'current_mode', 'rect', 'in_selection', 'drag_corner', 'dragging', 'last_drag_pos')
 

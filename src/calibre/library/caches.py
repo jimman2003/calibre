@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -851,7 +850,7 @@ class ResultCache(SearchQueryParser):  # {{{
     def _build_restriction_string(self, restriction):
         if self.base_restriction:
             if restriction:
-                return '(%s) and (%s)' % (self.base_restriction, restriction)
+                return '({}) and ({})'.format(self.base_restriction, restriction)
             else:
                 return self.base_restriction
         else:
@@ -867,7 +866,7 @@ class ResultCache(SearchQueryParser):  # {{{
         else:
             q = query
             if search_restriction:
-                q = '(%s) and (%s)' % (search_restriction, query)
+                q = '({}) and ({})'.format(search_restriction, query)
         if not q:
             if set_restriction_count:
                 self.search_restriction_book_count = len(self._map)
@@ -906,7 +905,7 @@ class ResultCache(SearchQueryParser):  # {{{
         self.search_restriction_name = s
 
     def search_restriction_applied(self):
-        return bool(self.search_restriction) or bool((self.base_restriction))
+        return bool(self.search_restriction) or bool(self.base_restriction)
 
     def get_search_restriction_book_count(self):
         return self.search_restriction_book_count
@@ -1117,7 +1116,7 @@ class ResultCache(SearchQueryParser):  # {{{
             only_ids.sort(key=keyg)
 
 
-class SortKey(object):
+class SortKey:
 
     def __init__(self, orders, values):
         self.orders, self.values = orders, values
@@ -1148,7 +1147,7 @@ class SortKey(object):
         return self.compare_to_other(other) >= 0
 
 
-class SortKeyGenerator(object):
+class SortKeyGenerator:
 
     def __init__(self, fields, field_metadata, data, db_prefs):
         from calibre.utils.icu import sort_key

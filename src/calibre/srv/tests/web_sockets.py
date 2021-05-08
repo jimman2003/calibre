@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -28,7 +27,7 @@ Sec-WebSocket-Version: 13\r
 Frame = namedtuple('Frame', 'fin opcode payload')
 
 
-class WSClient(object):
+class WSClient:
 
     def __init__(self, port, timeout=5):
         self.timeout = timeout
@@ -77,7 +76,7 @@ class WSClient(object):
             return data[:max_amt + 1]
         try:
             return self.socket.recv(max_amt)
-        except socket.error as err:
+        except OSError as err:
             if err.errno != errno.ECONNRESET:
                 raise
             return b''
@@ -292,7 +291,7 @@ class WebSocketTest(BaseTest):
             simple_test([
                 {'opcode':TEXT, 'fin':0}, {'opcode':CONTINUATION, 'fin':0, 'payload':'x'}, {'opcode':CONTINUATION},], ['x'])
 
-            for q in (b'\xc2\xb5', b'\xce\xba\xe1\xbd\xb9\xcf\x83\xce\xbc\xce\xb5', "Hello-µ@ßöäüàá-UTF-8!!".encode('utf-8')):
+            for q in (b'\xc2\xb5', b'\xce\xba\xe1\xbd\xb9\xcf\x83\xce\xbc\xce\xb5', "Hello-µ@ßöäüàá-UTF-8!!".encode()):
                 frags = []
                 for i in range(len(q)):
                     b = q[i:i+1]

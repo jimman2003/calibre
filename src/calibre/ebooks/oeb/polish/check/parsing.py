@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -23,7 +22,7 @@ HTML_ENTITTIES = frozenset(html5_entities)
 XML_ENTITIES = {'lt', 'gt', 'amp', 'apos', 'quot'}
 ALL_ENTITIES = HTML_ENTITTIES | XML_ENTITIES
 
-replace_pat = re.compile('&(%s);' % '|'.join(re.escape(x) for x in sorted((HTML_ENTITTIES - XML_ENTITIES))))
+replace_pat = re.compile('&(%s);' % '|'.join(re.escape(x) for x in sorted(HTML_ENTITTIES - XML_ENTITIES)))
 mismatch_pat = re.compile(r'tag mismatch:.+?line (\d+).+?line \d+')
 
 
@@ -210,7 +209,7 @@ class NonUTF8(BaseError):
                 return True
 
 
-class EntitityProcessor(object):
+class EntitityProcessor:
 
     def __init__(self, mt):
         self.entities = ALL_ENTITIES if mt in OEB_DOCS else XML_ENTITIES
@@ -429,7 +428,7 @@ class BareTextInBody(BaseError):
         return True
 
 
-class ErrorHandler(object):
+class ErrorHandler:
 
     ' Replacement logger to get useful error/warning info out of css_parser during parsing '
 

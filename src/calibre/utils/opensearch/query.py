@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2006, Ed Summers <ehs@pobox.com>'
 __docformat__ = 'restructuredtext en'
@@ -8,7 +5,7 @@ __docformat__ = 'restructuredtext en'
 from polyglot.urllib import parse_qs, urlencode, urlparse, urlunparse
 
 
-class Query(object):
+class Query:
     '''
     Represents an opensearch query Really this class is just a
     helper for substituting values into the macros in a format.

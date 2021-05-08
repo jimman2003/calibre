@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -174,7 +173,7 @@ def read_font_cs(parent, dest, XPath, get):
 # }}}
 
 
-class RunStyle(object):
+class RunStyle:
 
     all_properties = {
         'b', 'bCs', 'caps', 'cs', 'dstrike', 'emboss', 'i', 'iCs', 'imprint',

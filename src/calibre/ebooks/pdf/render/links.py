@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -27,12 +26,12 @@ class Destination(Array):
                 q -= 1
         if q != pnum:
             current_log().warn('Could not find page {} for link destination, using page {} instead'.format(pnum, q))
-        super(Destination, self).__init__([
+        super().__init__([
             pref, Name('XYZ'), pos['left'], pos['top'], None
         ])
 
 
-class Links(object):
+class Links:
 
     def __init__(self, pdf, mark_links, page_size):
         self.anchors = {}

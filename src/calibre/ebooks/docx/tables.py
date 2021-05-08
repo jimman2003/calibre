@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -174,7 +173,7 @@ def clone(style):
     return ans
 
 
-class Style(object):
+class Style:
 
     is_bidi = False
 
@@ -375,7 +374,7 @@ class TableStyle(Style):
         return self._css
 
 
-class Table(object):
+class Table:
 
     def __init__(self, namespace, tbl, styles, para_map, is_sub_table=False):
         self.namespace = namespace
@@ -615,11 +614,9 @@ class Table(object):
                         tc.getparent().remove(tc)
 
     def __iter__(self):
-        for p in self.paragraphs:
-            yield p
+        yield from self.paragraphs
         for t in itervalues(self.sub_tables):
-            for p in t:
-                yield p
+            yield from t
 
     def apply_markup(self, rmap, page, parent=None):
         table = TABLE('\n\t\t')
@@ -670,7 +667,7 @@ class Table(object):
                 elem.set('class', self.styles.register(css, elem.tag))
 
 
-class Tables(object):
+class Tables:
 
     def __init__(self, namespace):
         self.tables = []

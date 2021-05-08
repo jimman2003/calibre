@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 """
@@ -82,7 +81,7 @@ def get_wordcount(text):
 
 def dict2obj(dictionary):
     """Transform a dictionary into an object"""
-    class Obj(object):
+    class Obj:
 
         def __init__(self, dictionary):
             self.__dict__.update(dictionary)

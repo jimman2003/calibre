@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -23,7 +22,7 @@ from polyglot.builtins import as_unicode
 PDFVER = b'%PDF-1.4'  # 1.4 is needed for XMP metadata
 
 
-class IndirectObjects(object):
+class IndirectObjects:
 
     def __init__(self):
         self._list = []
@@ -83,7 +82,7 @@ class IndirectObjects(object):
 class Page(Stream):
 
     def __init__(self, parentref, *args, **kwargs):
-        super(Page, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.page_dict = Dictionary({
             'Type': Name('Page'),
             'Parent': parentref,
@@ -152,7 +151,7 @@ class Page(Stream):
         return ret
 
 
-class Path(object):
+class Path:
 
     def __init__(self):
         self.ops = []
@@ -173,14 +172,14 @@ class Path(object):
 class Catalog(Dictionary):
 
     def __init__(self, pagetree):
-        super(Catalog, self).__init__({'Type':Name('Catalog'),
+        super().__init__({'Type':Name('Catalog'),
             'Pages': pagetree})
 
 
 class PageTree(Dictionary):
 
     def __init__(self, page_size):
-        super(PageTree, self).__init__({'Type':Name('Pages'),
+        super().__init__({'Type':Name('Pages'),
             'MediaBox':Array([0, 0, page_size[0], page_size[1]]),
             'Kids':Array(), 'Count':0,
         })
@@ -199,7 +198,7 @@ class PageTree(Dictionary):
             return -1
 
 
-class HashingStream(object):
+class HashingStream:
 
     def __init__(self, f):
         self.f = f
@@ -259,7 +258,7 @@ class Metadata(Stream):
         d['Subtype'] = Name('XML')
 
 
-class PDFStream(object):
+class PDFStream:
 
     PATH_OPS = {
         # stroke fill   fill-rule
@@ -278,7 +277,7 @@ class PDFStream(object):
         self.stream = HashingStream(stream)
         self.compress = compress
         self.write_line(PDFVER)
-        self.write_line(u'%íì¦"'.encode('utf-8'))
+        self.write_line('%íì¦"'.encode())
         creator = ('%s %s [https://calibre-ebook.com]'%(__appname__,
                                     __version__))
         self.write_line('%% Created by %s'%creator)

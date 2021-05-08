@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -163,7 +162,7 @@ class AddBrackets:
                 )
             self.__open_bracket = False
 
-        inline_string = ''.join(['%s<nu<%s\n' % (k, v)
+        inline_string = ''.join(['{}<nu<{}\n'.format(k, v)
                 for k, v in iteritems(self.__inline)
                     if v != 'false'])
         if inline_string:

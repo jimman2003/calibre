@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -126,7 +125,7 @@ def parse_text_formatting(text):
     return text, formats
 
 
-class Block(object):
+class Block:
 
     def __init__(self, text='', width=0, font=None, img=None, max_height=100, align=Qt.AlignmentFlag.AlignCenter):
         self.layouts = []
@@ -340,7 +339,7 @@ def color(color_theme, name):
 # Styles {{{
 
 
-class Style(object):
+class Style:
 
     TITLE_ALIGN = SUBTITLE_ALIGN = FOOTER_ALIGN = Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop
 
@@ -561,10 +560,10 @@ class Blocks(Style):
 
 
 def all_styles():
-    return set(
+    return {
         x.NAME for x in itervalues(globals()) if
         isinstance(x, type) and issubclass(x, Style) and x is not Style
-    )
+    }
 
 
 def load_styles(prefs, respect_disabled=True):
@@ -603,7 +602,7 @@ def generate_cover(mi, prefs=None, as_qimage=False):
         p.setPen(color)
         block.draw(p)
     p.end()
-    img.setText('Generated cover', '%s %s' % (__appname__, __version__))
+    img.setText('Generated cover', '{} {}'.format(__appname__, __version__))
     if as_qimage:
         return img
     return pixmap_to_data(img)
@@ -679,7 +678,7 @@ def calibre_cover2(title, author_string='', series_string='', prefs=None, as_qim
         p.setPen(color)
         block.draw(p)
     p.end()
-    img.setText('Generated cover', '%s %s' % (__appname__, __version__))
+    img.setText('Generated cover', '{} {}'.format(__appname__, __version__))
     if as_qimage:
         return img
     return pixmap_to_data(img)

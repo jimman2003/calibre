@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2011, John Schember <john at nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -21,7 +18,7 @@ from calibre.constants import DEBUG
 from polyglot.builtins import range, as_unicode, as_bytes, unicode_type, map
 
 
-class APNXBuilder(object):
+class APNXBuilder:
     '''
     Create an APNX file using a pseudo page mapping.
     '''

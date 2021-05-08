@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -384,7 +383,7 @@ class SavedSearchBox(QComboBox):  # {{{
             self.search_box.clear()
             self.setEditText(qname)
             return
-        self.search_box.set_search_string(u'search:"%s"' % qname, emit_changed=False)
+        self.search_box.set_search_string('search:"%s"' % qname, emit_changed=False)
         self.setEditText(qname)
         self.setToolTip(db.saved_search_lookup(qname))
 
@@ -458,7 +457,7 @@ class SavedSearchBox(QComboBox):  # {{{
     # }}}
 
 
-class SearchBoxMixin(object):  # {{{
+class SearchBoxMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass
@@ -545,7 +544,7 @@ class SearchBoxMixin(object):  # {{{
     # }}}
 
 
-class SavedSearchBoxMixin(object):  # {{{
+class SavedSearchBoxMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass

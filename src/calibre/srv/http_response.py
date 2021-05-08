@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -209,7 +208,7 @@ def get_range_parts(ranges, content_type, content_length):  # {{{
 # }}}
 
 
-class ETaggedFile(object):  # {{{
+class ETaggedFile:  # {{{
 
     def __init__(self, output, etag):
         self.output, self.etag = output, etag
@@ -219,7 +218,7 @@ class ETaggedFile(object):  # {{{
 # }}}
 
 
-class RequestData(object):  # {{{
+class RequestData:  # {{{
 
     cookies = {}
     username = None
@@ -301,7 +300,7 @@ class RequestData(object):  # {{{
 # }}}
 
 
-class ReadableOutput(object):
+class ReadableOutput:
 
     def __init__(self, output, etag=None, content_length=None):
         self.src_file = output
@@ -345,7 +344,7 @@ def dynamic_output(output, outheaders, etag=None):
     return ans
 
 
-class ETaggedDynamicOutput(object):
+class ETaggedDynamicOutput:
 
     def __init__(self, func, etag):
         self.func, self.etag = func, etag
@@ -354,7 +353,7 @@ class ETaggedDynamicOutput(object):
         return self.func()
 
 
-class GeneratedOutput(object):
+class GeneratedOutput:
 
     def __init__(self, output, etag=None):
         self.output = output
@@ -363,7 +362,7 @@ class GeneratedOutput(object):
         self.accept_ranges = False
 
 
-class StaticOutput(object):
+class StaticOutput:
 
     def __init__(self, data):
         if isinstance(data, unicode_type):
@@ -403,7 +402,7 @@ class HTTPConnection(HTTPRequest):
                 # Something bad happened, was the file modified on disk by
                 # another process?
                 self.use_sendfile = self.ready = False
-                raise IOError('sendfile() failed to write any bytes to the socket')
+                raise OSError('sendfile() failed to write any bytes to the socket')
         else:
             data = buf.read(min(limit, self.send_bufsize))
             sent = self.send(data)
@@ -432,7 +431,7 @@ class HTTPConnection(HTTPRequest):
             buf.append("Connection: close")
         if extra_headers is not None:
             for h, v in iteritems(extra_headers):
-                buf.append('%s: %s' % (h, v))
+                buf.append('{}: {}'.format(h, v))
         buf.append('')
         buf = [(x + '\r\n').encode('ascii') for x in buf]
         if self.method != 'HEAD':
@@ -526,7 +525,7 @@ class HTTPConnection(HTTPRequest):
 
         buf = [HTTP11 + (' %d ' % data.status_code) + http_client.responses[data.status_code]]
         for header, value in sorted(iteritems(outheaders), key=itemgetter(0)):
-            buf.append('%s: %s' % (header, value))
+            buf.append('{}: {}'.format(header, value))
         for morsel in itervalues(data.outcookie):
             morsel['version'] = '1'
             x = morsel.output()
@@ -550,7 +549,7 @@ class HTTPConnection(HTTPRequest):
         ff = self.forwarded_for
         if ff:
             ff = '[%s] ' % ff
-        line = '%s port-%s %s%s %s "%s" %s %s' % (
+        line = '{} port-{} {}{} {} "{}" {} {}'.format(
             self.remote_addr, self.remote_port, ff or '', username or '-',
             fast_now_strftime('%d/%b/%Y:%H:%M:%S %z'),
             force_unicode(self.request_line or '', 'utf-8'),

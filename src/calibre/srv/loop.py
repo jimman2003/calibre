@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -38,7 +37,7 @@ WAKEUP, JOB_DONE = b'\0', b'\x01'
 IPPROTO_IPV6 = getattr(socket, "IPPROTO_IPV6", 41)
 
 
-class ReadBuffer(object):  # {{{
+class ReadBuffer:  # {{{
 
     ' A ring buffer used to speed up the readline() implementation by minimizing recv() calls '
 
@@ -153,7 +152,7 @@ def is_ip_trusted(remote_addr, trusted_ips):
     return False
 
 
-class Connection(object):  # {{{
+class Connection:  # {{{
 
     def __init__(self, socket, opts, ssl_context, tdir, addr, pool, log, access_log, wakeup):
         self.opts, self.pool, self.log, self.wakeup, self.access_log = opts, pool, log, wakeup, access_log
@@ -192,7 +191,7 @@ class Connection(object):  # {{{
         if self.send_bufsize < DESIRED_SEND_BUFFER_SIZE:
             try:
                 self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, DESIRED_SEND_BUFFER_SIZE)
-            except socket.error:
+            except OSError:
                 pass
             else:
                 self.send_bufsize = self.socket.getsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF)
@@ -228,7 +227,7 @@ class Connection(object):  # {{{
             return ret
         except ssl.SSLWantWriteError:
             return 0
-        except socket.error as e:
+        except OSError as e:
             if e.errno in socket_errors_nonblocking or e.errno in socket_errors_eintr:
                 return 0
             elif e.errno in socket_errors_socket_closed:
@@ -255,7 +254,7 @@ class Connection(object):  # {{{
             return data
         except ssl.SSLWantReadError:
             return b''
-        except socket.error as e:
+        except OSError as e:
             if e.errno in socket_errors_nonblocking or e.errno in socket_errors_eintr:
                 return b''
             if e.errno in socket_errors_socket_closed:
@@ -280,7 +279,7 @@ class Connection(object):  # {{{
             return bytes_read
         except ssl.SSLWantReadError:
             return 0
-        except socket.error as e:
+        except OSError as e:
             if e.errno in socket_errors_nonblocking or e.errno in socket_errors_eintr:
                 return 0
             if e.errno in socket_errors_socket_closed:
@@ -298,7 +297,7 @@ class Connection(object):  # {{{
                 self.ready = False
         except ssl.SSLWantReadError:
             return
-        except socket.error as e:
+        except OSError as e:
             if e.errno in socket_errors_nonblocking or e.errno in socket_errors_eintr:
                 return
             if e.errno in socket_errors_socket_closed:
@@ -315,7 +314,7 @@ class Connection(object):  # {{{
             self.log.error('Error while reading SSL data from client: %s' % as_unicode(e))
             self.ready = False
             return
-        except socket.error as e:
+        except OSError as e:
             if e.errno in socket_errors_nonblocking or e.errno in socket_errors_eintr:
                 return
             if e.errno in socket_errors_socket_closed:
@@ -329,7 +328,7 @@ class Connection(object):  # {{{
         try:
             self.socket.shutdown(socket.SHUT_WR)
             self.socket.close()
-        except socket.error:
+        except OSError:
             pass
 
     def queue_job(self, func, *args):
@@ -365,7 +364,7 @@ class Connection(object):  # {{{
 # }}}
 
 
-class ServerLoop(object):
+class ServerLoop:
 
     LISTENING_MSG = 'calibre server listening on'
 
@@ -441,7 +440,7 @@ class ServerLoop(object):
             self.control_out.close()
 
     def __str__(self):
-        return "%s(%r)" % (self.__class__.__name__, self.bind_address)
+        return "{}({!r})".format(self.__class__.__name__, self.bind_address)
     __repr__ = __str__
 
     @property
@@ -469,27 +468,27 @@ class ServerLoop(object):
             af, socktype, proto, canonname, sa = res
             try:
                 self.bind(af, socktype, proto)
-            except socket.error as serr:
-                msg = "%s -- (%s: %s)" % (msg, sa, as_unicode(serr))
+            except OSError as serr:
+                msg = "{} -- ({}: {})".format(msg, sa, as_unicode(serr))
                 if self.socket:
                     self.socket.close()
                 self.socket = None
                 continue
             break
         if not self.socket:
-            raise socket.error(msg)
+            raise OSError(msg)
 
     def initialize_socket(self):
         if self.pre_activated_socket is None:
             try:
                 self.do_bind()
-            except socket.error as err:
+            except OSError as err:
                 if not self.opts.fallback_to_detected_interface:
                     raise
                 ip = get_external_ip()
                 if ip == self.bind_address[0]:
                     raise
-                self.log.warn('Failed to bind to %s with error: %s. Trying to bind to the default interface: %s instead' % (
+                self.log.warn('Failed to bind to {} with error: {}. Trying to bind to the default interface: {} instead'.format(
                     self.bind_address[0], as_unicode(err), ip))
                 self.bind_address = (ip, self.bind_address[1])
                 self.do_bind()
@@ -539,7 +538,7 @@ class ServerLoop(object):
                 self.bind_address[0] in ('::', '::0', '::0.0.0.0')):
             try:
                 self.socket.setsockopt(IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
-            except (AttributeError, socket.error):
+            except (AttributeError, OSError):
                 # Apparently, the socket option is not available in
                 # this machine's TCP stack
                 pass
@@ -597,7 +596,7 @@ class ServerLoop(object):
                 self.ready = False
                 self.log.error('Listening socket was unexpectedly terminated')
                 return
-            except (select.error, socket.error) as e:
+            except OSError as e:
                 # select.error has no errno attribute. errno is instead
                 # e.args[0]
                 if getattr(e, 'errno', e.args[0]) in socket_errors_eintr:
@@ -605,7 +604,7 @@ class ServerLoop(object):
                 for s, conn in tuple(iteritems(self.connection_map)):
                     try:
                         select.select([s], [], [], 0)
-                    except (select.error, socket.error) as e:
+                    except OSError as e:
                         if getattr(e, 'errno', e.args[0]) not in socket_errors_eintr:
                             self.close(s, conn)  # Bad socket, discard
                 return
@@ -695,7 +694,7 @@ class ServerLoop(object):
                 f = self.control_out.recv if iswindows else self.control_out.read
                 try:
                     c = f(1)
-                except (socket.error, OSError) as e:
+                except OSError as e:
                     if not self.ready:
                         return
                     self.log.error('Control connection raised an error:', e)
@@ -724,7 +723,7 @@ class ServerLoop(object):
             sock, addr = self.socket.accept()
             set_socket_inherit(sock, False), sock.setblocking(False)
             return sock, addr
-        except socket.error:
+        except OSError:
             return None, None
 
     def stop(self):

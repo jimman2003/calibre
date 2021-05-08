@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2009, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -8,7 +5,7 @@ __docformat__ = 'restructuredtext en'
 import os
 
 
-class TxtNewlines(object):
+class TxtNewlines:
 
     NEWLINE_TYPES = {
                         'system'  : os.linesep,

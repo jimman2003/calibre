@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2019, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -10,7 +9,7 @@ from itertools import count
 counter = count()
 
 
-class WebStoreDialog(object):
+class WebStoreDialog:
 
     def __init__(
         self, gui, base_url, parent=None, detail_url=None, create_browser=None

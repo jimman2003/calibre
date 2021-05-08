@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -30,7 +27,7 @@ def comparable_price(text):
         # remove all separators accept fraction,
         # leave only 2 digits in fraction
         m = re.sub(r'\.(?!\d*$)', r'', m)
-        text = '{0:0>8.0f}'.format(float(m) * 100.)
+        text = '{:0>8.0f}'.format(float(m) * 100.)
     return text
 
 
@@ -202,11 +199,11 @@ class Matches(QAbstractItemModel):
             if col == 1:
                 t = result.title if result.title else _('Unknown')
                 a = result.author if result.author else ''
-                return ('<b>%s</b><br><i>%s</i>' % (t, a))
+                return ('<b>{}</b><br><i>{}</i>'.format(t, a))
             elif col == 2:
                 return (result.price)
             elif col == 4:
-                return ('<span>%s<br>%s</span>' % (result.store_name, result.formats))
+                return ('<span>{}<br>{}</span>'.format(result.store_name, result.formats))
             return None
         elif role == Qt.ItemDataRole.DecorationRole:
             if col == 0 and result.cover_data:

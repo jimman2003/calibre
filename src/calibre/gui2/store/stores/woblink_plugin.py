@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 store_version = 15  # Needed for dynamic plugin loading
 
 __license__ = 'GPL 3'
@@ -106,8 +103,7 @@ class WoblinkStore(BasicStoreConfig, StorePlugin):
             d.exec_()
 
     def search(self, query, max_results=10, timeout=60):
-        for s in search(query, max_results, timeout):
-            yield s
+        yield from search(query, max_results, timeout)
 
 
 if __name__ == '__main__':

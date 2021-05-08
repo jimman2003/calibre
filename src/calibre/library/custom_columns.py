@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -17,7 +16,7 @@ from calibre.utils.config import tweaks
 from polyglot.builtins import unicode_type, string_or_bytes
 
 
-class CustomColumns(object):
+class CustomColumns:
 
     CUSTOM_DATA_TYPES = frozenset(['rating', 'text', 'comments', 'datetime',
         'int', 'float', 'bool', 'series', 'composite', 'enumeration'])
@@ -199,7 +198,7 @@ class CustomColumns(object):
             else:
                 is_category = False
             is_m = v['multiple_seps']
-            tn = 'custom_column_{0}'.format(v['num'])
+            tn = 'custom_column_{}'.format(v['num'])
             self.field_metadata.add_custom_field(label=v['label'],
                     table=tn, column='value', datatype=v['datatype'],
                     colnum=v['num'], name=v['name'], display=v['display'],
@@ -557,8 +556,8 @@ class CustomColumns(object):
             if not append or not data['is_multiple']:
                 self.conn.execute('DELETE FROM %s WHERE book=?'%lt, (id_,))
                 self.conn.execute(
-                '''DELETE FROM %s WHERE (SELECT COUNT(id) FROM %s WHERE
-                    value=%s.id) < 1''' % (table, lt, table))
+                '''DELETE FROM {} WHERE (SELECT COUNT(id) FROM {} WHERE
+                    value={}.id) < 1'''.format(table, lt, table))
                 self.data._data[id_][self.FIELD_MAP[data['num']]] = None
             set_val = val if data['is_multiple'] else [val]
             existing = getter()

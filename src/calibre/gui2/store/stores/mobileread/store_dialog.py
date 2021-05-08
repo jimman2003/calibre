@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-
 __license__ = 'GPL 3'
 __copyright__ = '2011, John Schember <john@nachtimwald.com>'
 __docformat__ = 'restructuredtext en'
@@ -40,7 +36,7 @@ class MobileReadStoreDialog(QDialog, Ui_Dialog):
         self.restore_state()
 
     def do_search(self):
-        self.results_view.model().search(type(u'')(self.search_query.text()))
+        self.results_view.model().search(type('')(self.search_query.text()))
 
     def open_store(self, index):
         result = self.results_view.model().get_book(index)

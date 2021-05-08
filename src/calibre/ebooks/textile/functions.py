@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 
 """
@@ -101,11 +100,11 @@ def getimagesize(url):
             p.feed(s)
             if p.image:
                 return 'width="%i" height="%i"' % p.image.size
-    except (IOError, ValueError):
+    except (OSError, ValueError):
         return None
 
 
-class Textile(object):
+class Textile:
     hlgn = r'(?:\<(?!>)|(?<!<)\>|\<\>|\=|[()]+(?! ))'
     vlgn = r'[\-^~]'
     clas = r'(?:\([^)]+\))'
@@ -113,8 +112,8 @@ class Textile(object):
     styl = r'(?:\{[^}]+\})'
     cspn = r'(?:\\\d+)'
     rspn = r'(?:\/\d+)'
-    a = r'(?:%s|%s)*' % (hlgn, vlgn)
-    s = r'(?:%s|%s)*' % (cspn, rspn)
+    a = r'(?:{}|{})*'.format(hlgn, vlgn)
+    s = r'(?:{}|{})*'.format(cspn, rspn)
     c = r'(?:%s)*' % '|'.join([clas, styl, lnge, hlgn])
 
     pnct = r'[-!"#$%&()*+,/:;<=>?@\'\[\\\]\.^_`{|}~]'
@@ -451,7 +450,7 @@ class Textile(object):
         tatts = self.pba(match.group(1), 'table')
         rows = []
         for row in [x for x in match.group(2).split('\n') if x]:
-            rmtch = re.search(r'^(%s%s\. )(.*)' % (self.a, self.c), row.lstrip())
+            rmtch = re.search(r'^({}{}\. )(.*)'.format(self.a, self.c), row.lstrip())
             if rmtch:
                 ratts = self.pba(rmtch.group(1), 'tr')
                 row = rmtch.group(2)
@@ -463,7 +462,7 @@ class Textile(object):
                 ctyp = 'd'
                 if re.search(r'^_', cell):
                     ctyp = "h"
-                cmtch = re.search(r'^(_?%s%s%s\. )(.*)' % (self.s, self.a, self.c), cell)
+                cmtch = re.search(r'^(_?{}{}{}\. )(.*)'.format(self.s, self.a, self.c), cell)
                 if cmtch:
                     catts = self.pba(cmtch.group(1), 'td')
                     cell = cmtch.group(2)
@@ -471,11 +470,11 @@ class Textile(object):
                     catts = ''
 
                 cell = self.graf(self.span(cell))
-                cells.append('\t\t\t<t%s%s>%s</t%s>' % (ctyp, catts, cell, ctyp))
-            rows.append("\t\t<tr%s>\n%s\n\t\t</tr>" % (ratts, '\n'.join(cells)))
+                cells.append('\t\t\t<t{}{}>{}</t{}>'.format(ctyp, catts, cell, ctyp))
+            rows.append("\t\t<tr{}>\n{}\n\t\t</tr>".format(ratts, '\n'.join(cells)))
             cells = []
             catts = None
-        return "\t<table%s>\n%s\n\t</table>\n\n" % (tatts, '\n'.join(rows))
+        return "\t<table{}>\n{}\n\t</table>\n\n".format(tatts, '\n'.join(rows))
 
     def lists(self, text):
         """
@@ -496,7 +495,7 @@ class Textile(object):
             except IndexError:
                 nextline = ''
 
-            m = re.search(r"^([#*]+)(%s%s) (.*)$" % (self.a, self.c), line, re.S)
+            m = re.search(r"^([#*]+)({}{}) (.*)$".format(self.a, self.c), line, re.S)
             if m:
                 tl, atts, content = m.groups()
                 nl = ''
@@ -506,7 +505,7 @@ class Textile(object):
                 if tl not in lists:
                     lists.append(tl)
                     atts = self.pba(atts)
-                    line = "\t<%sl%s>\n\t\t<li>%s" % (self.lT(tl), atts, self.graf(content))
+                    line = "\t<{}l{}>\n\t\t<li>{}".format(self.lT(tl), atts, self.graf(content))
                 else:
                     line = "\t\t<li>" + self.graf(content)
 
@@ -536,7 +535,7 @@ class Textile(object):
             content = re.sub(r'(.+)(?:(?<!<br>)|(?<!<br />))\n(?![#*\s|])', '\\1<br>', match.group(3))
         else:
             content = re.sub(r'(.+)(?:(?<!<br>)|(?<!<br />))\n(?![#*\s|])', '\\1<br />', match.group(3))
-        return '<%s%s>%s%s' % (match.group(1), match.group(2), content, match.group(4))
+        return '<{}{}>{}{}'.format(match.group(1), match.group(2), content, match.group(4))
 
     def block(self, text, head_offset=0):
         """
@@ -557,7 +556,7 @@ class Textile(object):
 
         anon = False
         for line in text:
-            pattern = r'^(%s)(%s%s)\.(\.?)(?::(\S+))? (.*)$' % (tre, self.a, self.c)
+            pattern = r'^({})({}{})\.(\.?)(?::(\S+))? (.*)$'.format(tre, self.a, self.c)
             match = re.search(pattern, line, re.S)
             if match:
                 if ext:
@@ -576,9 +575,9 @@ class Textile(object):
                 # we'll close it at the start of the next block
 
                 if ext:
-                    line = "%s%s%s%s" % (o1, o2, content, c2)
+                    line = "{}{}{}{}".format(o1, o2, content, c2)
                 else:
-                    line = "%s%s%s%s%s" % (o1, o2, content, c2, c1)
+                    line = "{}{}{}{}{}".format(o1, o2, content, c2, c1)
 
             else:
                 anon = True
@@ -590,7 +589,7 @@ class Textile(object):
                     if tag == 'p' and not self.hasRawText(content):
                         line = content
                     else:
-                        line = "%s%s%s" % (o2, content, c2)
+                        line = "{}{}{}".format(o2, content, c2)
                 else:
                     line = self.graf(line)
 
@@ -649,7 +648,7 @@ class Textile(object):
                 cite = ' cite="%s"' % cite
             else:
                 cite = ''
-            o1 = "\t<blockquote%s%s>\n" % (cite, atts)
+            o1 = "\t<blockquote{}{}>\n".format(cite, atts)
             o2 = "\t\t<p%s>" % atts
             c2 = "</p>"
             c1 = "\n\t</blockquote>"
@@ -673,7 +672,7 @@ class Textile(object):
             c1 = '</pre>'
 
         else:
-            o2 = "\t<%s%s>" % (tag, atts)
+            o2 = "\t<{}{}>".format(tag, atts)
             c2 = "</%s>" % tag
 
         content = self.graf(content)
@@ -694,7 +693,7 @@ class Textile(object):
         fnid = self.fn[id]
         if not t:
             t = ''
-        return '<sup class="footnote"><a href="#fn%s">%s</a></sup>%s' % (fnid, id, t)
+        return '<sup class="footnote"><a href="#fn{}">{}</a></sup>{}'.format(fnid, id, t)
 
     def glyphs(self, text):
         """
@@ -862,9 +861,9 @@ class Textile(object):
         punct = '!"#$%&\'*+,-./:;=?@\\^_`|~'
 
         pattern = r'''
-            (?P<pre>    [\s\[{(]|[%s]   )?
+            (?P<pre>    [\s\[{{(]|[{}]   )?
             "                          # start
-            (?P<atts>   %s       )
+            (?P<atts>   {}       )
             (?P<text>   [^"]+?   )
             \s?
             (?:   \(([^)]+?)\)(?=")   )?     # $title
@@ -872,7 +871,7 @@ class Textile(object):
             (?P<url>    (?:ftp|https?)? (?: :// )? [-A-Za-z0-9+&@#/?=~_()|!:,.;]*[-A-Za-z0-9+&@#/=~_()|]   )
             (?P<post>   [^\w\/;]*?   )
             (?=<|\s|$)
-        ''' % (re.escape(punct), self.c)
+        '''.format(re.escape(punct), self.c)
 
         text = re.compile(pattern, re.X).sub(self.fLink, text)
 
@@ -903,7 +902,7 @@ class Textile(object):
         text = self.glyphs(text)
 
         url = self.relURL(url)
-        out = '<a href="%s"%s%s>%s</a>' % (self.encode_html(url), atts, self.rel, text)
+        out = '<a href="{}"{}{}>{}</a>'.format(self.encode_html(url), atts, self.rel, text)
         out = self.shelve(out)
         return ''.join([pre, out, post])
 
@@ -953,7 +952,7 @@ class Textile(object):
 
         content = self.span(content)
 
-        out = "<%s%s>%s%s</%s>" % (tag, atts, content, end, tag)
+        out = "<{}{}>{}{}</{}>".format(tag, atts, content, end, tag)
         return out
 
     def image(self, text):
@@ -982,7 +981,7 @@ class Textile(object):
         atts  = self.pba(atts)
 
         if title:
-            atts = atts + ' title="%s" alt="%s"' % (title, title)
+            atts = atts + ' title="{}" alt="{}"'.format(title, title)
         else:
             atts = atts + ' alt=""'
 
@@ -1001,9 +1000,9 @@ class Textile(object):
         if href:
             out.append('<a href="%s" class="img">' % href)
         if self.html_type == 'html':
-            out.append('<img src="%s"%s>' % (url, atts))
+            out.append('<img src="{}"{}>'.format(url, atts))
         else:
-            out.append('<img src="%s"%s />' % (url, atts))
+            out.append('<img src="{}"{} />'.format(url, atts))
         if href:
             out.append('</a>')
 
@@ -1036,7 +1035,7 @@ class Textile(object):
     def doSpecial(self, text, start, end, method=None):
         if method is None:
             method = self.fSpecial
-        pattern = re.compile(r'(^|\s|[\[({>])%s(.*?)%s(\s|$|[\])}])?' % (re.escape(start), re.escape(end)), re.M|re.S)
+        pattern = re.compile(r'(^|\s|[\[({{>]){}(.*?){}(\s|$|[\])}}])?'.format(re.escape(start), re.escape(end)), re.M|re.S)
         return pattern.sub(method, text)
 
     def fSpecial(self, match):

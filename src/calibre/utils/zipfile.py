@@ -1,4 +1,3 @@
-
 """
 Read and write ZIP files. Modified by Kovid Goyal to support replacing files in
 a zip archive, detecting filename encoding, updating zip files, etc.
@@ -181,7 +180,7 @@ def _check_zipfile(fp):
     try:
         if _EndRecData(fp):
             return True         # file has correct magic number
-    except IOError:
+    except OSError:
         pass
     return False
 
@@ -198,7 +197,7 @@ def is_zipfile(filename):
         else:
             with open(filename, "rb") as fp:
                 result = _check_zipfile(fp)
-    except IOError:
+    except OSError:
         pass
     return result
 
@@ -209,7 +208,7 @@ def _EndRecData64(fpin, offset, endrec):
     """
     try:
         fpin.seek(offset - sizeEndCentDir64Locator, 2)
-    except IOError:
+    except OSError:
         # If the seek fails, the file is not large enough to contain a ZIP64
         # end-of-archive record, so just return the end record we were given.
         return endrec
@@ -257,7 +256,7 @@ def _EndRecData(fpin):
     # file if this is the case).
     try:
         fpin.seek(-sizeEndCentDir, 2)
-    except IOError:
+    except OSError:
         return None
     data = fpin.read()
     if data[0:4] == stringEndArchive and data[-2:] == b"\000\000":
@@ -301,7 +300,7 @@ def _EndRecData(fpin):
     return
 
 
-class ZipInfo (object):
+class ZipInfo :
 
     """Class with attributes describing each file in the ZIP archive."""
 
@@ -760,7 +759,7 @@ class ZipFile:
             modeDict = {'r' : 'rb', 'w': 'wb', 'a' : 'r+b'}
             try:
                 self.fp = open(file, modeDict[mode])
-            except IOError:
+            except OSError:
                 if mode == 'a':
                     mode = key = 'w'
                     self.fp = open(file, modeDict[mode])
@@ -819,7 +818,7 @@ class ZipFile:
         fp = self.fp
         try:
             endrec = _EndRecData(fp)
-        except IOError:
+        except OSError:
             raise BadZipfile("File is not a zip file")
         if not endrec:
             raise BadZipfile("File is not a zip file")
@@ -899,7 +898,7 @@ class ZipFile:
             fname = decode_zip_internal_file_name(fname, zip_info.flag_bits)
             if fname != zip_info.orig_filename:
                 raise RuntimeError(
-                      'File name in directory "%s" and header "%s" differ.' % (
+                      'File name in directory "{}" and header "{}" differ.'.format(
                           zip_info.orig_filename, fname))
 
             zip_info.file_offset = file_offset
@@ -970,7 +969,7 @@ class ZipFile:
 
     def printdir(self):
         """Print a table of contents for the zip file."""
-        print("%-46s %19s %12s" % ("File Name", "Modified    ", "Size"))
+        print("{:<46} {:>19} {:>12}".format("File Name", "Modified    ", "Size"))
         for zinfo in self.filelist:
             date = "%d-%02d-%02d %02d:%02d:%02d" % zinfo.date_time[:6]
             print("%-46s %s %12d" % (zinfo.filename, date, zinfo.file_size))
@@ -1547,7 +1546,7 @@ class PyZipFile(ZipFile):
             if os.path.isfile(initname):
                 # This is a package directory, add it
                 if basename:
-                    basename = "%s/%s" % (basename, name)
+                    basename = "{}/{}".format(basename, name)
                 else:
                     basename = name
                 if self.debug:
@@ -1621,7 +1620,7 @@ class PyZipFile(ZipFile):
             fname = file_pyc
         archivename = os.path.split(fname)[1]
         if basename:
-            archivename = "%s/%s" % (basename, archivename)
+            archivename = "{}/{}".format(basename, archivename)
         return (fname, archivename)
 
 

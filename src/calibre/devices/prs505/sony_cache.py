@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -89,7 +88,7 @@ def uuid():
 # }}}
 
 
-class XMLCache(object):
+class XMLCache:
 
     def __init__(self, paths, ext_paths, prefixes, use_author_sort):
         from calibre.utils.xml_parse import safe_xml_fromstring
@@ -759,7 +758,7 @@ class XMLCache(object):
         return m
 
     def book_by_lpath(self, lpath, root):
-        matches = root.xpath(u'//*[local-name()="text" and @path="%s"]'%lpath)
+        matches = root.xpath('//*[local-name()="text" and @path="%s"]'%lpath)
         if matches:
             return matches[0]
 

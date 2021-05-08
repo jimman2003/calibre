@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal kovid@kovidgoyal.net'
 __docformat__ = 'restructuredtext en'
@@ -223,7 +221,7 @@ def render_pages(tasks, dest, opts, notification=lambda x, y: x):
     return pages, failures
 
 
-class Progress(object):
+class Progress:
 
     def __init__(self, total, update):
         self.total  = total

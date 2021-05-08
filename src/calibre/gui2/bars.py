@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -607,7 +606,7 @@ else:
 # }}}
 
 
-class AdaptMenuBarForDialog(object):
+class AdaptMenuBarForDialog:
 
     def __init__(self, menu_bar):
         self.menu_bar = menu_bar
@@ -646,8 +645,7 @@ class BarsManager(QObject):
 
     @property
     def bars(self):
-        for x in self.main_bars + self.child_bars:
-            yield x
+        yield from self.main_bars + self.child_bars
 
     @property
     def showing_donate(self):

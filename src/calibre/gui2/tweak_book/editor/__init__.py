@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -57,7 +56,7 @@ def syntax_text_char_format(*args):
     return ans
 
 
-class StoreLocale(object):
+class StoreLocale:
 
     __slots__ = ('enabled',)
 

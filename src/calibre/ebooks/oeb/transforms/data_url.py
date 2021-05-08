@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -10,7 +9,7 @@ from calibre.ebooks.oeb.base import XPath, urlunquote
 from polyglot.builtins import as_bytes
 
 
-class DataURL(object):
+class DataURL:
 
     def __call__(self, oeb, opts):
         from calibre.utils.imghdr import what

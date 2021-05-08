@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -29,7 +28,7 @@ DBPATH = 'Sony_Reader/database/books.db'
 THUMBPATH = 'Sony_Reader/database/cache/books/%s/thumbnail/main_thumbnail.jpg'
 
 
-class ImageWrapper(object):
+class ImageWrapper:
 
     def __init__(self, image_path):
         self.image_path = image_path
@@ -199,7 +198,7 @@ class PRST1(USBMS):
                 for i, row in enumerate(cursor):
                     try:
                         comp_date = int(os.path.getmtime(self.normalize_path(prefix + row[0])) * 1000)
-                    except (OSError, IOError, TypeError):
+                    except (OSError, TypeError):
                         # In case the db has incorrect path info
                         continue
                     device_date = int(row[1])

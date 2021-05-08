@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -103,7 +102,7 @@ class Catalog(QDialog, Ui_Dialog):
         self.widgets = sorted(self.widgets, key=lambda x: x.TITLE)
 
         # Generate a sorted list of installed catalog formats/sync_enabled pairs
-        fmts = sorted((x[0] for x in self.fmts))
+        fmts = sorted(x[0] for x in self.fmts)
 
         self.sync_enabled_formats = []
         for fmt in self.fmts:

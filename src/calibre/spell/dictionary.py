@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2014, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -30,7 +29,7 @@ dprefs.defaults['user_dictionaries'] = [{'name':_('Default'), 'is_active':True, 
 not_present = object()
 
 
-class UserDictionary(object):
+class UserDictionary:
 
     __slots__ = ('name', 'is_active', 'words')
 
@@ -176,7 +175,7 @@ def load_dictionary(dictionary):
     return LoadedDictionary(dictionary.primary_locale, dictionary.locales, obj, dictionary.builtin, dictionary.name, dictionary.id)
 
 
-class Dictionaries(object):
+class Dictionaries:
 
     def __init__(self):
         self.remove_hyphenation = re.compile('[\u2010-]+')
@@ -215,7 +214,7 @@ class Dictionaries(object):
                                 ans.obj.add(word)
                             except Exception:
                                 # not critical since all it means is that the word wont show up in suggestions
-                                prints('Failed to add the word %r to the dictionary for %s' % (word, locale), file=sys.stderr)
+                                prints('Failed to add the word {!r} to the dictionary for {}'.format(word, locale), file=sys.stderr)
             self.dictionaries[locale] = ans
         return ans
 

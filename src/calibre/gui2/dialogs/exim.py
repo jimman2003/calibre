@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -37,7 +36,7 @@ def disk_usage(path_to_dir, abort=None):
                 if stat.S_ISDIR(r.st_mode):
                     stack.append(cpath)
                 ans += r.st_size
-        except EnvironmentError:
+        except OSError:
             pass
     return ans
 

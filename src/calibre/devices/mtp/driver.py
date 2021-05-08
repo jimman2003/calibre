@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -535,7 +534,7 @@ class MTP_DEVICE(BASE):
         cw.commit()
 
     def settings(self):
-        class Opts(object):
+        class Opts:
 
             def __init__(s):
                 s.format_map = self.get_pref('format_map')

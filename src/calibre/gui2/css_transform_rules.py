@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -234,7 +233,7 @@ class Tester(Dialog):  # {{{
         css = decl.cssText
         if isinstance(css, bytes):
             css = css.decode('utf-8')
-        self.result.load_text('/* %s */\n\n%s' % (_('Resulting stylesheet'), css), 'css')
+        self.result.load_text('/* {} */\n\n{}'.format(_('Resulting stylesheet'), css), 'css')
 
     def sizeHint(self):
         return QSize(800, 600)

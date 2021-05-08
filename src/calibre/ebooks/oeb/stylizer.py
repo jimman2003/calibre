@@ -1,6 +1,3 @@
-# -*- encoding: utf-8 -*-
-
-
 '''
 CSS property propagation class.
 '''
@@ -97,7 +94,7 @@ def test_media_ok():
     assert not media_ok('screen and (device-width:10px)')
 
 
-class StylizerRules(object):
+class StylizerRules:
 
     def __init__(self, opts, profile, stylesheets):
         self.opts, self.profile, self.stylesheets = opts, profile, stylesheets
@@ -183,7 +180,7 @@ class StylizerRules(object):
         return True
 
 
-class Stylizer(object):
+class Stylizer:
     STYLESHEETS = WeakKeyDictionary()
 
     def __init__(self, tree, path, oeb, opts, profile=None,
@@ -306,7 +303,7 @@ class Stylizer(object):
             try:
                 matches = tuple(select(text))
             except SelectorError as err:
-                self.logger.error('Ignoring CSS rule with invalid selector: %r (%s)' % (text, as_unicode(err)))
+                self.logger.error('Ignoring CSS rule with invalid selector: {!r} ({})'.format(text, as_unicode(err)))
                 continue
 
             if fl is not None:
@@ -397,11 +394,11 @@ class Stylizer(object):
                 size = float(style['font-size'][:-2])
                 style['font-size'] = "%.2fpt" % (size * font_scale)
             style = ';\n    '.join(': '.join(item) for item in style.items())
-            rules.append('%s {\n    %s;\n}' % (selector, style))
+            rules.append('{} {{\n    {};\n}}'.format(selector, style))
         return '\n'.join(rules)
 
 
-class Style(object):
+class Style:
     MS_PAT = re.compile(r'^\s*(mso-|panose-|text-underline|tab-interval)')
 
     def __init__(self, element, stylizer):
@@ -788,7 +785,7 @@ class Style(object):
 
     def __str__(self):
         items = sorted(iteritems(self._style))
-        return '; '.join("%s: %s" % (key, val) for key, val in items)
+        return '; '.join("{}: {}".format(key, val) for key, val in items)
 
     def cssdict(self):
         return dict(self._style)

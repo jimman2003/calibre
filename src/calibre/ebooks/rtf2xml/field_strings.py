@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -216,10 +215,10 @@ class FieldStrings:
             the_list = action(field_name, name, changed_string)
         else:
             # change -1 to 0--for now, I want users to report bugs
-            msg = 'no key for "%s" "%s"\n' % (field_name, changed_string)
+            msg = 'no key for "{}" "{}"\n'.format(field_name, changed_string)
             sys.stderr.write(msg)
             if self.__run_level > 3:
-                msg = 'no key for "%s" "%s"\n' % (field_name, changed_string)
+                msg = 'no key for "{}" "{}"\n'.format(field_name, changed_string)
                 raise self.__bug_handler(msg)
             the_list = self.__fall_back_func(field_name, line)
             return the_list
@@ -603,7 +602,7 @@ class FieldStrings:
         """
         fields = line.split()
         label = fields[1]
-        my_string = '%s<label>%s' % (name, label)
+        my_string = '{}<label>{}'.format(name, label)
         return [None, None, my_string]
 
     def __ta_func(self, field_name, name, line):

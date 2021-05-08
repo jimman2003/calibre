@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -82,7 +81,7 @@ def parse_indx_header(data):
     return ans
 
 
-class CNCX(object):  # {{{
+class CNCX:  # {{{
 
     '''
     Parses the records that contain the compiled NCX (all strings from the
@@ -241,12 +240,12 @@ def parse_index_record(table, data, control_byte_count, tags, codec,
             ident, consumed = decode_string(rec, codec=codec, ordt_map=ordt_map)
         except UnicodeDecodeError:
             ident, consumed = decode_string(rec, codec='utf-16', ordt_map=ordt_map)
-        if u'\x00' in ident:
+        if '\x00' in ident:
             try:
                 ident, consumed = decode_string(rec, codec='utf-16',
                         ordt_map=ordt_map)
             except UnicodeDecodeError:
-                ident = ident.replace('u\x00', u'')
+                ident = ident.replace('u\x00', '')
         rec = rec[consumed:]
         tag_map = get_tag_map(control_byte_count, tags, rec, strict=strict)
         table[ident] = tag_map

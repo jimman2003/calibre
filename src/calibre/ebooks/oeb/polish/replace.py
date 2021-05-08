@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -19,7 +18,7 @@ from calibre.ebooks.oeb.polish.utils import extract
 from polyglot.urllib import urlparse, urlunparse
 
 
-class LinkReplacer(object):
+class LinkReplacer:
 
     def __init__(self, base, container, link_map, frag_map):
         self.base = base
@@ -52,7 +51,7 @@ class LinkReplacer(object):
         return href
 
 
-class IdReplacer(object):
+class IdReplacer:
 
     def __init__(self, base, container, id_map):
         self.base, self.container, self.replaced = base, container, False
@@ -82,7 +81,7 @@ class IdReplacer(object):
         return href
 
 
-class LinkRebaser(object):
+class LinkRebaser:
 
     def __init__(self, container, old_name, new_name):
         self.old_name, self.new_name = old_name, new_name
@@ -273,7 +272,7 @@ def normalize_case(container, val):
     def safe_listdir(x):
         try:
             return os.listdir(x)
-        except EnvironmentError:
+        except OSError:
             return ()
 
     parts = val.split('/')

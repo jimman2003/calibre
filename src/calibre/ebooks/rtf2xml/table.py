@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -351,7 +350,7 @@ class Table:
             cell_dict = self.__cell_list[0]
             keys = cell_dict.keys()
             for key in keys:
-                self.__write_obj.write('<%s>%s' % (key, cell_dict[key]))
+                self.__write_obj.write('<{}>{}'.format(key, cell_dict[key]))
             self.__write_obj.write('\n')
             # self.__cell_list.pop()
             self.__cell_list.pop(0)
@@ -375,7 +374,7 @@ class Table:
         self.__write_obj.write('mi<tg<open-att__<row')
         keys = self.__row_dict.keys()
         for key in keys:
-            self.__write_obj.write('<%s>%s' % (key, self.__row_dict[key]))
+            self.__write_obj.write('<{}>{}'.format(key, self.__row_dict[key]))
         self.__write_obj.write('\n')
         self.__cells_in_row = 0
         self.__rows_in_table += 1
@@ -508,7 +507,7 @@ class Table:
             cell_dict = self.__cell_list[-1]
             keys = cell_dict.keys()
             for key in keys:
-                self.__write_obj.write('<%s>%s' % (key, cell_dict[key]))
+                self.__write_obj.write('<{}>{}'.format(key, cell_dict[key]))
             self.__write_obj.write('\n')
         else:
             self.__write_obj.write('mi<tg<empty_____<cell\n')

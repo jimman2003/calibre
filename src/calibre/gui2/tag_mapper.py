@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -257,7 +256,7 @@ class Delegate(QStyledItemDelegate):
         QStyledItemDelegate.paint(self, painter, option, index)
         pal = option.palette
         color = pal.color(QPalette.ColorRole.HighlightedText if option.state & QStyle.StateFlag.State_Selected else QPalette.ColorRole.Text).name()
-        text = '<div style="color:%s">%s</div>' % (color, index.data(RENDER_ROLE))
+        text = '<div style="color:{}">{}</div>'.format(color, index.data(RENDER_ROLE))
         st = QStaticText(text)
         st.setTextWidth(option.rect.width())
         painter.drawStaticText(option.rect.left() + self.MARGIN // 2, option.rect.top() + self.MARGIN // 2, st)
@@ -431,7 +430,7 @@ class Tester(Dialog):
         return ans
 
 
-class SaveLoadMixin(object):
+class SaveLoadMixin:
 
     def save_ruleset(self):
         if not self.rules:

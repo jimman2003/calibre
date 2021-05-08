@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPL v3 Copyright: 2018, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -46,7 +45,7 @@ def book_hash(path, size, mtime):
 def safe_makedirs(path):
     try:
         os.makedirs(path)
-    except EnvironmentError as err:
+    except OSError as err:
         if err.errno != errno.EEXIST:
             raise
     return path
@@ -61,7 +60,7 @@ def robust_rmtree(x):
             except UnicodeDecodeError:
                 rmtree(as_bytes(x))
             return True
-        except EnvironmentError:
+        except OSError:
             time.sleep(0.1)
     return False
 
@@ -72,7 +71,7 @@ def robust_rename(a, b):
         try:
             os.rename(a, b)
             return True
-        except EnvironmentError:
+        except OSError:
             time.sleep(0.1)
     return False
 

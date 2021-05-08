@@ -1,7 +1,5 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 store_version = 16  # Needed for dynamic plugin loading
 
@@ -103,8 +101,7 @@ class AmazonKindleStore(StorePlugin):
         open_url(QUrl(store_link))
 
     def search(self, query, max_results=10, timeout=60):
-        for result in search_amazon(query, max_results=max_results, timeout=timeout):
-            yield result
+        yield from search_amazon(query, max_results=max_results, timeout=timeout)
 
     def get_details(self, search_result, timeout):
         url = DETAILS_URL

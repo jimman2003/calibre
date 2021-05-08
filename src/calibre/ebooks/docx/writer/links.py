@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -27,7 +26,7 @@ def start_text(tag, prefix_len=0, top_level=True):
     return ans
 
 
-class TOCItem(object):
+class TOCItem:
 
     def __init__(self, title, bmark, level):
         self.title, self.bmark, self.level = title, bmark, level
@@ -65,7 +64,7 @@ def sanitize_bookmark_name(base):
     return re.sub(r'[^0-9a-zA-Z]', '_', ascii_text(base))[:32].rstrip('_')
 
 
-class LinksManager(object):
+class LinksManager:
 
     def __init__(self, namespace, document_relationships, log):
         self.namespace = namespace

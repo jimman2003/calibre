@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -73,14 +72,14 @@ def read_images_from_folder(path):
     return name_map
 
 
-class Theme(object):
+class Theme:
 
     def __init__(self, title='', author='', version=-1, description='', license='Unknown', url=None, cover=None):
         self.title, self.author, self.version, self.description = title, author, version, description
         self.license, self.cover, self.url = license, cover, url
 
 
-class Report(object):
+class Report:
 
     def __init__(self, path, name_map, extra, missing, theme):
         self.path, self.name_map, self.extra, self.missing, self.theme = path, name_map, extra, missing, theme
@@ -104,7 +103,7 @@ def read_theme_from_folder(path):
     try:
         with open(os.path.join(path, THEME_METADATA), 'rb') as f:
             metadata = json.load(f)
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno != errno.ENOENT:
             raise
         metadata = {}
@@ -124,7 +123,7 @@ def read_theme_from_folder(path):
     try:
         with open(os.path.join(path, THEME_COVER), 'rb') as f:
             theme.cover = f.read()
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno != errno.ENOENT:
             raise
         theme.cover = create_cover(ans)
@@ -450,7 +449,7 @@ def get_cover(metadata):
     cdir = os.path.join(cache_dir(), 'icon-theme-covers')
     try:
         os.makedirs(cdir)
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno != errno.EEXIST:
             raise
 
@@ -462,7 +461,7 @@ def get_cover(metadata):
         try:
             with open(path, 'rb') as f:
                 return f.read()
-        except EnvironmentError as e:
+        except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
         return b''
@@ -673,7 +672,7 @@ class ChooseTheme(Dialog):
             self.themes.sort(key=lambda x:self.usage.get(x.get('name'), 0), reverse=True)
         self.theme_list.clear()
         for theme in self.themes:
-            i = QListWidgetItem(theme.get('title', '') + ' %s %s' % (theme.get('number'), self.usage.get(theme.get('name'))), self.theme_list)
+            i = QListWidgetItem(theme.get('title', '') + ' {} {}'.format(theme.get('number'), self.usage.get(theme.get('name'))), self.theme_list)
             i.setData(Qt.ItemDataRole.UserRole, theme)
             if 'cover-pixmap' in theme:
                 i.setData(Qt.ItemDataRole.DecorationRole, theme['cover-pixmap'])
@@ -808,14 +807,14 @@ def remove_icon_theme():
     try:
         with open(metadata_file, 'rb') as f:
             metadata = json.load(f)
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno != errno.ENOENT:
             raise
         return
     for name in metadata['files']:
         try:
             os.remove(os.path.join(icdir, *name.split('/')))
-        except EnvironmentError as e:
+        except OSError as e:
             if e.errno != errno.ENOENT:
                 raise
     os.remove(metadata_file)

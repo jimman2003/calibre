@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -70,8 +69,7 @@ class MultiDict(dict):  # {{{
         f = dict.values
         for v in f(self):
             if duplicates:
-                for x in v:
-                    yield x
+                yield from v
             else:
                 yield v[-1]
     itervalues = values
@@ -100,12 +98,12 @@ class MultiDict(dict):  # {{{
         return ans if all else ans[-1]
 
     def __repr__(self):
-        return '{' + ', '.join('%s: %s' % (reprlib.repr(k), reprlib.repr(v)) for k, v in iteritems(self)) + '}'
+        return '{' + ', '.join('{}: {}'.format(reprlib.repr(k), reprlib.repr(v)) for k, v in iteritems(self)) + '}'
     __str__ = __unicode__ = __repr__
 
     def pretty(self, leading_whitespace=''):
         return leading_whitespace + ('\n' + leading_whitespace).join(
-            '%s: %s' % (k, (repr(v) if isinstance(v, bytes) else v)) for k, v in sorted(self.items(), key=itemgetter(0)))
+            '{}: {}'.format(k, (repr(v) if isinstance(v, bytes) else v)) for k, v in sorted(self.items(), key=itemgetter(0)))
 # }}}
 
 
@@ -235,7 +233,7 @@ def eintr_retry_call(func, *args, **kwargs):
     while True:
         try:
             return func(*args, **kwargs)
-        except EnvironmentError as e:
+        except OSError as e:
             if getattr(e, 'errno', None) in socket_errors_eintr:
                 continue
             raise
@@ -271,7 +269,7 @@ class ServerLog(ThreadSafeLog):
     exception_traceback_level = ThreadSafeLog.WARN
 
 
-class RotatingStream(object):
+class RotatingStream:
 
     def __init__(self, filename, max_size=None, history=5):
         self.filename, self.history, self.max_size = filename, history, max_size
@@ -287,7 +285,7 @@ class RotatingStream(object):
             self.stream = open(os.open(self.filename, os.O_WRONLY|os.O_APPEND|os.O_CREAT|os.O_CLOEXEC), 'w')
         try:
             self.stream.tell()
-        except EnvironmentError:
+        except OSError:
             # Happens if filename is /dev/stdout for example
             self.max_size = None
 
@@ -306,7 +304,7 @@ class RotatingStream(object):
                 winutil.move_file(src, dest)
             else:
                 os.rename(src, dest)
-        except EnvironmentError as e:
+        except OSError as e:
             if e.errno != errno.ENOENT:  # the source of the rename does not exist
                 raise
 
@@ -327,13 +325,13 @@ class RotatingStream(object):
         failed = {}
         try:
             os.remove(self.filename)
-        except EnvironmentError as e:
+        except OSError as e:
             failed[self.filename] = e
         import glob
         for f in glob.glob(self.filename + '.*'):
             try:
                 os.remove(f)
-            except EnvironmentError as e:
+            except OSError as e:
                 failed[f] = e
         self.set_output()
         return failed
@@ -351,7 +349,7 @@ class RotatingLog(ServerLog):
 # }}}
 
 
-class HandleInterrupt(object):  # {{{
+class HandleInterrupt:  # {{{
 
     # On windows socket functions like accept(), recv(), send() are not
     # interrupted by a Ctrl-C in the console. So to make Ctrl-C work we have to
@@ -397,7 +395,7 @@ class HandleInterrupt(object):  # {{{
 # }}}
 
 
-class Accumulator(object):  # {{{
+class Accumulator:  # {{{
 
     'Optimized replacement for BytesIO when the usage pattern is many writes followed by a single getvalue()'
 
@@ -435,7 +433,7 @@ def get_library_data(ctx, rd, strict_library_id=False):
     return db, library_id, library_map, default_library
 
 
-class Offsets(object):
+class Offsets:
     'Calculate offsets for a paginated view'
 
     def __init__(self, offset, delta, total):

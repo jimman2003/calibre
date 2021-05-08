@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -14,7 +13,7 @@ from calibre.ebooks.oeb.base import rewrite_links, urlnormalize
 from polyglot.urllib import urldefrag, urlparse
 
 
-class RenameFiles(object):  # {{{
+class RenameFiles:  # {{{
 
     '''
     Rename files and adjust all links pointing to them. Note that the spine
@@ -88,7 +87,7 @@ class RenameFiles(object):  # {{{
 # }}}
 
 
-class UniqueFilenames(object):  # {{{
+class UniqueFilenames:  # {{{
 
     'Ensure that every item in the manifest has a unique filename'
 
@@ -140,7 +139,7 @@ class UniqueFilenames(object):  # {{{
 # }}}
 
 
-class FlatFilenames(object):  # {{{
+class FlatFilenames:  # {{{
 
     'Ensure that every item in the manifest has a unique filename without subfolders.'
 

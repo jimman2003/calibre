@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -12,7 +11,7 @@ from calibre import prints
 from calibre.utils.logging import default_log as log
 
 
-class NumberToText(object):  # {{{
+class NumberToText:  # {{{
     '''
     Converts numbers to text
     4.56    => four point fifty-six
@@ -60,7 +59,7 @@ class NumberToText(object):  # {{{
             onesPart = self.lessThanTwenty[tensComponent % 10]
 
             if intToTranslate % 10:
-                tensComponentString = "%s-%s" % (tensPart, onesPart)
+                tensComponentString = "{}-{}".format(tensPart, onesPart)
             else:
                 tensComponentString = "%s" % tensPart
 
@@ -110,7 +109,7 @@ class NumberToText(object):  # {{{
             time_strings = self.number.split(":")
             hours = NumberToText(time_strings[0]).text
             minutes = NumberToText(time_strings[1]).text
-            self.text = '%s-%s' % (hours.capitalize(), minutes)
+            self.text = '{}-{}'.format(hours.capitalize(), minutes)
 
         # Test for %
         elif re.search('%', self.number):
@@ -127,7 +126,7 @@ class NumberToText(object):  # {{{
             decimal_strings = self.number.split(".")
             left = NumberToText(decimal_strings[0]).text
             right = NumberToText(decimal_strings[1]).text
-            self.text = '%s point %s' % (left.capitalize(), right)
+            self.text = '{} point {}'.format(left.capitalize(), right)
 
         # Test for hypenated
         elif re.search('-', self.number):
@@ -141,7 +140,7 @@ class NumberToText(object):  # {{{
             else:
                 left = strings[0]
                 right = NumberToText(strings[1]).text
-            self.text = '%s-%s' % (left, right)
+            self.text = '{}-{}'.format(left, right)
 
         # Test for only commas and numbers
         elif re.search(',', self.number) and not re.search('[^0-9,]',self.number):
@@ -160,11 +159,11 @@ class NumberToText(object):  # {{{
             if number_position < text_position:
                 number = self.number[:text_position]
                 text = self.number[text_position:]
-                self.text = '%s%s' % (NumberToText(number).text,text)
+                self.text = '{}{}'.format(NumberToText(number).text,text)
             else:
                 text = self.number[:number_position]
                 number = self.number[number_position:]
-                self.text = '%s%s' % (text, NumberToText(number).text)
+                self.text = '{}{}'.format(text, NumberToText(number).text)
 
         else:
             if self.verbose:
@@ -187,7 +186,7 @@ class NumberToText(object):  # {{{
                 thousandsNumber = (number - (millionsNumber * 10**6))//10**3
                 hundredsNumber  = number - (millionsNumber * 10**6) - (thousandsNumber * 10**3)
                 if self.verbose:
-                    print("Converting %s %s %s" % (millionsNumber, thousandsNumber, hundredsNumber))
+                    print("Converting {} {} {}".format(millionsNumber, thousandsNumber, hundredsNumber))
 
                 # Convert hundredsNumber
                 if hundredsNumber :
@@ -196,7 +195,7 @@ class NumberToText(object):  # {{{
                 # Convert thousandsNumber
                 if thousandsNumber:
                     if number > 1099 and number < 2000:
-                        resultString = '%s %s' % (self.lessThanTwenty[number//100],
+                        resultString = '{} {}'.format(self.lessThanTwenty[number//100],
                                                     self.stringFromInt(number % 100))
                         self.text = resultString.strip().capitalize()
                         return

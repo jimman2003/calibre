@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -13,7 +12,7 @@ from calibre.ebooks.oeb.base import barename, XPath
 from polyglot.builtins import iteritems
 
 
-class RemoveAdobeMargins(object):
+class RemoveAdobeMargins:
     '''
     Remove margins specified in Adobe's page templates.
     '''
@@ -40,7 +39,7 @@ class NegativeTextIndent(Exception):
     pass
 
 
-class RemoveFakeMargins(object):
+class RemoveFakeMargins:
 
     '''
     Remove left and right margins from paragraph/divs if the same margin is specified

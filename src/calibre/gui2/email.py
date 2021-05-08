@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -51,7 +50,7 @@ class Worker(Thread):
             self.func = self.args = None
 
 
-class Sendmail(object):
+class Sendmail:
 
     MAX_RETRIES = 1
     TIMEOUT = 25 * 60  # seconds
@@ -303,13 +302,13 @@ def select_recipients(parent=None):
 # }}}
 
 
-class EmailMixin(object):  # {{{
+class EmailMixin:  # {{{
 
     def __init__(self, *args, **kwargs):
         pass
 
     def send_multiple_by_mail(self, recipients, delete_from_library):
-        ids = set(self.library_view.model().id(r) for r in self.library_view.selectionModel().selectedRows())
+        ids = {self.library_view.model().id(r) for r in self.library_view.selectionModel().selectedRows()}
         if not ids:
             return
         db = self.current_db
@@ -352,7 +351,7 @@ class EmailMixin(object):  # {{{
             for to, (ids, nooutput) in iteritems(bad_recipients):
                 msg = _('This recipient has no valid formats defined') if nooutput else \
                         _('These books have no suitable input formats for conversion')
-                det_msg.append('%s - %s' % (to, msg))
+                det_msg.append('{} - {}'.format(to, msg))
                 det_msg.extend('\t' + titles[bid] for bid in ids)
                 det_msg.append('\n')
             warning_dialog(self, _('Could not send'),

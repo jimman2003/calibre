@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -24,7 +23,7 @@ FontNames = namedtuple('FontNames',
     'family_name, subfamily_name, full_name, preferred_family_name, preferred_subfamily_name, wws_family_name, wws_subfamily_name')
 
 
-class FontMetadata(object):
+class FontMetadata:
 
     def __init__(self, bytes_or_stream):
         if not hasattr(bytes_or_stream, 'read'):

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -32,7 +31,7 @@ class CNCX(CNCX_):  # {{{
 # }}}
 
 
-class TAGX(object):  # {{{
+class TAGX:  # {{{
 
     BITMASKS = {11:0b1}
     BITMASKS.update({x:(1 << i) for i, x in enumerate([1, 2, 3, 4, 5, 21, 22, 23])})
@@ -90,7 +89,7 @@ class TAGX(object):  # {{{
 
 # Index Entries {{{
 
-class IndexEntry(object):
+class IndexEntry:
 
     TAG_VALUES = {
             'offset': 1,
@@ -144,8 +143,7 @@ class IndexEntry(object):
 
     @property
     def tag_nums(self):
-        for i in range(1, 5):
-            yield i
+        yield from range(1, 5)
         for attr in ('class_offset', 'parent_index', 'first_child_index',
                 'last_child_index'):
             if getattr(self, attr) is not None:
@@ -243,7 +241,7 @@ class SecondaryIndexEntry(IndexEntry):
 # }}}
 
 
-class TBS(object):  # {{{
+class TBS:  # {{{
 
     '''
     Take the list of index nodes starting/ending on a record and calculate the
@@ -428,7 +426,7 @@ class TBS(object):  # {{{
 # }}}
 
 
-class Indexer(object):  # {{{
+class Indexer:  # {{{
 
     def __init__(self, serializer, number_of_text_records,
             size_of_last_text_record, masthead_offset, is_periodical,

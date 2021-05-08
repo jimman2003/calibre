@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -72,7 +71,7 @@ class RuleEdit(RuleEditBase):
         self.query.setText(unicode_type(rule.get('query', '')).strip())
 
     def validate(self):
-        ans = super(RuleEdit, self).validate()
+        ans = super().validate()
         if ans:
             rule = self.rule
             if 'glob' in rule['match_type']:

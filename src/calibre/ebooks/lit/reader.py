@@ -1,4 +1,3 @@
-
 '''
 Support for reading LIT files.
 '''
@@ -117,14 +116,14 @@ def consume_sized_utf8_string(bytes, zpad=False):
         result.append(char)
     if zpad and bytes[pos:pos+1] == b'\0':
         pos += 1
-    return u''.join(result), bytes[pos:]
+    return ''.join(result), bytes[pos:]
 
 
 def encode(string):
     return unicode_type(string).encode('ascii', 'xmlcharrefreplace')
 
 
-class UnBinary(object):
+class UnBinary:
     AMPERSAND_RE = re.compile(
         br'&(?!(?:#[0-9]+|#x[0-9a-fA-F]+|[a-zA-Z_:][a-zA-Z0-9.-_:]+);)')
     OPEN_ANGLE_RE = re.compile(br'<<(?![!]--)')
@@ -197,7 +196,7 @@ class UnBinary(object):
         if state == 'close tag':
             if not tag_name:
                 raise LitError('Tag ends before it begins.')
-            buf.write(encode(u''.join(('</', tag_name, '>'))))
+            buf.write(encode(''.join(('</', tag_name, '>'))))
             dynamic_tag = 0
             tag_name = None
             state = 'text'
@@ -380,11 +379,11 @@ class UnBinary(object):
                     if frag:
                         path = '#'.join((path, frag))
                     path = urlnormalize(path)
-                    buf.write(encode(u'"%s"' % path))
+                    buf.write(encode('"%s"' % path))
                     state = 'get attr'
 
 
-class DirectoryEntry(object):
+class DirectoryEntry:
 
     def __init__(self, name, section, offset, size):
         self.name = name
@@ -400,7 +399,7 @@ class DirectoryEntry(object):
         return repr(self)
 
 
-class ManifestItem(object):
+class ManifestItem:
 
     def __init__(self, original, internal, mime_type, offset, root, state):
         self.original = original
@@ -442,7 +441,7 @@ def preserve(function):
     return wrapper
 
 
-class LitFile(object):
+class LitFile:
     PIECE_SIZE = 16
 
     def __init__(self, filename_or_stream, log):
@@ -889,7 +888,7 @@ class LitFile(object):
         return (tags, attrs)
 
 
-class LitContainer(object):
+class LitContainer:
     """Simple Container-interface, read-only accessor for LIT files."""
 
     def __init__(self, filename_or_stream, log):
@@ -955,4 +954,4 @@ class LitReader(OEBReader):
                 hasattr(item.data, 'xpath') and item.data.xpath('/html')):
                 item.media_type = 'application/xhtml+xml'
                 item.data = item._parse_xhtml(etree.tostring(item.data))
-        super(LitReader, self)._spine_from_opf(opf)
+        super()._spine_from_opf(opf)

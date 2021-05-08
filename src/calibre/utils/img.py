@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015-2019, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -304,7 +303,7 @@ def blend_on_canvas(img, width, height, bgcolor='#ffffff'):
     return canvas
 
 
-class Canvas(object):
+class Canvas:
 
     def __init__(self, width, height, bgcolor='#ffffff'):
         self.img = QImage(width, height, QImage.Format.Format_RGB32)
@@ -570,7 +569,7 @@ def run_optimizer(file_path, cmd, as_filter=False, input_data=None):
                 outw.join(60.0), inw.join(60.0)
             try:
                 sz = os.path.getsize(outfile)
-            except EnvironmentError:
+            except OSError:
                 sz = 0
             if sz < 1:
                 return '%s returned a zero size image' % cmd[0]
@@ -579,12 +578,12 @@ def run_optimizer(file_path, cmd, as_filter=False, input_data=None):
     finally:
         try:
             os.remove(outfile)
-        except EnvironmentError as err:
+        except OSError as err:
             if err.errno != errno.ENOENT:
                 raise
         try:
             os.remove(outfile + '.bak')  # optipng creates these files
-        except EnvironmentError as err:
+        except OSError as err:
             if err.errno != errno.ENOENT:
                 raise
 

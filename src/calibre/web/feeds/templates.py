@@ -27,7 +27,7 @@ def attrs(*args, **kw):
 # Regular templates
 
 
-class Template(object):
+class Template:
 
     IS_HTML = True
 
@@ -249,7 +249,7 @@ class TouchscreenIndexTemplate(Template):
 
     def _generate(self, title, masthead, datefmt, feeds, extra_css=None, style=None):
         self.IS_HTML = False
-        date = '%s, %s %s, %s' % (strftime('%A'), strftime('%B'), strftime('%d').lstrip('0'), strftime('%Y'))
+        date = '{}, {} {}, {}'.format(strftime('%A'), strftime('%B'), strftime('%d').lstrip('0'), strftime('%Y'))
         masthead_p = etree.Element("p")
         masthead_p.set("style","text-align:center")
         masthead_img = etree.Element("img")

@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 '''
@@ -25,7 +23,7 @@ from calibre.utils.config import OptionParser
 from polyglot.builtins import string_or_bytes, unicode_type
 
 
-class LrsParser(object):
+class LrsParser:
 
     def __init__(self, stream, logger):
         self.logger = logger

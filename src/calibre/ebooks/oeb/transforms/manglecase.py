@@ -1,4 +1,3 @@
-
 '''
 CSS case-mangling transform.
 '''
@@ -23,7 +22,7 @@ CASE_MANGLER_CSS = """
 TEXT_TRANSFORMS = {'capitalize', 'uppercase', 'lowercase'}
 
 
-class CaseMangler(object):
+class CaseMangler:
 
     @classmethod
     def config(cls, cfg):

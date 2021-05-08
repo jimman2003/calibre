@@ -1,5 +1,3 @@
-
-
 '''
 LZX compression/decompression wrapper.
 '''
@@ -15,7 +13,7 @@ LZXError = _lzx.LZXError
 Compressor = _lzx.Compressor
 
 
-class Decompressor(object):
+class Decompressor:
 
     def __init__(self, wbits):
         self.wbits = wbits

@@ -1,5 +1,4 @@
 #! /usr/bin/env python
-# vim:fileencoding=utf-8
 # Written by Martin v. Löwis <loewis@informatik.hu-berlin.de>
 
 
@@ -122,7 +121,7 @@ def make(filename, outfile):
     try:
         with open(infile, 'rb') as f:
             lines = f.readlines()
-    except IOError as msg:
+    except OSError as msg:
         print(msg, file=sys.stderr)
         sys.exit(1)
 
@@ -230,7 +229,7 @@ def make(filename, outfile):
         else:
             with open(outfile, "wb") as f:
                 f.write(output)
-    except IOError as msg:
+    except OSError as msg:
         print(msg, file=sys.stderr)
 
 

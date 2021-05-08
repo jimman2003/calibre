@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -143,7 +142,7 @@ IN_CONTENT = 4
 IN_COMMENT_CONTENT = 5
 
 
-class CSSState(object):
+class CSSState:
 
     __slots__ = ('parse', 'blocks')
 
@@ -164,7 +163,7 @@ class CSSState(object):
         return not self.__eq__(other)
 
     def __repr__(self):
-        return "CSSState(parse=%s, blocks=%s)" % (self.parse, self.blocks)
+        return "CSSState(parse={}, blocks={})".format(self.parse, self.blocks)
     __str__ = __repr__
 
 

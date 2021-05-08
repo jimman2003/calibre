@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 __license__ = 'GPL v3'
 __copyright__ = '2013, Kovid Goyal <kovid at kovidgoyal.net>'
@@ -38,7 +37,7 @@ def run_loop(user_data, state_map, formats, text):
             break
 
 
-class SimpleState(object):
+class SimpleState:
 
     __slots__ = ('parse',)
 
@@ -63,7 +62,7 @@ class SimpleUserData(QTextBlockUserData):
         self.doc_name = doc_name
 
 
-class SyntaxHighlighter(object):
+class SyntaxHighlighter:
 
     create_formats_func = lambda highlighter: {}
     spell_attributes = ()

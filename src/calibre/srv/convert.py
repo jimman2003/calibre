@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2018, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -23,7 +22,7 @@ conversion_jobs = {}
 cache_lock = Lock()
 
 
-class JobStatus(object):
+class JobStatus:
 
     def __init__(self, job_id, book_id, tdir, library_id, pathtoebook, conversion_data):
         self.job_id = job_id
@@ -70,14 +69,14 @@ def expire_old_jobs():
 def safe_delete_file(path):
     try:
         os.remove(path)
-    except EnvironmentError:
+    except OSError:
         pass
 
 
 def safe_delete_tree(path):
     try:
         shutil.rmtree(path, ignore_errors=True)
-    except EnvironmentError:
+    except OSError:
         pass
 
 
@@ -142,7 +141,7 @@ def queue_job(ctx, rd, library_id, db, fmt, book_id, conversion_data):
     recs = [(k, v, OptionRecommendation.HIGH) for k, v in iteritems(recs)]
 
     job_id = ctx.start_job(
-        'Convert book %s (%s)' % (book_id, fmt), 'calibre.srv.convert',
+        'Convert book {} ({})'.format(book_id, fmt), 'calibre.srv.convert',
         'convert_book', args=(
             src_file.name, opf_file.name, cover_path, conversion_data['output_fmt'], recs),
         job_done_callback=job_done
@@ -255,7 +254,7 @@ def profiles():
             else:
                 ss = _('%(width)d x %(height)d pixels') % dict(width=w, height=h)
             ss = _('Screen size: %s') % ss
-            return {'name': profile.name, 'description': ('%s [%s]' % (profile.description, ss))}
+            return {'name': profile.name, 'description': ('{} [{}]'.format(profile.description, ss))}
 
         ans = profiles.ans = {}
         ans['input'] = {p.short_name: desc(p) for p in input_profiles()}

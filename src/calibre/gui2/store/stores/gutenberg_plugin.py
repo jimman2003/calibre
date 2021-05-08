@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # License: GPLv3 Copyright: 2020, Kovid Goyal <kovid at kovidgoyal.net>
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 store_version = 8  # Needed for dynamic plugin loading
 
@@ -85,8 +83,7 @@ def search(query, max_results=10, timeout=60, write_raw_to=None):
 class GutenbergStore(StorePlugin):
 
     def search(self, query, max_results=10, timeout=60):
-        for result in search(query, max_results, timeout):
-            yield result
+        yield from search(query, max_results, timeout)
 
     def open(self, parent=None, detail_item=None, external=False):
         url = detail_item or absurl('/')

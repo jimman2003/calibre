@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2009, Kovid Goyal <kovid at kovidgoyal.net>
 
 'A simplified logging system'
@@ -19,7 +18,7 @@ from calibre.prints import prints
 from polyglot.builtins import as_unicode
 
 
-class Stream(object):
+class Stream:
 
     def __init__(self, stream=None):
         if stream is None:
@@ -147,7 +146,7 @@ class UnicodeHTMLStream(HTMLStream):
         self.last_col = lc
 
 
-class Log(object):
+class Log:
 
     DEBUG = DEBUG
     INFO  = INFO

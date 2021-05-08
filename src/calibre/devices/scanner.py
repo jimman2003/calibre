@@ -1,4 +1,3 @@
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 '''
@@ -41,12 +40,12 @@ _USBDevice = namedtuple('USBDevice',
 class USBDevice(_USBDevice):
 
     def __new__(cls, *args, **kwargs):
-        self = super(USBDevice, cls).__new__(cls, *args)
+        self = super().__new__(cls, *args)
         self.busnum = self.devnum = -1
         return self
 
     def __repr__(self):
-        return (u'USBDevice(busnum=%s, devnum=%s, '
+        return ('USBDevice(busnum=%s, devnum=%s, '
                 'vendor_id=0x%04x, product_id=0x%04x, bcd=0x%04x, '
                 'manufacturer=%s, product=%s, serial=%s)')%(
                 self.busnum, self.devnum, self.vendor_id, self.product_id,
@@ -56,7 +55,7 @@ class USBDevice(_USBDevice):
     __unicode__ = __repr__
 
 
-class LibUSBScanner(object):
+class LibUSBScanner:
 
     def __call__(self):
         if not hasattr(self, 'libusb'):
@@ -93,7 +92,7 @@ class LibUSBScanner(object):
             print('after', num, 'repeats')
 
 
-class LinuxScanner(object):
+class LinuxScanner:
 
     SYSFS_PATH = os.environ.get('SYSFS_PATH', '/sys')
 
@@ -142,15 +141,15 @@ class LinuxScanner(object):
             try:
                 dev.append(read(man).decode('utf-8'))
             except Exception:
-                dev.append(u'')
+                dev.append('')
             try:
                 dev.append(read(prod_string).decode('utf-8'))
             except Exception:
-                dev.append(u'')
+                dev.append('')
             try:
                 dev.append(read(serial).decode('utf-8'))
             except Exception:
-                dev.append(u'')
+                dev.append('')
 
             dev = USBDevice(*dev)
             try:
@@ -178,7 +177,7 @@ if isnetbsd:
     netbsd_scanner = None
 
 
-class DeviceScanner(object):
+class DeviceScanner:
 
     def __init__(self, *args):
         if iswindows:

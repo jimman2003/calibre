@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2013, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -23,7 +22,7 @@ from polyglot.builtins import unicode_type
 from polyglot.functools import lru_cache
 
 
-class HistoryMixin(object):
+class HistoryMixin:
 
     max_history_items = None
     min_history_entry_length = 3
@@ -540,7 +539,7 @@ class HTMLDisplay(QTextBrowser):
             try:
                 with lopen(path, 'rb') as f:
                     data = f.read()
-            except EnvironmentError:
+            except OSError:
                 if path.rpartition('.')[-1].lower() in {'jpg', 'jpeg', 'gif', 'png', 'bmp', 'webp'}:
                     return QByteArray(bytearray.fromhex(
                         '89504e470d0a1a0a0000000d49484452'

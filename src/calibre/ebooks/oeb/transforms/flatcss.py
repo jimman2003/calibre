@@ -33,7 +33,7 @@ def asfloat(value, default):
     return float(value)
 
 
-class KeyMapper(object):
+class KeyMapper:
 
     def __init__(self, sbase, dbase, dkey):
         self.sbase = float(sbase)
@@ -83,7 +83,7 @@ class KeyMapper(object):
         return dsize
 
 
-class ScaleMapper(object):
+class ScaleMapper:
 
     def __init__(self, sbase, dbase):
         self.dscale = float(dbase) / float(sbase)
@@ -94,7 +94,7 @@ class ScaleMapper(object):
         return dsize
 
 
-class NullMapper(object):
+class NullMapper:
 
     def __init__(self):
         pass
@@ -112,7 +112,7 @@ def FontMapper(sbase=None, dbase=None, dkey=None):
         return NullMapper()
 
 
-class EmbedFontsCSSRules(object):
+class EmbedFontsCSSRules:
 
     def __init__(self, body_font_family, rules):
         self.body_font_family, self.rules = body_font_family, rules
@@ -131,7 +131,7 @@ class EmbedFontsCSSRules(object):
         return self.href
 
 
-class CSSFlattener(object):
+class CSSFlattener:
 
     def __init__(self, fbase=None, fkey=None, lineh=None, unfloat=False,
                  untable=False, page_break_on_body=False, specializer=None,
@@ -242,7 +242,7 @@ class CSSFlattener(object):
 
         for i, font in enumerate(faces):
             ext = 'otf' if font['is_otf'] else 'ttf'
-            fid, href = self.oeb.manifest.generate(id=u'font',
+            fid, href = self.oeb.manifest.generate(id='font',
                 href='fonts/%s.%s'%(ascii_filename(font['full_name']).replace(' ', '-'), ext))
             item = self.oeb.manifest.add(fid, href,
                     guess_type('dummy.'+ext)[0],
@@ -332,7 +332,7 @@ class CSSFlattener(object):
         dlineh = self.lineh
         for kind in ('margin', 'padding'):
             for edge in ('bottom', 'top'):
-                property = "%s-%s" % (kind, edge)
+                property = "{}-{}".format(kind, edge)
                 if property not in cssdict:
                     continue
                 if '%' in cssdict[property]:
@@ -529,7 +529,7 @@ class CSSFlattener(object):
 
             if cssdict:
                 items = sorted(iteritems(cssdict))
-                css = ';\n'.join(u'%s: %s' % (key, val) for key, val in items)
+                css = ';\n'.join('{}: {}'.format(key, val) for key, val in items)
                 classes = node.get('class', '').strip() or 'calibre'
                 classes_list = classes.split()
                 # lower() because otherwise if the document uses the same class
@@ -547,7 +547,7 @@ class CSSFlattener(object):
 
             for psel, cssdict in iteritems(pseudo_classes):
                 items = sorted(iteritems(cssdict))
-                css = ';\n'.join('%s: %s' % (key, val) for key, val in items)
+                css = ';\n'.join('{}: {}'.format(key, val) for key, val in items)
                 pstyles = pseudo_styles[psel]
                 if css in pstyles:
                     match = pstyles[css]
@@ -627,7 +627,7 @@ class CSSFlattener(object):
                 stylizer.page_rule['margin-bottom'] = '%gpt'%\
                         float(self.context.margin_bottom)
             items = sorted(stylizer.page_rule.items())
-            css = ';\n'.join("%s: %s" % (key, val) for key, val in items)
+            css = ';\n'.join("{}: {}".format(key, val) for key, val in items)
             css = ('@page {\n%s\n}\n'%css) if items else ''
             rules = [css_text(r) for r in stylizer.font_face_rules + self.embed_font_rules]
             raw = '\n\n'.join(rules)
@@ -675,7 +675,7 @@ class CSSFlattener(object):
             x = sorted(((k+':'+psel, v) for v, k in iteritems(styles)))
             items.extend(x)
 
-        css = ''.join(".%s {\n%s;\n}\n\n" % (key, val) for key, val in items)
+        css = ''.join(".{} {{\n{};\n}}\n\n".format(key, val) for key, val in items)
 
         href = self.replace_css(css)
         global_css = self.collect_global_css()

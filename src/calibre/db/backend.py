@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -57,7 +56,7 @@ CUSTOM_DATA_TYPES = frozenset(('rating', 'text', 'comments', 'datetime',
 WINDOWS_RESERVED_NAMES = frozenset('CON PRN AUX NUL COM1 COM2 COM3 COM4 COM5 COM6 COM7 COM8 COM9 LPT1 LPT2 LPT3 LPT4 LPT5 LPT6 LPT7 LPT8 LPT9'.split())
 
 
-class DynamicFilter(object):  # {{{
+class DynamicFilter:  # {{{
 
     'No longer used, present for legacy compatibility'
 
@@ -139,18 +138,18 @@ class DBPrefs(dict):  # {{{
         self.__setitem__(key, val)
 
     def get_namespaced(self, namespace, key, default=None):
-        key = u'namespaced:%s:%s'%(namespace, key)
+        key = 'namespaced:%s:%s'%(namespace, key)
         try:
             return dict.__getitem__(self, key)
         except KeyError:
             return default
 
     def set_namespaced(self, namespace, key, val):
-        if u':' in key:
+        if ':' in key:
             raise KeyError('Colons are not allowed in keys')
-        if u':' in namespace:
+        if ':' in namespace:
             raise KeyError('Colons are not allowed in the namespace')
-        key = u'namespaced:%s:%s'%(namespace, key)
+        key = 'namespaced:%s:%s'%(namespace, key)
         self[key] = val
 
     def write_serialized(self, library_path):
@@ -249,7 +248,7 @@ def IdentifiersConcat():
     '''String concatenation aggregator for the identifiers map'''
 
     def step(ctxt, key, val):
-        ctxt.append(u'%s:%s'%(key, val))
+        ctxt.append('%s:%s'%(key, val))
 
     def finalize(ctxt):
         try:
@@ -386,14 +385,14 @@ def set_global_state(backend):
 def rmtree_with_retry(path, sleep_time=1):
     try:
         shutil.rmtree(path)
-    except EnvironmentError as e:
+    except OSError as e:
         if e.errno == errno.ENOENT and not os.path.exists(path):
             return
         time.sleep(sleep_time)  # In case something has temporarily locked a file
         shutil.rmtree(path)
 
 
-class DB(object):
+class DB:
 
     PATH_LIMIT = 40 if iswindows else 100
     WINDOWS_LIBRARY_PATH_LIMIT = 75
@@ -629,7 +628,7 @@ class DB(object):
                 prints('found user category case overlap', catmap[uc])
                 cat = catmap[uc][0]
                 suffix = 1
-                while icu_lower((cat + unicode_type(suffix))) in catmap:
+                while icu_lower(cat + unicode_type(suffix)) in catmap:
                     suffix += 1
                 prints('Renaming user category %s to %s'%(cat, cat+unicode_type(suffix)))
                 user_cats[cat + unicode_type(suffix)] = user_cats[cat]
@@ -743,7 +742,7 @@ class DB(object):
                 x = [y.strip() for y in x if y.strip()]
                 x = [y.decode(preferred_encoding, 'replace') if not isinstance(y,
                     unicode_type) else y for y in x]
-                return [u' '.join(y.split()) for y in x]
+                return [' '.join(y.split()) for y in x]
             else:
                 return x if x is None or isinstance(x, unicode_type) else \
                         x.decode(preferred_encoding, 'replace')
@@ -808,7 +807,7 @@ class DB(object):
             else:
                 is_category = False
             is_m = v['multiple_seps']
-            tn = 'custom_column_{0}'.format(v['num'])
+            tn = 'custom_column_{}'.format(v['num'])
             self.field_metadata.add_custom_field(label=v['label'],
                     table=tn, column='value', datatype=v['datatype'],
                     colnum=v['num'], name=v['name'], display=v['display'],
@@ -1247,7 +1246,7 @@ class DB(object):
             author = ascii_filename(_('Unknown'))
         if author.upper() in WINDOWS_RESERVED_NAMES:
             author += 'w'
-        return '%s/%s%s' % (author, title, book_id)
+        return '{}/{}{}'.format(author, title, book_id)
 
     def construct_file_name(self, book_id, title, author, extlen):
         '''
@@ -1412,7 +1411,7 @@ class DB(object):
         path = os.path.abspath(os.path.join(self.library_path, path, 'cover.jpg'))
         try:
             return utcfromtimestamp(os.stat(path).st_mtime)
-        except EnvironmentError:
+        except OSError:
             pass  # Cover doesn't exist
 
     def copy_cover_to(self, path, dest, windows_atomic_move=None, use_hardlink=False, report_file_size=None):
@@ -1428,13 +1427,13 @@ class DB(object):
             if os.access(path, os.R_OK):
                 try:
                     f = lopen(path, 'rb')
-                except (IOError, OSError):
+                except OSError:
                     time.sleep(0.2)
                     try:
                         f = lopen(path, 'rb')
-                    except (IOError, OSError) as e:
+                    except OSError as e:
                         # Ensure the path that caused this error is reported
-                        raise Exception('Failed to open %r with error: %s' % (path, e))
+                        raise Exception('Failed to open {!r} with error: {}'.format(path, e))
 
                 with f:
                     if hasattr(dest, 'write'):
@@ -1462,13 +1461,13 @@ class DB(object):
         path = os.path.abspath(os.path.join(self.library_path, path, 'cover.jpg'))
         try:
             stat = os.stat(path)
-        except EnvironmentError:
+        except OSError:
             return False, None, None
         if abs(timestamp - stat.st_mtime) < 0.1:
             return True, None, None
         try:
             f = lopen(path, 'rb')
-        except (IOError, OSError):
+        except OSError:
             time.sleep(0.2)
         f = lopen(path, 'rb')
         with f:
@@ -1503,7 +1502,7 @@ class DB(object):
             if os.path.exists(path):
                 try:
                     os.remove(path)
-                except (IOError, OSError):
+                except OSError:
                     time.sleep(0.2)
                     os.remove(path)
         else:
@@ -1513,7 +1512,7 @@ class DB(object):
             else:
                 try:
                     save_cover_data_to(data, path)
-                except (IOError, OSError):
+                except OSError:
                     time.sleep(0.2)
                     save_cover_data_to(data, path)
 
@@ -1599,7 +1598,7 @@ class DB(object):
                     # wrong in the rest of this function, at least the file is
                     # not deleted
                     os.rename(old_path, dest)
-                except EnvironmentError as e:
+                except OSError as e:
                     if getattr(e, 'errno', None) != errno.ENOENT:
                         # Failing to rename the old format will at worst leave a
                         # harmless orphan, so log and ignore the error
@@ -1711,11 +1710,11 @@ class DB(object):
         try:
             with lopen(path, 'wb') as f:
                 f.write(raw)
-        except EnvironmentError:
+        except OSError:
             exc_info = sys.exc_info()
             try:
                 os.makedirs(os.path.dirname(path))
-            except EnvironmentError as err:
+            except OSError as err:
                 if err.errno == errno.EEXIST:
                     # Parent directory already exists, re-raise original exception
                     reraise(*exc_info)
@@ -1794,8 +1793,7 @@ class DB(object):
         return frozenset(r[0] for r in self.execute('SELECT book FROM books_plugin_data WHERE name=?', (name,)))
 
     def annotations_for_book(self, book_id, fmt, user_type, user):
-        for x in annotations_for_book(self.conn, book_id, fmt, user_type, user):
-            yield x
+        yield from annotations_for_book(self.conn, book_id, fmt, user_type, user)
 
     def search_annotations(self,
         fts_engine_query, use_stemming, highlight_start, highlight_end, snippet_size, annotation_type,
@@ -2057,18 +2055,18 @@ class DB(object):
         for loc in old_dirs:
             try:
                 rmtree_with_retry(loc)
-            except EnvironmentError as e:
+            except OSError as e:
                 if os.path.exists(loc):
                     prints('Failed to delete:', loc, 'with error:', as_unicode(e))
         for loc in old_files:
             try:
                 os.remove(loc)
-            except EnvironmentError as e:
+            except OSError as e:
                 if e.errno != errno.ENOENT:
                     prints('Failed to delete:', loc, 'with error:', as_unicode(e))
         try:
             os.rmdir(odir)
-        except EnvironmentError:
+        except OSError:
             pass
         self.conn  # Connect to the moved metadata.db
         progress(_('Completed'), total, total)

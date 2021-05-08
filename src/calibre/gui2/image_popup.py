@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -211,7 +210,7 @@ class ImageView(QDialog):
     def adjust_scrollbars(self, factor):
         for sb in (self.scrollarea.horizontalScrollBar(),
                 self.scrollarea.verticalScrollBar()):
-            sb.setValue(int(factor*sb.value()) + int(((factor - 1) * sb.pageStep()/2)))
+            sb.setValue(int(factor*sb.value()) + int((factor - 1) * sb.pageStep()/2))
 
     def rotate_image(self):
         pm = self.label.pixmap()
@@ -258,7 +257,7 @@ class ImageView(QDialog):
             (self.zoom_out if d < 0 else self.zoom_in)()
 
 
-class ImagePopup(object):
+class ImagePopup:
 
     def __init__(self, parent):
         self.current_img = QPixmap()

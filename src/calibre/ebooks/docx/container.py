@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -86,7 +85,7 @@ def read_default_style_language(raw, mi, XPath):
 # }}}
 
 
-class DOCX(object):
+class DOCX:
 
     def __init__(self, path_or_stream, log=None, extract=True):
         self.docx_is_transitional = True
@@ -259,7 +258,7 @@ class DOCX(object):
         else:
             try:
                 shutil.rmtree(self.tdir)
-            except EnvironmentError:
+            except OSError:
                 pass
 
 

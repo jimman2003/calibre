@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2017, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -27,7 +26,7 @@ Tap, TapAndHold, Flick = 'Tap', 'TapAndHold', 'Flick'
 Left, Right, Up, Down = 'Left', 'Right', 'Up', 'Down'
 
 
-class TouchPoint(object):
+class TouchPoint:
 
     def __init__(self, tp):
         self.creation_time = self.last_update_time = self.time_of_last_move = monotonic()

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -14,7 +13,7 @@ from calibre.utils.wordcount import get_wordcount_obj
 from polyglot.builtins import unicode_type
 
 
-class HeuristicProcessor(object):
+class HeuristicProcessor:
 
     def __init__(self, extra_opts=None, log=None):
         self.log = default_log if log is None else log

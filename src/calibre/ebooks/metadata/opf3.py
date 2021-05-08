@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2016, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -191,7 +190,7 @@ def ensure_prefix(root, prefixes, prefix, value=None):
     prefixes[prefix] = value or reserved_prefixes[prefix]
     prefixes = {k:v for k, v in iteritems(prefixes) if reserved_prefixes.get(k) != v}
     if prefixes:
-        root.set('prefix', ' '.join('%s: %s' % (k, v) for k, v in iteritems(prefixes)))
+        root.set('prefix', ' '.join('{}: {}'.format(k, v) for k, v in iteritems(prefixes)))
     else:
         root.attrib.pop('prefix', None)
 
@@ -300,7 +299,7 @@ def set_identifiers(root, prefixes, refines, new_identifiers, force_identifiers=
     metadata = XPath('./opf:metadata')(root)[0]
     for scheme, val in iteritems(new_identifiers):
         ident = metadata.makeelement(DC('identifier'))
-        ident.text = '%s:%s' % (scheme, val)
+        ident.text = '{}:{}'.format(scheme, val)
         if package_identifier is None:
             metadata.append(ident)
         else:
@@ -322,7 +321,7 @@ def identifier_writer(name):
         metadata = XPath('./opf:metadata')(root)[0]
         if ival:
             ident = metadata.makeelement(DC('identifier'))
-            ident.text = '%s:%s' % (name, ival)
+            ident.text = '{}:{}'.format(name, ival)
             if package_identifier is None:
                 metadata.append(ident)
             else:
@@ -796,7 +795,7 @@ def set_series(root, prefixes, refines, series, series_index):
 
 
 def dict_reader(name, load=json.loads, try2=True):
-    pq = '%s:%s' % (CALIBRE_PREFIX, name)
+    pq = '{}:{}'.format(CALIBRE_PREFIX, name)
 
     def reader(root, prefixes, refines):
         for meta in XPath('./opf:metadata/opf:meta[@property]')(root):
@@ -828,7 +827,7 @@ read_author_link_map = dict_reader('author_link_map')
 
 
 def dict_writer(name, serialize=dump_dict, remove2=True):
-    pq = '%s:%s' % (CALIBRE_PREFIX, name)
+    pq = '{}:{}'.format(CALIBRE_PREFIX, name)
 
     def writer(root, prefixes, refines, val):
         if remove2:
@@ -1007,7 +1006,7 @@ def read_metadata(root, ver=None, return_extra_data=False):
         ans.series, ans.series_index = s, si
     ans.author_link_map = read_author_link_map(root, prefixes, refines) or ans.author_link_map
     ans.user_categories = read_user_categories(root, prefixes, refines) or ans.user_categories
-    for name, fm in iteritems((read_user_metadata(root, prefixes, refines) or {})):
+    for name, fm in iteritems(read_user_metadata(root, prefixes, refines) or {}):
         ans.set_user_metadata(name, fm)
     if return_extra_data:
         ans = ans, ver, read_raster_cover(root, prefixes, refines), first_spine_item(root, prefixes, refines)

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -54,7 +53,7 @@ class Stylizer(Sz):
             return Style(element, self)
 
 
-class TextRun(object):
+class TextRun:
 
     ws_pat = None
 
@@ -133,7 +132,7 @@ class TextRun(object):
         return ans
 
 
-class Block(object):
+class Block:
 
     def __init__(self, namespace, styles_manager, links_manager, html_block, style, is_table_cell=False, float_spec=None, is_list_item=False, parent_bg=None):
         self.force_not_empty = False
@@ -251,7 +250,7 @@ class Block(object):
         return True
 
 
-class Blocks(object):
+class Blocks:
 
     def __init__(self, namespace, styles_manager, links_manager):
         self.top_bookmark = None
@@ -406,7 +405,7 @@ class Blocks(object):
         return 'Block(%r)' % self.runs
 
 
-class Convert(object):
+class Convert:
 
     # Word does not apply default styling to hyperlinks, so we ensure they get
     # default styling (the conversion pipeline does not apply any styling to

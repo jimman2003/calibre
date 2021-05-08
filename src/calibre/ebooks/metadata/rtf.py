@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2008, Kovid Goyal <kovid at kovidgoyal.net>
 
 """
@@ -173,7 +172,7 @@ def create_metadata(stream, options):
         publisher = encode(options.publisher)
         md.append(r'{\manager %s}'%(publisher,))
     if options.tags:
-        tags = u', '.join(options.tags)
+        tags = ', '.join(options.tags)
         tags = encode(tags)
         md.append(r'{\category %s}'%(tags,))
     if len(md) > 1:

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -161,7 +160,7 @@ class ToCEditAction(InterfaceAction):
                     continue
                 try:
                     lf = lock_file(lock_path, timeout=0.01, sleep_time=0.005)
-                except EnvironmentError:
+                except OSError:
                     continue
                 else:
                     self.jobs.remove(job)

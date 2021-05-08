@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
@@ -14,7 +12,7 @@ from calibre.utils.icu import sort_key, strcmp, primary_contains
 from polyglot.builtins import iteritems, unicode_type
 
 
-class Item(object):
+class Item:
 
     def __init__(self, name, label, index, icon, exists):
         self.name = name

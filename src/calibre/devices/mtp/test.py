@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -15,7 +14,7 @@ from calibre.devices.scanner import DeviceScanner
 from polyglot.builtins import range
 
 
-class ProgressCallback(object):
+class ProgressCallback:
 
     def __init__(self):
         self.count = 0

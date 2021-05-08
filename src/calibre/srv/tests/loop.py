@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -52,7 +51,7 @@ class LoopTest(BaseTest):
 
     def test_plugins(self):
         'Test plugin semantics'
-        class Plugin(object):
+        class Plugin:
 
             def __init__(self):
                 self.running = Event()
@@ -91,7 +90,7 @@ class LoopTest(BaseTest):
                 res = conn.getresponse()
                 if int(res.status) == int(http_client.REQUEST_TIMEOUT):
                     raise socket.timeout('Timeout')
-                raise Exception('Got unexpected response: code: %s %s headers: %r data: %r' % (
+                raise Exception('Got unexpected response: code: {} {} headers: {!r} data: {!r}'.format(
                     res.status, res.reason, res.getheaders(), res.read()))
             self.ae(pool.busy, 1)
         self.ae(1, sum(int(w.is_alive()) for w in pool.workers))
@@ -136,7 +135,7 @@ class LoopTest(BaseTest):
 
     def test_ring_buffer(self):
         'Test the ring buffer used for reads'
-        class FakeSocket(object):
+        class FakeSocket:
 
             def __init__(self, data):
                 self.data = data

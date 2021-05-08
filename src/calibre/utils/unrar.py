@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__ = 'GPL v3'
@@ -22,7 +21,7 @@ def as_unicode(x):
     return x
 
 
-class StreamAsPath(object):
+class StreamAsPath:
 
     def __init__(self, stream):
         self.stream = stream
@@ -45,7 +44,7 @@ class StreamAsPath(object):
         if self.temppath is not None:
             try:
                 os.remove(self.temppath)
-            except EnvironmentError:
+            except OSError:
                 pass
         self.temppath = None
 
@@ -59,8 +58,7 @@ def extract(path_or_stream, location):
 def names(path_or_stream):
     from unrardll import names
     with StreamAsPath(path_or_stream) as path:
-        for name in names(path, only_useful=True):
-            yield name
+        yield from names(path, only_useful=True)
 
 
 def comment(path_or_stream):
@@ -129,7 +127,7 @@ def test_basic():
         c = comment(stream)
         expected = 'some comment\n'
         if c != expected:
-            raise ValueError('Comment not read: %r != %r' % (c, expected))
+            raise ValueError('Comment not read: {!r} != {!r}'.format(c, expected))
         if set(names(stream)) != {
             '1/sub-one', 'one.txt', '2/sub-two.txt', '诶比屁.txt', 'Füße.txt',
             'uncompressed', 'max-compressed'}:
@@ -146,7 +144,7 @@ def test_basic():
                 d = extract_member(stream, name=name)
                 if d is None or d[1] != tdata[name]:
                     raise ValueError(
-                        'Failed to extract %s %r != %r' % (name, d, tdata[name]))
+                        'Failed to extract {} {!r} != {!r}'.format(name, d, tdata[name]))
 
     do_test(stream)
     with PersistentTemporaryFile('test-unrar') as f:

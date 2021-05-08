@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 import math, sys, re, numbers
@@ -47,15 +45,13 @@ def tokens(tb):
                 if hasattr(x.contents[0], 'text'):
                     yield x.contents[0].text, cattrs(attrs, {})
                 elif hasattr(x.contents[0], 'attrs'):
-                    for z in process_element(x.contents[0], x.contents[0].attrs):
-                        yield z
+                    yield from process_element(x.contents[0], x.contents[0].attrs)
         elif isinstance(x, Plot):
             yield x, None
         elif isinstance(x, Span):
             attrs = cattrs(attrs, x.attrs)
             for y in x.contents:
-                for z in process_element(y, attrs):
-                    yield z
+                yield from process_element(y, attrs)
 
     for i in tb.contents:
         if isinstance(i, CR):
@@ -65,11 +61,10 @@ def tokens(tb):
                 attrs = {}
                 if hasattr(j, 'attrs'):
                     attrs = j.attrs
-                for k in process_element(j, attrs):
-                    yield k
+                yield from process_element(j, attrs)
 
 
-class Cell(object):
+class Cell:
 
     def __init__(self, conv, tag, css):
         self.conv = conv
@@ -210,7 +205,7 @@ class Cell(object):
         return sum([self.text_block_size(i, width)[1] for i in self.text_blocks])
 
 
-class Row(object):
+class Row:
 
     def __init__(self, conv, row, css, colpad):
         self.cells = []
@@ -273,11 +268,10 @@ class Row(object):
         return -1 if cell.colspan > 1 else cell.pwidth
 
     def cell_iterator(self):
-        for c in self.cells:
-            yield c
+        yield from self.cells
 
 
-class Table(object):
+class Table:
 
     def __init__(self, conv, table, css, rowpad=10, colpad=10):
         self.rows = []

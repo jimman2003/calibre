@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -186,7 +185,7 @@ class ParsingTests(BaseTest):
             root = parse(src, discard_namespaces=ds)
             for tag, lnum in iteritems({'html':2, 'head':3, 'body':3, 'p':3, 'svg':4, 'image':4, 'b':5}):
                 elem = root.xpath('//*[local-name()="%s"]' % tag)[0]
-                self.assertEqual(lnum, elem.sourceline, 'Line number incorrect for %s, source: %s:' % (tag, src))
+                self.assertEqual(lnum, elem.sourceline, 'Line number incorrect for {}, source: {}:'.format(tag, src))
 
         for ds in (False, True):
             src = '\n<html>\n<p b=1 a=2 c=3 d=4 e=5 f=6 g=7 h=8><svg b=1 a=2 c=3 d=4 e=5 f=6 g=7 h=8>\n'
@@ -219,4 +218,4 @@ def timing():
             f(raw)
             timings.append(monotonic() - st)
         avg = sum(timings)/len(timings)
-        print('Average time for %s: %.2g' % (name, avg))
+        print('Average time for {}: {:.2g}'.format(name, avg))

@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -50,7 +49,7 @@ def find_list_containers(list_tag, tag_style):
     return ans
 
 
-class NumberingDefinition(object):
+class NumberingDefinition:
 
     def __init__(self, top_most, stylizer, namespace):
         self.namespace = namespace
@@ -90,7 +89,7 @@ class NumberingDefinition(object):
             level.serialize(an, makeelement)
 
 
-class Level(object):
+class Level:
 
     def __init__(self, list_type, container, items, ilvl=0):
         self.ilvl = ilvl
@@ -125,7 +124,7 @@ class Level(object):
             makeelement(makeelement(lvl, 'w:rPr'), 'w:rFonts', w_ascii=ff, w_hAnsi=ff, w_hint="default")
 
 
-class ListsManager(object):
+class ListsManager:
 
     def __init__(self, docx):
         self.namespace = docx.namespace

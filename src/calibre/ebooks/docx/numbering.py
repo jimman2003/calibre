@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -44,7 +43,7 @@ alphabet_map = {
 }
 
 
-class Level(object):
+class Level:
 
     def __init__(self, namespace, lvl=None):
         self.namespace = namespace
@@ -152,7 +151,7 @@ class Level(object):
         return css
 
 
-class NumberingDefinition(object):
+class NumberingDefinition:
 
     def __init__(self, namespace, parent=None, an_id=None):
         self.namespace = namespace
@@ -174,7 +173,7 @@ class NumberingDefinition(object):
         return ans
 
 
-class Numbering(object):
+class Numbering:
 
     def __init__(self, namespace):
         self.namespace = namespace

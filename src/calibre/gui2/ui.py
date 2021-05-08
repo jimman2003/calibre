@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -81,7 +80,7 @@ def add_quick_start_guide(library_view, refresh_cover_browser=None):
     try:
         with lopen(P('quick_start/%s.epub' % l), 'rb') as src:
             buf = BytesIO(src.read())
-    except EnvironmentError as err:
+    except OSError as err:
         if err.errno != errno.ENOENT:
             raise
         with lopen(P('quick_start/eng.epub'), 'rb') as src:
@@ -485,7 +484,7 @@ class Main(MainWindow, MainWindowMixin, DeviceMixin, EmailMixin,  # {{{
             if os.path.exists(os.path.join(config_dir, 'server.py')):
                 try:
                     os.remove(os.path.join(config_dir, 'server.py'))
-                except EnvironmentError:
+                except OSError:
                     pass
                 warning_dialog(self, _('Content server changed!'), _(
                     'calibre 3 comes with a completely re-written content server.'
@@ -911,7 +910,7 @@ class Main(MainWindow, MainWindowMixin, DeviceMixin, EmailMixin,  # {{{
             font.setBold(True)
             font.setItalic(True)
         self.virtual_library.setFont(font)
-        title = '{0} — || {1}{2} ||'.format(
+        title = '{} — || {}{} ||'.format(
                 __appname__, self.iactions['Choose Library'].library_name(), restrictions)
         self.setWindowTitle(title)
 

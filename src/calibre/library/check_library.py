@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -38,7 +37,7 @@ CHECKS = [('invalid_titles',    _('Invalid titles'), True, False),
       ]
 
 
-class CheckLibrary(object):
+class CheckLibrary:
 
     def __init__(self, library_path, db):
         if isbytestring(library_path):

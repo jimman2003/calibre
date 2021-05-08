@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -79,7 +78,7 @@ class ContentTest(LibraryBaseTest):
 
             def get(what, book_id, library_id=None, q=''):
                 q = ('?' + q) if q else q
-                conn.request('GET', '/get/%s/%s' % (what, book_id) + (('/' + library_id) if library_id else '') + q)
+                conn.request('GET', '/get/{}/{}'.format(what, book_id) + (('/' + library_id) if library_id else '') + q)
                 r = conn.getresponse()
                 return r, r.read()
 
@@ -124,7 +123,7 @@ class ContentTest(LibraryBaseTest):
             import calibre.library.save_to_disk as c
             orig, c.DEBUG = c.DEBUG, False
             try:
-                db.set_pref('plugboards', {u'epub': {u'content_server': [[u'changed, {title}', u'title']]}})
+                db.set_pref('plugboards', {'epub': {'content_server': [['changed, {title}', 'title']]}})
                 # this is needed as the cache is not invalidated for plugboard changes
                 db.set_field('title', {1:'again'})
                 r, data = get('epub', 1)

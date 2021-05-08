@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 
 
 __license__ = 'GPL v3'
@@ -71,7 +70,7 @@ def digest(un, pw, nonce=None, uri=None, method='GET', nc=1, qop='auth', realm=R
     modify(da)
     pw = getattr(da, 'pw', pw)
 
-    class Data(object):
+    class Data:
 
         def __init__(self):
             self.method = method
@@ -109,7 +108,7 @@ class TestAuth(BaseTest):
             self.ae(b'closed', urlopen(server, un='!@#$%^&*()-=_+', pw='!@#$%^&*()-=_+', method='basic').read())
 
             def request(un='testuser', pw='testpw'):
-                conn.request('GET', '/closed', headers={'Authorization': b'Basic ' + as_base64_bytes('%s:%s' % (un, pw))})
+                conn.request('GET', '/closed', headers={'Authorization': b'Basic ' + as_base64_bytes('{}:{}'.format(un, pw))})
                 r = conn.getresponse()
                 return r.status, r.read()
 
@@ -256,7 +255,7 @@ class TestAuth(BaseTest):
             conn = server.connect()
 
             def request(un='testuser', pw='testpw'):
-                conn.request('GET', '/closed', headers={'Authorization': b'Basic ' + as_base64_bytes('%s:%s' % (un, pw))})
+                conn.request('GET', '/closed', headers={'Authorization': b'Basic ' + as_base64_bytes('{}:{}'.format(un, pw))})
                 r = conn.getresponse()
                 return r.status, r.read()
 

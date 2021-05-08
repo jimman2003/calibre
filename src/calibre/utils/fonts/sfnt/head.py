@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:fdm=marker:ai
 
 
 __license__   = 'GPL v3'
@@ -22,7 +21,7 @@ class HeadTable(UnknownTable):
     font_revision = FixedProperty('_font_revision')
 
     def __init__(self, *args, **kwargs):
-        super(HeadTable, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         field_types = (
                 '_version_number' , 'l',

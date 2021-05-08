@@ -1,5 +1,3 @@
-
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 """
@@ -20,7 +18,7 @@ class LRFParseError(Exception):
     pass
 
 
-class PRS500_PROFILE(object):
+class PRS500_PROFILE:
     screen_width  = 600
     screen_height = 775
     dpi           = 166

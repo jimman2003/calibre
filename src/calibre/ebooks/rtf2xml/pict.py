@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -78,7 +77,7 @@ class Pict:
             try:
                 os.mkdir(self.__dir_name)
             except OSError as msg:
-                msg = "%sCouldn't make directory '%s':\n" % (unicode_type(msg), self.__dir_name)
+                msg = "{}Couldn't make directory '{}':\n".format(unicode_type(msg), self.__dir_name)
                 raise self.__bug_handler
         else:
             if self.__run_level > 1:

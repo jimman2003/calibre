@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=utf-8
 # License: GPLv3 Copyright: 2015, Kovid Goyal <kovid at kovidgoyal.net>
 
 
@@ -61,7 +60,7 @@ def parse_html(raw):
     return ans
 
 
-class ParseItem(object):
+class ParseItem:
 
     __slots__ = ('name', 'length', 'fingerprint', 'parsing_done', 'parsed_data')
 
@@ -72,7 +71,7 @@ class ParseItem(object):
         self.parsing_done = False
 
     def __repr__(self):
-        return 'ParsedItem(name=%r, length=%r, fingerprint=%r, parsing_done=%r, parsed_data_is_None=%r)' % (
+        return 'ParsedItem(name={!r}, length={!r}, fingerprint={!r}, parsing_done={!r}, parsed_data_is_None={!r})'.format(
             self.name, self.length, self.fingerprint, self.parsing_done, self.parsed_data is None)
 
 
@@ -313,7 +312,7 @@ class WebPage(QWebEnginePage):
         self.bridge = PreviewBridge(self)
 
     def javaScriptConsoleMessage(self, level, msg, linenumber, source_id):
-        prints('%s:%s: %s' % (source_id, linenumber, msg))
+        prints('{}:{}: {}'.format(source_id, linenumber, msg))
 
     def acceptNavigationRequest(self, url, req_type, is_main_frame):
         if req_type == QWebEngineUrlRequestInfo.NavigationType.NavigationTypeReload:

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 '''
 Write content to ereader pdb file.
 '''
@@ -186,7 +183,7 @@ class Writer(FormatWriter):
             if len(metadata.publisher) >= 1:
                 publisher = metadata.publisher[0].value
 
-        return as_bytes('%s\x00%s\x00%s\x00%s\x00%s\x00' % (title, author, copyright, publisher, isbn))
+        return as_bytes('{}\x00{}\x00{}\x00{}\x00{}\x00'.format(title, author, copyright, publisher, isbn))
 
     def _header_record(self, text_count, chapter_count, link_count, image_count):
         '''

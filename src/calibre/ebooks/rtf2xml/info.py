@@ -1,4 +1,3 @@
-
 #########################################################################
 #                                                                       #
 #                                                                       #
@@ -232,12 +231,12 @@ class Info:
                     msg = 'No dictionary match for %s\n' % att
                     raise self.__bug_handler(msg)
             else:
-                self.__text_string += '<%s>%s' % (att_changed, value)
+                self.__text_string += '<{}>{}'.format(att_changed, value)
 
     def __single_field_func(self, line, tag):
         value = line[20:-1]
         self.__write_obj.write(
-        'mi<tg<empty-att_<%s<%s>%s\n' % (tag, tag, value)
+        'mi<tg<empty-att_<{}<{}>{}\n'.format(tag, tag, value)
         )
 
     def __after_info_table_func(self, line):

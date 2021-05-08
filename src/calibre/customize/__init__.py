@@ -1,4 +1,3 @@
-
 __license__   = 'GPL v3'
 __copyright__ = '2008, Kovid Goyal <kovid at kovidgoyal.net>'
 
@@ -30,7 +29,7 @@ class PluginInstallationType(enum.IntEnum):
     BUILTIN = 3
 
 
-class Plugin(object):  # {{{
+class Plugin:  # {{{
     '''
     A calibre plugin. Useful members include:
 
@@ -567,7 +566,7 @@ class CatalogPlugin(Plugin):  # {{{
         from calibre.ptempfile import PersistentTemporaryDirectory
 
         if not type(self) in builtin_plugins and self.name not in config['disabled_plugins']:
-            files_to_copy = ["%s.%s" % (self.name.lower(),ext) for ext in ["ui","py"]]
+            files_to_copy = ["{}.{}".format(self.name.lower(),ext) for ext in ["ui","py"]]
             resources = zipfile.ZipFile(self.plugin_path,'r')
 
             if self.resources_path is None:
@@ -577,7 +576,7 @@ class CatalogPlugin(Plugin):  # {{{
                 try:
                     resources.extract(file, self.resources_path)
                 except:
-                    print(" customize:__init__.initialize(): %s not found in %s" % (file, os.path.basename(self.plugin_path)))
+                    print(" customize:__init__.initialize(): {} not found in {}".format(file, os.path.basename(self.plugin_path)))
                     continue
             resources.close()
 

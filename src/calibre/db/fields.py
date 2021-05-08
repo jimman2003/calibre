@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# vim:fileencoding=UTF-8:ts=4:sw=4:sta:et:sts=4:ai
 
 
 __license__   = 'GPL v3'
@@ -39,7 +38,7 @@ class InvalidLinkTable(Exception):
         self.field_name = name
 
 
-class Field(object):
+class Field:
 
     is_many = False
     is_many_many = False
@@ -328,8 +327,7 @@ class CompositeField(OneToOneField):
             for v in vals:
                 if v:
                     val_map[v].add(book_id)
-        for val, book_ids in iteritems(val_map):
-            yield val, book_ids
+        yield from iteritems(val_map)
 
     def iter_counts(self, candidates, get_metadata=None):
         val_map = defaultdict(set)
@@ -343,8 +341,7 @@ class CompositeField(OneToOneField):
             else:
                 length = 0
             val_map[length].add(book_id)
-        for val, book_ids in iteritems(val_map):
-            yield val, book_ids
+        yield from iteritems(val_map)
 
     def get_composite_categories(self, tag_class, book_rating_map, book_ids,
                                  is_multiple, get_metadata):
@@ -437,11 +434,10 @@ class OnDeviceField(OneToOneField):
         val_map = defaultdict(set)
         for book_id in candidates:
             val_map[self.for_book(book_id, default_value=default_value)].add(book_id)
-        for val, book_ids in iteritems(val_map):
-            yield val, book_ids
+        yield from iteritems(val_map)
 
 
-class LazySortMap(object):
+class LazySortMap:
 
     __slots__ = ('default_sort_key', 'sort_key_func', 'id_map', 'cache')
 
@@ -562,8 +558,7 @@ class ManyToManyField(Field):
         cbm = self.table.book_col_map
         for book_id in candidates:
             val_map[len(cbm.get(book_id, ()))].add(book_id)
-        for count, book_ids in iteritems(val_map):
-            yield count, book_ids
+        yield from iteritems(val_map)
 
     @property
     def book_value_map(self):
@@ -664,7 +659,7 @@ class FormatsField(ManyToManyField):
         return ans
 
 
-class LazySeriesSortMap(object):
+class LazySeriesSortMap:
 
     __slots__ = ('default_sort_key', 'sort_key_func', 'id_map', 'cache')
 
