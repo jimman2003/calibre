@@ -1241,6 +1241,7 @@ class Cache:
             except IndexError:
                 author = _('Unknown')
             self.backend.update_path(book_id, title, author, self.fields['path'], self.fields['formats'])
+            self.format_metadata_cache.pop(book_id, None)
             if mark_as_dirtied:
                 self._mark_as_dirty(book_ids)
 

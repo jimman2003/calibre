@@ -125,7 +125,7 @@ class TOCView(QTreeView):
             m.addAction(_('Expand all items at the level of {}').format(index.data()), partial(self.expand_at_level, index))
             m.addAction(_('Collapse all items at the level of {}').format(index.data()), partial(self.collapse_at_level, index))
         m.addSeparator()
-        m.addAction(_('Copy table of contents to clipboard'), self.copy_to_clipboard)
+        m.addAction(_('Copy Table of Contents to clipboard'), self.copy_to_clipboard)
         m.exec_(self.mapToGlobal(pos))
 
     def copy_to_clipboard(self):
@@ -136,7 +136,10 @@ class TOCView(QTreeView):
         self.model().update_current_toc_nodes(families)
 
     def scroll_to_current_toc_node(self):
-        nodes = self.model().viewed_nodes()
+        try:
+            nodes = self.model().viewed_nodes()
+        except AttributeError:
+            nodes = ()
         if nodes:
             self.scrollTo(nodes[-1].index())
 
